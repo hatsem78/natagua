@@ -21,10 +21,13 @@ from app_natagua.views import index
 admin.site.site_header = "Natagua Admin"
 admin.site.site_title = "Natagua Admistración"
 admin.site.index_title = "Bien venido Natagua Sistema"
+
+
 urlpatterns = [
     url(r'^$', index, name='index'),
     url('natagua/api/', include('api.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/', include('django.contrib.auth.urls')),
 
 
 ]
