@@ -11,7 +11,7 @@ class CarrierType(models.Model):
     class Meta:
         verbose_name_plural = "Tipo de Transportista"
 
-
+    id = models.AutoField(primary_key=True, help_text="Id único para tipo de transportista ")
     name = models.CharField('Nombre', max_length=200)
 
     def __str__(self):
@@ -25,12 +25,12 @@ class Carrier(models.Model):
     class Meta:
         verbose_name_plural = "Transportista"
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                          help_text="ID único para este libro particular en toda la carrier")
+    id = models.AutoField(primary_key=True, help_text="Id único para transportista ")
     last_name = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     age = models.CharField(max_length=10)
     carrier_type = models.ForeignKey('CarrierType', on_delete=models.SET_NULL, null=True)
+    tutor = models.CharField(max_length=100, default='')
     address = models.CharField(max_length=200)
     mobile = models.CharField(max_length=50)
     between_street = models.CharField(max_length=200)
@@ -45,6 +45,7 @@ class MoveType(models.Model):
     class Meta:
         verbose_name_plural = "Movimiento Transportista"
 
+    id = models.AutoField(primary_key=True, help_text="Id único tipo de movimiento ")
     name_move = models.CharField(max_length=200, help_text="Tipo movimiento del transportista")
 
     def __str__(self):
@@ -58,8 +59,7 @@ class CarrierRoute(models.Model):
     class Meta:
         verbose_name_plural = "Transportista Ruta"
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                          help_text="ID único para para este movimiento en particular")
+    id = models.AutoField(primary_key=True, help_text="Id único para ruta de  transportista ")
     origin = models.CharField(max_length=100)
     destination = models.CharField(max_length=100)
     carrier = models.ForeignKey('Carrier', on_delete=models.SET_NULL, null=True)
@@ -73,6 +73,7 @@ class TutorRelationship(models.Model):
     class Meta:
         verbose_name_plural = "Tutor Relación"
 
+    id = models.AutoField(primary_key=True, help_text="Id único  para tutor relación")
     name = models.CharField(max_length=200)
 
     def __str__(self):
@@ -86,8 +87,7 @@ class Tutor(models.Model):
     class Meta:
         verbose_name_plural = "Tutor del Estudiante"
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                          help_text="ID único del tutor del estudiante")
+    id = models.AutoField(primary_key=True, help_text="Id único tutor ")
     last_name = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     age = models.CharField(max_length=10)
@@ -105,8 +105,7 @@ class Student(models.Model):
     class Meta:
         verbose_name_plural = "Estudiante"
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                          help_text="ID único el estudiante")
+    id = models.AutoField(primary_key=True, help_text="Id único estudiante ")
     last_name = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     age = models.CharField(max_length=10)
@@ -127,6 +126,7 @@ class TeacherType(models.Model):
     class Meta:
         verbose_name_plural = "Tipo profesor"
 
+    id = models.AutoField(primary_key=True, help_text="Id único tipo de profesor ")
     name = models.CharField(max_length=200)
 
     def __str__(self):
@@ -140,8 +140,7 @@ class Teacher(models.Model):
     class Meta:
         verbose_name_plural = "Profesor"
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                          help_text="ID único el profesor")
+    id = models.AutoField(primary_key=True, help_text="Id único para profesor ")
     last_name = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     age = models.CharField(max_length=10)
@@ -153,3 +152,19 @@ class Teacher(models.Model):
     mail = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
     teacher_type = models.ForeignKey('TeacherType', on_delete=models.SET_NULL, null=True)
+
+
+'''
+class Address_custom(models.Model):
+    class Meta:
+        verbose_name_plural = "Dirección"
+
+    id = models.AutoField(primary_key=True, help_text="Id único para dirección ")
+    raw = models.CharField(max_length=100)
+    street_number = models.CharField(max_length=10)
+    route = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=10)
+    state = models.CharField(max_length=100, help_text="Estado provincia ")
+    state_code = models.CharField(max_length=100, help_text="Código del Estado Ejemplo Ar ")
+    country = models.CharField(max_length=100, help_text="Pais ")
+    country_code = models.CharField(max_length=100, help_text="Cod. Pais ")'''

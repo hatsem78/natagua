@@ -17,17 +17,26 @@ from django.conf.urls import url
 from django.conf import settings
 from django.contrib import admin
 from django.conf.urls import url, include
-from app_natagua.views import index
+from django.urls import path
+from django.views.generic import TemplateView
+
+from app_natagua.views import index, login
+# from . import views
+
 admin.site.site_header = "Natagua Admin"
 admin.site.site_title = "Natagua Admistración"
 admin.site.index_title = "Bien venido Natagua Sistema"
 
 
 urlpatterns = [
-    url(r'^$', index, name='index'),
-    url('natagua/api/', include('api.urls')),
+
     url(r'^admin/', admin.site.urls),
-    url(r'^accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),  #
+    path('', index, name='index'),
+    # url(r'^$', index, name='index'),
+    url('natagua/api/', include('api.urls')),
+
+
 
 
 ]
