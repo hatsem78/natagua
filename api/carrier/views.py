@@ -6,10 +6,10 @@ from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from rest_framework import status, viewsets
-from app_natagua.models import Carrier
-from api.carrier.serializers import CarrierSerializer
+#from app_natagua.models import Carrier
+#from api.carrier.serializers import CarrierSerializer
 from django.http import Http404
-
+'''
 class CarrierViewSet(viewsets.ModelViewSet):
     queryset = Carrier.objects.all()
     serializer_class = CarrierSerializer
@@ -106,4 +106,6 @@ def Carrier_detail(request, pk):
 
     elif request.method == 'DELETE':
         snippet.delete()
-        return HttpResponse(status=204)
+        return HttpResponse(status=204
+        
+        '''

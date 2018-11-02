@@ -1,4 +1,4 @@
-from app_natagua.models import Carrier
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
@@ -22,7 +22,6 @@ from rest_framework import status
             'results': data
         })
 
-'''
 
 class CarrierSerializer(serializers.ModelSerializer):
     class Meta:
@@ -73,6 +72,7 @@ class Carrier(generics.ListAPIView):
 
 
 
+'''
 
 
 

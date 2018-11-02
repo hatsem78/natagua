@@ -5,16 +5,46 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4a2f9c91-7676-4e15-895a-895c9a153550" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/natagua.iml" afterPath="$PROJECT_DIR$/.idea/natagua.iml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/api/turno/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/api/turno/serializers.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/api/turno/test/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/api/turno/test/test_author_seralizer.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/api/turno/views.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/app_natagua/static/js/configuracion_general/turno.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/app_natagua/static/js/utils.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/app_natagua/templates/turno/turno.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/natagua/context_processor.py" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/api/carrier/serializers.py" afterPath="$PROJECT_DIR$/api/carrier/serializers.py" />
+      <change beforePath="$PROJECT_DIR$/api/carrier/views.py" afterPath="$PROJECT_DIR$/api/carrier/views.py" />
+      <change beforePath="$PROJECT_DIR$/api/urls.py" afterPath="$PROJECT_DIR$/api/urls.py" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/admin.py" afterPath="$PROJECT_DIR$/app_natagua/admin.py" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0001_initial.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0002_remove_transportista_street.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0003_auto_20181029_1328.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0004_carrierroute_date_route.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0005_auto_20181029_1347.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0006_auto_20181029_1402.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0007_carrier_carrier_type.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0008_auto_20181029_1508.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0009_auto_20181029_1526.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0010_auto_20181029_1531.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0011_auto_20181031_1707.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0012_auto_20181031_1717.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0013_auto_20181031_1719.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0014_auto_20181031_1723.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0015_auto_20181031_1923.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0016_auto_20181031_1936.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0017_delete_address_custom.py" afterPath="" />
       <change beforePath="$PROJECT_DIR$/app_natagua/models.py" afterPath="$PROJECT_DIR$/app_natagua/models.py" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/static/css/main.css" afterPath="$PROJECT_DIR$/app_natagua/static/css/main.css" />
       <change beforePath="$PROJECT_DIR$/app_natagua/templates/base.html" afterPath="$PROJECT_DIR$/app_natagua/templates/base.html" />
+      <change beforePath="$PROJECT_DIR$/app_natagua/templates/index_prueba.html" afterPath="$PROJECT_DIR$/app_natagua/templates/index_prueba.html" />
       <change beforePath="$PROJECT_DIR$/app_natagua/templates/registration/login.html" afterPath="$PROJECT_DIR$/app_natagua/templates/registration/login.html" />
       <change beforePath="$PROJECT_DIR$/app_natagua/views.py" afterPath="$PROJECT_DIR$/app_natagua/views.py" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="" />
       <change beforePath="$PROJECT_DIR$/natagua/settings.py" afterPath="$PROJECT_DIR$/natagua/settings.py" />
       <change beforePath="$PROJECT_DIR$/natagua/urls.py" afterPath="$PROJECT_DIR$/natagua/urls.py" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" afterPath="$PROJECT_DIR$/requirements.txt" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -24,25 +54,101 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/natagua$natagua.coverage" NAME="natagua Coverage Results" MODIFIED="1541012876611" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/natagua$natagua.coverage" NAME="natagua Coverage Results" MODIFIED="1541194791720" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app_natagua/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="156" column="0" lean-forward="false" selection-start-line="156" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
+            <state relative-caret-position="252">
+              <caret line="14" column="10" lean-forward="false" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="10" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
-                <element signature="e#156#616#0" expanded="false" />
-                <element signature="e#1398#1914#0" expanded="false" />
-                <element signature="e#1955#2432#0" expanded="false" />
-                <element signature="e#2477#2912#0" expanded="false" />
-                <element signature="e#2946#3662#0" expanded="false" />
-                <element signature="e#3698#4384#0" expanded="false" />
-                <element signature="e#4423#4853#0" expanded="false" />
-                <element signature="e#4889#5589#0" expanded="false" />
+                <marker date="1541194654023" expanded="false" signature="605:1070" ph="..." />
+                <marker date="1541194654023" expanded="false" signature="1847:2368" ph="..." />
+                <marker date="1541194654023" expanded="false" signature="2403:2886" ph="..." />
+                <marker date="1541194654023" expanded="false" signature="2926:3366" ph="..." />
+                <marker date="1541194654023" expanded="false" signature="3394:4116" ph="..." />
+                <marker date="1541194654023" expanded="false" signature="4146:4838" ph="..." />
+                <marker date="1541194654023" expanded="false" signature="4872:5307" ph="..." />
+                <marker date="1541194654023" expanded="false" signature="5337:6043" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="0002_auto_20181102_2156.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app_natagua/migrations/0002_auto_20181102_2156.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="0001_initial.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app_natagua/migrations/0001_initial.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="17" column="24" lean-forward="false" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="serializers.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/turno/serializers.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="12" column="22" lean-forward="false" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+              <folding>
+                <element signature="e#1#45#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="185">
+              <caret line="20" column="39" lean-forward="false" selection-start-line="20" selection-start-column="34" selection-end-line="20" selection-end-column="39" />
+              <folding>
+                <element signature="e#70#97#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/carrier/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="turno.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app_natagua/static/js/configuracion_general/turno.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="18">
+              <caret line="10" column="19" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="turno.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app_natagua/templates/turno/turno.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="337">
+              <caret line="40" column="51" lean-forward="false" selection-start-line="40" selection-start-column="51" selection-end-line="40" selection-end-column="51" />
+              <folding>
+                <element signature="e#1475#1482#1#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -54,29 +160,50 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>STATIC_URL</find>
-      <find>'django.contrib.staticfiles'</find>
-      <find>app-sidebar__toggle</find>
-      <find>django.contrib.auth.urls</find>
-      <find>main.min.js</find>
-      <find>vali</find>
-      <find>INSTALLED_APPS</find>
-      <find>accounts</find>
-      <find>TEMPLATES = [</find>
-      <find>BASE_DIR</find>
       <find>logo</find>
       <find>por favor</find>
       <find>Por favor inicie sesión para ver esta página</find>
       <find>id =</find>
       <find>Address_custom</find>
+      <find>ui el</find>
+      <find>index.</find>
+      <find>booking/passenger_list_pdf/passenger_list_confirmed.html</find>
+      <find>Carrier</find>
+      <find>address</find>
+      <find>app-ti</find>
+      <find>CarrierSerializer</find>
+      <find>carrier</find>
+      <find>starting</find>
+      <find>addArticleModal</find>
+      <find>getArticles</find>
+      <find>$http</find>
+      <find>hidden</find>
+      <find>csrf_token</find>
+      <find>javascripts</find>
+      <find>API_PREFIX</find>
+      <find>gettext</find>
+      <find>moment</find>
+      <find>HTTP</find>
+      <find>form</find>
+      <find>views</find>
+      <find>CarrierDetail</find>
+      <find>Turno</find>
+      <find>turno</find>
+      <find>AddTurno</find>
     </findStrings>
+    <replaceStrings>
+      <replace>HTTP</replace>
+      <replace>addTurno</replace>
+    </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/app_natagua/modulo_admin</dir>
+      <dir>$PROJECT_DIR$/app_natagua</dir>
       <dir>$PROJECT_DIR$</dir>
     </dirStrings>
   </component>
@@ -87,15 +214,28 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/app_natagua/static/css/main.css" />
         <option value="$PROJECT_DIR$/requirements.txt" />
-        <option value="$PROJECT_DIR$/app_natagua/templates/base.html" />
-        <option value="$PROJECT_DIR$/natagua/urls.py" />
-        <option value="$PROJECT_DIR$/app_natagua/views.py" />
-        <option value="$PROJECT_DIR$/natagua/settings.py" />
         <option value="$PROJECT_DIR$/app_natagua/templates/registration/login_.html" />
         <option value="$PROJECT_DIR$/app_natagua/templates/registration/login.html" />
+        <option value="$PROJECT_DIR$/api/carrier/views.py" />
+        <option value="$PROJECT_DIR$/app_natagua/migrations/0018_turno.py" />
+        <option value="$PROJECT_DIR$/api/carrier/serializers.py" />
+        <option value="$PROJECT_DIR$/app_natagua/static/css/main.css" />
+        <option value="$PROJECT_DIR$/app_natagua/templates/index_prueba.html" />
+        <option value="$PROJECT_DIR$/app_natagua/static/js/configuracion_general/alerta.js" />
+        <option value="$PROJECT_DIR$/natagua/context_processor.py" />
+        <option value="$PROJECT_DIR$/natagua/settings.py" />
+        <option value="$PROJECT_DIR$/app_natagua/static/js/utils.js" />
+        <option value="$PROJECT_DIR$/app_natagua/templates/base.html" />
+        <option value="$PROJECT_DIR$/api/urls.py" />
+        <option value="$PROJECT_DIR$/app_natagua/admin.py" />
         <option value="$PROJECT_DIR$/app_natagua/models.py" />
+        <option value="$PROJECT_DIR$/app_natagua/views.py" />
+        <option value="$PROJECT_DIR$/natagua/urls.py" />
+        <option value="$PROJECT_DIR$/api/turno/serializers.py" />
+        <option value="$PROJECT_DIR$/api/turno/views.py" />
+        <option value="$PROJECT_DIR$/app_natagua/static/js/configuracion_general/turno.js" />
+        <option value="$PROJECT_DIR$/app_natagua/templates/turno/turno.html" />
       </list>
     </option>
   </component>
@@ -107,9 +247,9 @@
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="67" />
-    <option name="y" value="102" />
-    <option name="width" value="1221" />
-    <option name="height" value="522" />
+    <option name="y" value="25" />
+    <option name="width" value="1299" />
+    <option name="height" value="743" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -126,7 +266,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -142,12 +281,19 @@
             <path>
               <item name="natagua" type="b2602c69:ProjectViewProjectNode" />
               <item name="natagua" type="462c0819:PsiDirectoryNode" />
+              <item name="app_natagua" type="462c0819:PsiDirectoryNode" />
+              <item name="migrations" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="natagua" type="b2602c69:ProjectViewProjectNode" />
+              <item name="natagua" type="462c0819:PsiDirectoryNode" />
               <item name="natagua" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -157,9 +303,18 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../gui-utils" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="" />
+    <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.selected.package.standard" value="" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/natagua" />
+      <recent name="$PROJECT_DIR$/app_natagua/static/js" />
+      <recent name="$PROJECT_DIR$/api/turno" />
       <recent name="$PROJECT_DIR$/app_natagua/templates" />
     </key>
   </component>
@@ -232,29 +387,29 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
+    <frame x="67" y="25" width="1299" height="743" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32899022" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.7959641" sideWeight="0.50747067" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32899022" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24868836" sideWeight="0.49197567" order="2" side_tool="false" content_ui="tabs" x="23" y="391" width="1874" height="230" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32948583" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22191478" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6770671" sideWeight="0.48922586" order="2" side_tool="false" content_ui="tabs" x="23" y="391" width="1874" height="230" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2277691" sideWeight="0.49401435" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22585794" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295964" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2497332" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24868836" sideWeight="0.50802433" order="3" side_tool="true" content_ui="tabs" x="23" y="359" width="1874" height="294" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.81279254" sideWeight="0.5059856" order="3" side_tool="true" content_ui="tabs" x="23" y="359" width="1874" height="294" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295964" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
     </layout>
@@ -267,6 +422,13 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/api/turno/views.py</url>
+          <line>21</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -274,12 +436,17 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="6" />
+      <option name="time" value="9" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>serializer.data</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>include('django.contrib.auth.urls')</expression-string>
         <language-id>Python</language-id>
@@ -288,12 +455,30 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/app_natagua/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+            <marker date="1541194654023" expanded="false" signature="605:1070" ph="..." />
+            <marker date="1541194654023" expanded="false" signature="1847:2368" ph="..." />
+            <marker date="1541194654023" expanded="false" signature="2403:2886" ph="..." />
+            <marker date="1541194654023" expanded="false" signature="2926:3366" ph="..." />
+            <marker date="1541194654023" expanded="false" signature="3394:4116" ph="..." />
+            <marker date="1541194654023" expanded="false" signature="4146:4838" ph="..." />
+            <marker date="1541194654023" expanded="false" signature="4872:5307" ph="..." />
+            <marker date="1541194654023" expanded="false" signature="5337:6043" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/natagua/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="468">
           <caret line="33" column="36" lean-forward="true" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="36" />
           <folding>
-            <element signature="e#641#673#0" expanded="false" />
+            <element signature="e#641#673#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -303,7 +488,8 @@
         <state relative-caret-position="540">
           <caret line="30" column="15" lean-forward="false" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="15" />
           <folding>
-            <element signature="e#0#57#0" expanded="false" />
+            <element signature="e#25#82#0" expanded="false" />
+            <element signature="e#1528#5340#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -352,7 +538,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1404">
           <caret line="78" column="17" lean-forward="true" selection-start-line="78" selection-start-column="17" selection-end-line="78" selection-end-column="17" />
-          <folding />
+          <folding>
+            <marker date="1541193424504" expanded="false" signature="7976:8814" ph="..." />
+            <marker date="1541193424504" expanded="false" signature="8852:9410" ph="..." />
+            <marker date="1541193424504" expanded="false" signature="9448:10782" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -371,13 +561,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app_natagua/modulo_admin/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app_natagua/static/css/main.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -407,70 +590,11 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app_natagua/templates/login.html" />
-    <entry file="file://$PROJECT_DIR$/natagua/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="33" column="62" lean-forward="true" selection-start-line="33" selection-start-column="3" selection-end-line="33" selection-end-column="62" />
-          <folding>
-            <element signature="e#641#673#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app_natagua/templates/index_prueba.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app_natagua/templates/registration/login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="62" column="24" lean-forward="false" selection-start-line="62" selection-start-column="24" selection-end-line="62" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/natagua/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="775">
-          <caret line="156" column="21" lean-forward="false" selection-start-line="156" selection-start-column="21" selection-end-line="156" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app_natagua/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="29" column="15" lean-forward="false" selection-start-line="29" selection-start-column="15" selection-end-line="29" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#57#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app_natagua/templates/registration/login_1.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="8" column="2" lean-forward="false" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/templates/registration/login_1.html" />
     <entry file="file://$PROJECT_DIR$/requirements.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="3" column="19" lean-forward="false" selection-start-line="3" selection-start-column="19" selection-end-line="3" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app_natagua/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="78" column="17" lean-forward="false" selection-start-line="78" selection-start-column="17" selection-end-line="78" selection-end-column="17" />
           <folding />
         </state>
       </provider>
@@ -483,21 +607,246 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/templates/registration/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="25" lean-forward="true" selection-start-line="0" selection-start-column="25" selection-end-line="0" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/migrations/0018_turno.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/turno/test/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/carrier/serializers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1183">
+          <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+          <folding>
+            <element signature="e#1#45#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/static/css/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="359">
+          <caret line="15351" column="16" lean-forward="false" selection-start-line="15351" selection-start-column="16" selection-end-line="15351" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/natagua/context_processor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="32" lean-forward="false" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#44#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/natagua/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="481">
+          <caret line="161" column="10" lean-forward="false" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="258" column="63" lean-forward="false" selection-start-line="258" selection-start-column="63" selection-end-line="258" selection-end-column="63" />
+          <folding>
+            <marker date="1541193424504" expanded="false" signature="7976:8814" ph="..." />
+            <marker date="1541193424504" expanded="false" signature="8852:9410" ph="..." />
+            <marker date="1541193424504" expanded="false" signature="9448:10782" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/static/js/utils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="3" column="10" lean-forward="false" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/templates/index_prueba.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="408" column="20" lean-forward="false" selection-start-line="408" selection-start-column="20" selection-end-line="408" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../even_natagua/lib/python3.6/site-packages/django/db/backends/sqlite3/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="295" column="0" lean-forward="false" selection-start-line="295" selection-start-column="0" selection-end-line="295" selection-end-column="0" />
+          <folding>
+            <marker date="1540811119533" expanded="true" signature="7517:7541" ph="PRAGMA forei... " />
+            <marker date="1540811119533" expanded="true" signature="10589:10843" ph="SELECT REFER... missing_value" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/carrier/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/turno/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="23" column="7" lean-forward="true" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="20" column="39" lean-forward="false" selection-start-line="20" selection-start-column="34" selection-end-line="20" selection-end-column="39" />
+          <folding>
+            <element signature="e#70#97#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="38" column="12" lean-forward="false" selection-start-line="38" selection-start-column="12" selection-end-line="38" selection-end-column="12" />
+          <folding>
+            <element signature="e#1528#5340#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/natagua/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="37" column="26" lean-forward="false" selection-start-line="37" selection-start-column="26" selection-end-line="37" selection-end-column="26" />
+          <folding>
+            <element signature="e#641#673#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/turno/serializers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="22" lean-forward="false" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+          <folding>
+            <element signature="e#1#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/templates/turno/turno.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="40" column="51" lean-forward="false" selection-start-line="40" selection-start-column="51" selection-end-line="40" selection-end-column="51" />
+          <folding>
+            <element signature="e#1475#1482#1#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/migrations/0003_delete_turno.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/static/js/configuracion_general/turno.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="10" column="19" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app_natagua/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="156" column="0" lean-forward="false" selection-start-line="156" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
+        <state relative-caret-position="252">
+          <caret line="14" column="10" lean-forward="false" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="10" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
-            <element signature="e#156#616#0" expanded="false" />
-            <element signature="e#1398#1914#0" expanded="false" />
-            <element signature="e#1955#2432#0" expanded="false" />
-            <element signature="e#2477#2912#0" expanded="false" />
-            <element signature="e#2946#3662#0" expanded="false" />
-            <element signature="e#3698#4384#0" expanded="false" />
-            <element signature="e#4423#4853#0" expanded="false" />
-            <element signature="e#4889#5589#0" expanded="false" />
+            <marker date="1541194654023" expanded="false" signature="605:1070" ph="..." />
+            <marker date="1541194654023" expanded="false" signature="1847:2368" ph="..." />
+            <marker date="1541194654023" expanded="false" signature="2403:2886" ph="..." />
+            <marker date="1541194654023" expanded="false" signature="2926:3366" ph="..." />
+            <marker date="1541194654023" expanded="false" signature="3394:4116" ph="..." />
+            <marker date="1541194654023" expanded="false" signature="4146:4838" ph="..." />
+            <marker date="1541194654023" expanded="false" signature="4872:5307" ph="..." />
+            <marker date="1541194654023" expanded="false" signature="5337:6043" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/migrations/0002_auto_20181102_2156.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/migrations/0001_initial.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" column="24" lean-forward="false" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="24" />
+          <folding />
         </state>
       </provider>
     </entry>

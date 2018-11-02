@@ -20,20 +20,22 @@ from django.conf.urls import url, include
 from django.urls import path
 from django.views.generic import TemplateView
 
-from app_natagua.views import index, login
+
 # from . import views
+from app_natagua.views import index, Turnos
 
 admin.site.site_header = "Natagua Admin"
 admin.site.site_title = "Natagua Admistración"
 admin.site.index_title = "Bien venido Natagua Sistema"
 
 
+
 urlpatterns = [
 
     url(r'^admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),  #
-    path('', index, name='index'),
-    # url(r'^$', index, name='index'),
+    url(r'^$', index, name='index'),
+    url(r'^turno$', Turnos.as_view(), name='turno'),
     url('natagua/api/', include('api.urls')),
 
 

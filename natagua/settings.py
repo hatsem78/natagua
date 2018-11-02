@@ -82,6 +82,7 @@ TEMPLATES = [
                 "django.template.context_processors.i18n",
                 "django.template.context_processors.media",
                 "django.template.context_processors.static",
+                "natagua.context_processor.global_vars",
             ],
         },
     },
@@ -156,3 +157,6 @@ STATIC_URL = '/' + URL_PREFIX + '/static/'
 
 LOGIN_URL = 'accounts/login'
 LOGIN_REDIRECT_URL = '/'
+
+URL_PREFIX = 'natagua'
+API_PREFIX = 'natagua/api/'

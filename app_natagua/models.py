@@ -3,6 +3,24 @@ import uuid # Requerida para las instancias de libros únicos
 # Create your models here.
 
 
+class Turnos(models.Model):
+    """
+    Modelo que representa un de turno
+    """
+
+    class Meta:
+        verbose_name_plural = "Turnos"
+
+    id = models.AutoField(primary_key=True, help_text="Id único de turno ")
+    nombre = models.CharField('Nombre', max_length=200)
+
+    def __str__(self):
+        """
+        Cadena que representa a la instancia particular del modelo (p. ej en el sitio de Administración)
+        """
+        return self.name
+
+'''
 class CarrierType(models.Model):
     """
     Modelo que representa un tipo de transportista
@@ -154,7 +172,7 @@ class Teacher(models.Model):
     teacher_type = models.ForeignKey('TeacherType', on_delete=models.SET_NULL, null=True)
 
 
-'''
+
 class Address_custom(models.Model):
     class Meta:
         verbose_name_plural = "Dirección"
