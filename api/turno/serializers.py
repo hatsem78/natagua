@@ -11,4 +11,4 @@ from app_natagua.models import Turnos
 class TurnoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Turnos
-        fields = ('id', 'name')
+        fields = ('id', 'nombre')

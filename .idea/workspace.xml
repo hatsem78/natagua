@@ -5,46 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4a2f9c91-7676-4e15-895a-895c9a153550" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/api/turno/__init__.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/api/turno/serializers.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/api/turno/test/__init__.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/api/turno/test/test_author_seralizer.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/api/turno/views.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app_natagua/static/js/configuracion_general/turno.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app_natagua/static/js/utils.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app_natagua/templates/turno/turno.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/natagua/context_processor.py" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/api/carrier/serializers.py" afterPath="$PROJECT_DIR$/api/carrier/serializers.py" />
-      <change beforePath="$PROJECT_DIR$/api/carrier/views.py" afterPath="$PROJECT_DIR$/api/carrier/views.py" />
-      <change beforePath="$PROJECT_DIR$/api/urls.py" afterPath="$PROJECT_DIR$/api/urls.py" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/admin.py" afterPath="$PROJECT_DIR$/app_natagua/admin.py" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0001_initial.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0002_remove_transportista_street.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0003_auto_20181029_1328.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0004_carrierroute_date_route.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0005_auto_20181029_1347.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0006_auto_20181029_1402.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0007_carrier_carrier_type.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0008_auto_20181029_1508.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0009_auto_20181029_1526.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0010_auto_20181029_1531.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0011_auto_20181031_1707.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0012_auto_20181031_1717.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0013_auto_20181031_1719.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0014_auto_20181031_1723.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0015_auto_20181031_1923.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0016_auto_20181031_1936.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/migrations/0017_delete_address_custom.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/api/turno/serializers.py" afterPath="$PROJECT_DIR$/api/turno/serializers.py" />
       <change beforePath="$PROJECT_DIR$/app_natagua/models.py" afterPath="$PROJECT_DIR$/app_natagua/models.py" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/static/css/main.css" afterPath="$PROJECT_DIR$/app_natagua/static/css/main.css" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/templates/base.html" afterPath="$PROJECT_DIR$/app_natagua/templates/base.html" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/templates/index_prueba.html" afterPath="$PROJECT_DIR$/app_natagua/templates/index_prueba.html" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/templates/registration/login.html" afterPath="$PROJECT_DIR$/app_natagua/templates/registration/login.html" />
-      <change beforePath="$PROJECT_DIR$/app_natagua/views.py" afterPath="$PROJECT_DIR$/app_natagua/views.py" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/natagua/settings.py" afterPath="$PROJECT_DIR$/natagua/settings.py" />
-      <change beforePath="$PROJECT_DIR$/natagua/urls.py" afterPath="$PROJECT_DIR$/natagua/urls.py" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -54,26 +19,36 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/natagua$natagua.coverage" NAME="natagua Coverage Results" MODIFIED="1541194791720" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/natagua$natagua.coverage" NAME="natagua Coverage Results" MODIFIED="1541244866350" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app_natagua/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="14" column="10" lean-forward="false" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="10" />
+            <state relative-caret-position="360">
+              <caret line="20" column="26" lean-forward="false" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
-                <marker date="1541194654023" expanded="false" signature="605:1070" ph="..." />
-                <marker date="1541194654023" expanded="false" signature="1847:2368" ph="..." />
-                <marker date="1541194654023" expanded="false" signature="2403:2886" ph="..." />
-                <marker date="1541194654023" expanded="false" signature="2926:3366" ph="..." />
-                <marker date="1541194654023" expanded="false" signature="3394:4116" ph="..." />
-                <marker date="1541194654023" expanded="false" signature="4146:4838" ph="..." />
-                <marker date="1541194654023" expanded="false" signature="4872:5307" ph="..." />
-                <marker date="1541194654023" expanded="false" signature="5337:6043" ph="..." />
+                <marker date="1541244812602" expanded="false" signature="607:1072" ph="..." />
+                <marker date="1541244812602" expanded="false" signature="1849:2370" ph="..." />
+                <marker date="1541244812602" expanded="false" signature="2405:2888" ph="..." />
+                <marker date="1541244812602" expanded="false" signature="2928:3368" ph="..." />
+                <marker date="1541244812602" expanded="false" signature="3396:4118" ph="..." />
+                <marker date="1541244812602" expanded="false" signature="4148:4840" ph="..." />
+                <marker date="1541244812602" expanded="false" signature="4874:5309" ph="..." />
+                <marker date="1541244812602" expanded="false" signature="5339:6045" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="379">
+              <caret line="111" column="19" lean-forward="false" selection-start-line="111" selection-start-column="19" selection-end-line="111" selection-end-column="19" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -88,7 +63,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="0001_initial.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="0001_initial.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app_natagua/migrations/0001_initial.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="306">
@@ -98,11 +73,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="serializers.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="serializers.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/turno/serializers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="12" column="22" lean-forward="false" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+            <state relative-caret-position="234">
+              <caret line="13" column="31" lean-forward="false" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
               <folding>
                 <element signature="e#1#45#0" expanded="true" />
               </folding>
@@ -113,7 +88,7 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="185">
+            <state relative-caret-position="324">
               <caret line="20" column="39" lean-forward="false" selection-start-line="20" selection-start-column="34" selection-end-line="20" selection-end-column="39" />
               <folding>
                 <element signature="e#70#97#0" expanded="true" />
@@ -135,7 +110,7 @@
       <file leaf-file-name="turno.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app_natagua/static/js/configuracion_general/turno.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
+            <state relative-caret-position="180">
               <caret line="10" column="19" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="19" />
               <folding />
             </state>
@@ -145,11 +120,9 @@
       <file leaf-file-name="turno.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app_natagua/templates/turno/turno.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="337">
+            <state relative-caret-position="720">
               <caret line="40" column="51" lean-forward="false" selection-start-line="40" selection-start-column="51" selection-end-line="40" selection-end-column="51" />
-              <folding>
-                <element signature="e#1475#1482#1#HTML" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -213,7 +186,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/app_natagua/templates/registration/login_.html" />
         <option value="$PROJECT_DIR$/app_natagua/templates/registration/login.html" />
@@ -229,13 +201,15 @@
         <option value="$PROJECT_DIR$/app_natagua/templates/base.html" />
         <option value="$PROJECT_DIR$/api/urls.py" />
         <option value="$PROJECT_DIR$/app_natagua/admin.py" />
-        <option value="$PROJECT_DIR$/app_natagua/models.py" />
         <option value="$PROJECT_DIR$/app_natagua/views.py" />
         <option value="$PROJECT_DIR$/natagua/urls.py" />
-        <option value="$PROJECT_DIR$/api/turno/serializers.py" />
         <option value="$PROJECT_DIR$/api/turno/views.py" />
         <option value="$PROJECT_DIR$/app_natagua/static/js/configuracion_general/turno.js" />
         <option value="$PROJECT_DIR$/app_natagua/templates/turno/turno.html" />
+        <option value="$PROJECT_DIR$/app_natagua/migrations/0001_initial.py" />
+        <option value="$PROJECT_DIR$/app_natagua/models.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/api/turno/serializers.py" />
       </list>
     </option>
   </component>
@@ -276,13 +250,13 @@
             <path>
               <item name="natagua" type="b2602c69:ProjectViewProjectNode" />
               <item name="natagua" type="462c0819:PsiDirectoryNode" />
-              <item name="app_natagua" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="natagua" type="b2602c69:ProjectViewProjectNode" />
               <item name="natagua" type="462c0819:PsiDirectoryNode" />
-              <item name="app_natagua" type="462c0819:PsiDirectoryNode" />
-              <item name="migrations" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+              <item name="turno" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="natagua" type="b2602c69:ProjectViewProjectNode" />
@@ -293,8 +267,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -395,11 +369,10 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32899022" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6770671" sideWeight="0.48922586" order="2" side_tool="false" content_ui="tabs" x="23" y="391" width="1874" height="230" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2277691" sideWeight="0.49401435" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22585794" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22620904" sideWeight="0.49401435" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22984837" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295964" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2497332" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -410,6 +383,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295964" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
     </layout>
@@ -455,20 +429,72 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/api/turno/serializers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="12" column="22" lean-forward="false" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+          <folding>
+            <element signature="e#1#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="20" column="39" lean-forward="false" selection-start-line="20" selection-start-column="34" selection-end-line="20" selection-end-column="39" />
+          <folding>
+            <element signature="e#70#97#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/carrier/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/static/js/configuracion_general/turno.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="10" column="19" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/templates/turno/turno.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="720">
+          <caret line="40" column="51" lean-forward="false" selection-start-line="40" selection-start-column="51" selection-end-line="40" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/migrations/0001_initial.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" column="24" lean-forward="false" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app_natagua/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
-            <marker date="1541194654023" expanded="false" signature="605:1070" ph="..." />
-            <marker date="1541194654023" expanded="false" signature="1847:2368" ph="..." />
-            <marker date="1541194654023" expanded="false" signature="2403:2886" ph="..." />
-            <marker date="1541194654023" expanded="false" signature="2926:3366" ph="..." />
-            <marker date="1541194654023" expanded="false" signature="3394:4116" ph="..." />
-            <marker date="1541194654023" expanded="false" signature="4146:4838" ph="..." />
-            <marker date="1541194654023" expanded="false" signature="4872:5307" ph="..." />
-            <marker date="1541194654023" expanded="false" signature="5337:6043" ph="..." />
+            <marker date="1541244812602" expanded="false" signature="607:1072" ph="..." />
+            <marker date="1541244812602" expanded="false" signature="1849:2370" ph="..." />
+            <marker date="1541244812602" expanded="false" signature="2405:2888" ph="..." />
+            <marker date="1541244812602" expanded="false" signature="2928:3368" ph="..." />
+            <marker date="1541244812602" expanded="false" signature="3396:4118" ph="..." />
+            <marker date="1541244812602" expanded="false" signature="4148:4840" ph="..." />
+            <marker date="1541244812602" expanded="false" signature="4874:5309" ph="..." />
+            <marker date="1541244812602" expanded="false" signature="5339:6045" ph="..." />
           </folding>
         </state>
       </provider>
@@ -488,7 +514,6 @@
         <state relative-caret-position="540">
           <caret line="30" column="15" lean-forward="false" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="15" />
           <folding>
-            <element signature="e#25#82#0" expanded="false" />
             <element signature="e#1528#5340#0" expanded="false" />
           </folding>
         </state>
@@ -498,7 +523,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2826">
           <caret line="157" column="24" lean-forward="false" selection-start-line="157" selection-start-column="24" selection-end-line="157" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -506,7 +530,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2034">
           <caret line="123" column="0" lean-forward="false" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -514,7 +537,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="774">
           <caret line="43" column="32" lean-forward="false" selection-start-line="43" selection-start-column="32" selection-end-line="43" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -522,7 +544,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="3" column="19" lean-forward="false" selection-start-line="3" selection-start-column="19" selection-end-line="3" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -530,7 +551,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="20" column="29" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="75" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -538,11 +558,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1404">
           <caret line="78" column="17" lean-forward="true" selection-start-line="78" selection-start-column="17" selection-end-line="78" selection-end-column="17" />
-          <folding>
-            <marker date="1541193424504" expanded="false" signature="7976:8814" ph="..." />
-            <marker date="1541193424504" expanded="false" signature="8852:9410" ph="..." />
-            <marker date="1541193424504" expanded="false" signature="9448:10782" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -574,18 +589,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="88" column="4" lean-forward="false" selection-start-line="88" selection-start-column="4" selection-end-line="88" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../even_natagua/lib/python3.6/site-packages/django/core/handlers/base.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2034">
           <caret line="123" column="0" lean-forward="false" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -595,7 +602,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="3" column="19" lean-forward="false" selection-start-line="3" selection-start-column="19" selection-end-line="3" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -603,7 +609,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="20" column="29" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="75" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -611,7 +616,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
           <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -619,7 +623,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="25" lean-forward="true" selection-start-line="0" selection-start-column="25" selection-end-line="0" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -627,23 +630,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app_natagua/migrations/0018_turno.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/migrations/0018_turno.py" />
     <entry file="file://$PROJECT_DIR$/api/turno/test/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -651,9 +645,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1183">
           <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
-          <folding>
-            <element signature="e#1#45#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -661,7 +652,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="359">
           <caret line="15351" column="16" lean-forward="false" selection-start-line="15351" selection-start-column="16" selection-end-line="15351" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -669,9 +659,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
           <caret line="7" column="32" lean-forward="false" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#44#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -679,7 +666,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="481">
           <caret line="161" column="10" lean-forward="false" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -687,11 +673,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
           <caret line="258" column="63" lean-forward="false" selection-start-line="258" selection-start-column="63" selection-end-line="258" selection-end-column="63" />
-          <folding>
-            <marker date="1541193424504" expanded="false" signature="7976:8814" ph="..." />
-            <marker date="1541193424504" expanded="false" signature="8852:9410" ph="..." />
-            <marker date="1541193424504" expanded="false" signature="9448:10782" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -699,7 +680,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="3" column="10" lean-forward="false" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -707,7 +687,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="293">
           <caret line="408" column="20" lean-forward="false" selection-start-line="408" selection-start-column="20" selection-end-line="408" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -715,10 +694,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="295" column="0" lean-forward="false" selection-start-line="295" selection-start-column="0" selection-end-line="295" selection-end-column="0" />
-          <folding>
-            <marker date="1540811119533" expanded="true" signature="7517:7541" ph="PRAGMA forei... " />
-            <marker date="1540811119533" expanded="true" signature="10589:10843" ph="SELECT REFER... missing_value" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -726,9 +701,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
           <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -752,7 +724,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
+        <state relative-caret-position="324">
           <caret line="20" column="39" lean-forward="false" selection-start-line="20" selection-start-column="34" selection-end-line="20" selection-end-column="39" />
           <folding>
             <element signature="e#70#97#0" expanded="true" />
@@ -780,57 +752,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/turno/serializers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="22" lean-forward="false" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
-          <folding>
-            <element signature="e#1#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app_natagua/templates/turno/turno.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
+        <state relative-caret-position="720">
           <caret line="40" column="51" lean-forward="false" selection-start-line="40" selection-start-column="51" selection-end-line="40" selection-end-column="51" />
-          <folding>
-            <element signature="e#1475#1482#1#HTML" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app_natagua/migrations/0003_delete_turno.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/migrations/0003_delete_turno.py" />
     <entry file="file://$PROJECT_DIR$/app_natagua/static/js/configuracion_general/turno.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
+        <state relative-caret-position="180">
           <caret line="10" column="19" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="19" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app_natagua/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="14" column="10" lean-forward="false" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-            <marker date="1541194654023" expanded="false" signature="605:1070" ph="..." />
-            <marker date="1541194654023" expanded="false" signature="1847:2368" ph="..." />
-            <marker date="1541194654023" expanded="false" signature="2403:2886" ph="..." />
-            <marker date="1541194654023" expanded="false" signature="2926:3366" ph="..." />
-            <marker date="1541194654023" expanded="false" signature="3394:4116" ph="..." />
-            <marker date="1541194654023" expanded="false" signature="4146:4838" ph="..." />
-            <marker date="1541194654023" expanded="false" signature="4872:5307" ph="..." />
-            <marker date="1541194654023" expanded="false" signature="5337:6043" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -847,6 +782,42 @@
         <state relative-caret-position="306">
           <caret line="17" column="24" lean-forward="false" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="24" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_natagua/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="20" column="26" lean-forward="false" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+            <marker date="1541244812602" expanded="false" signature="607:1072" ph="..." />
+            <marker date="1541244812602" expanded="false" signature="1849:2370" ph="..." />
+            <marker date="1541244812602" expanded="false" signature="2405:2888" ph="..." />
+            <marker date="1541244812602" expanded="false" signature="2928:3368" ph="..." />
+            <marker date="1541244812602" expanded="false" signature="3396:4118" ph="..." />
+            <marker date="1541244812602" expanded="false" signature="4148:4840" ph="..." />
+            <marker date="1541244812602" expanded="false" signature="4874:5309" ph="..." />
+            <marker date="1541244812602" expanded="false" signature="5339:6045" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="111" column="19" lean-forward="false" selection-start-line="111" selection-start-column="19" selection-end-line="111" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/turno/serializers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" column="31" lean-forward="false" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
+          <folding>
+            <element signature="e#1#45#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

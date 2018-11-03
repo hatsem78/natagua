@@ -18,7 +18,7 @@ class Turnos(models.Model):
         """
         Cadena que representa a la instancia particular del modelo (p. ej en el sitio de Administración)
         """
-        return self.name
+        return self.nombre
 
 '''
 class CarrierType(models.Model):
