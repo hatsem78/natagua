@@ -16,8 +16,7 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     url(r'^', include(router.urls)),
-
-    url(r'turno/', views.TurnoList.as_view(), name='turno_list'),
+    url(r'turno_list/', views.TurnoList.as_view(), name='turno_list'),
     url(r'turno/<int:pk>/', views.TurnoDetail.as_view(), name='turno_detail'),
 
 

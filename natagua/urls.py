@@ -36,11 +36,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),  #
     url(r'^$', index, name='index'),
     url(r'^turno$', Turnos.as_view(), name='turno'),
-    url('natagua/api/', include('api.urls')),
-
-
-
-
+    url(r'^api/', include('api.urls'), name="api"),
 ]
 
 

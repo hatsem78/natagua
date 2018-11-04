@@ -62,8 +62,8 @@ MIDDLEWARE = [
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.SessionAuthentication',),
+    'PAGE_SIZE': 100,
     'DEFAULT_PAGINATION_CLASS': None,
-    'PAGE_SIZE': 100
 }
 
 ROOT_URLCONF = 'natagua.urls'
@@ -159,4 +159,4 @@ LOGIN_URL = 'accounts/login'
 LOGIN_REDIRECT_URL = '/'
 
 URL_PREFIX = 'natagua'
-API_PREFIX = 'natagua/api/'
+API_PREFIX = '/api/'

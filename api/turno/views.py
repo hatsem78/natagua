@@ -6,15 +6,19 @@ from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from rest_framework import status, viewsets
-#from app_natagua.models import Carrier
-#from api.carrier.serializers import CarrierSerializer
+from rest_framework import serializers, generics
 from django.http import Http404
-
+from api.utils import Pagination
 from api.turno.serializers import TurnoSerializer
 from app_natagua.models import Turnos
 
 
-class TurnoList(APIView):
+class TurnoList(generics.ListAPIView):
+    queryset = snippets = Turnos.objects.get_queryset().order_by('id')
+    serializer_class = TurnoSerializer
+    pagination_class = Pagination
+
+class TurnoListt(APIView):
     """
     List all snippets, or create a new snippet.
     """

@@ -15,17 +15,46 @@
     </div>
     <div class="tile mb-4" id="starting">
         <div class="tile-title-w-btn">
-          <h3 class="title">Listado</h3>
-          <p>
-              <a
-                  data-toggle="modal"
-                  data-target="#addTurno"
-                  class="btn btn-primary icon-btn"
-                  href="#" >
-                  <i class="fa fa-file"></i>Nuevo Turno
-              </a>
-          </p>
+            <h3 class="title">Listado</h3>
+            <p>
+                  <a
+                      data-toggle="modal"
+                      data-target="#addTurno"
+                      class="btn btn-info icon-btn"
+                      href="#" >
+                      <i class="fa fa-plus"></i>Nuevo Turno
+                  </a>
+            </p>
         </div>
+
+        <vuetable ref="vuetable"
+            api-url="{% url 'turno_list' %}"
+            :fields="fieldes"
+            :sort-order="sortOrder"
+            :css="css.table"
+            pagination-path=""
+            :per-page="3"
+            @vuetable:pagination-data="onPaginationData"
+            @vuetable:loading="onLoading"
+            @vuetable:loaded="onLoaded"
+        >
+           <template slot="actions" slot-scope="props">
+              <div class="table-button-container">
+                  <button class="btn btn-outline-primary btn-sm" @click="editRow(props.rowData)">
+                    <span class="fa fa-lg fa-edit"></span> Editar</button>&nbsp;&nbsp;
+                  <button class="btn btn-danger btn-sm" @click="deleteRow(props.rowData)">
+                    <span class="fa fa-lg fa-trash"></span> Eliminar</button>&nbsp;&nbsp;
+              </div>
+              </template>
+
+
+        </vuetable>
+        <vuetable-pagination ref="pagination"
+          :css="css.pagination"
+          @vuetable-pagination:change-page="onChangePage"
+        ></vuetable-pagination>
+
+
         <!-- Add Article Modal -->
         <div class="modal fade" id="addTurno" tabindex="-1" role="dialog"
              aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -60,12 +89,14 @@
                 </form>
               </div>
             </div>
-            <div class="loading" v-if="loading===true">Loading&#8230;</div>
+            <div class="loading" v-if="loading">Loading&#8230;</div>
           </div>
     </div>
 
 {% endblock %}
 {% block javascripts %}
     {{ block.super }}
+    <script src="{% static '/js/vue-table.js' %}"></script>
     <script src="{% static '/js/configuracion_general/turno.js' %}"></script>
+
 {% endblock javascripts %}
