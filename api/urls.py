@@ -1,14 +1,14 @@
 # coding=utf-8
-#from api.carrier.serializers import CarrierSerializer
-from api.turno import views
+from api.turno.views import *
 from django.conf.urls import url, include
 from rest_framework import routers
+from django.urls import path
 
-#from api.carrier.views import CarrierViewSet
+
 
 router = routers.DefaultRouter()
 
-from rest_framework.urlpatterns import format_suffix_patterns
+
 
 router = routers.DefaultRouter()
 
@@ -16,10 +16,11 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     url(r'^', include(router.urls)),
-    url(r'turno_list/', views.TurnoList.as_view(), name='turno_list'),
-    url(r'turno/<int:pk>/', views.TurnoDetail.as_view(), name='turno_detail'),
+    url(r'turno_list/', TurnoList.as_view(), name='turno_list'),
 
-
+#    url(r'turno_action/', TurnoDetail, name='turno_action'),
+    path('turno/', TurnoAdd.as_view()),
+    path('turno/<int:pk>/', TurnoDetail.as_view()),
 
     #url(r'carrier/', views.CarrierList.as_view(), name='Carrier_list'),
     #url(r'carrier/<int:pk>/', views.CarrierDetail.as_view(), name='Carrier_detail'),

@@ -21,7 +21,9 @@
                       data-toggle="modal"
                       data-target="#addTurno"
                       class="btn btn-info icon-btn"
-                      href="#" >
+                      href="#"
+                      @click="addRow()"
+                  >
                       <i class="fa fa-plus"></i>Nuevo Turno
                   </a>
             </p>
@@ -40,10 +42,13 @@
         >
            <template slot="actions" slot-scope="props">
               <div class="table-button-container">
-                  <button class="btn btn-outline-primary btn-sm" @click="editRow(props.rowData)">
-                    <span class="fa fa-lg fa-edit"></span> Editar</button>&nbsp;&nbsp;
+                  <button class="btn btn-outline-primary btn-sm" data-toggle="modal"
+                     data-target="#addTurno" @click="editRow(props.rowData)">
+                     <span class="fa fa-lg fa-edit"></span> Editar
+                  </button>&nbsp;&nbsp;
                   <button class="btn btn-danger btn-sm" @click="deleteRow(props.rowData)">
-                    <span class="fa fa-lg fa-trash"></span> Eliminar</button>&nbsp;&nbsp;
+                    <span class="fa fa-lg fa-trash"></span> Eliminar
+                  </button>&nbsp;&nbsp;
               </div>
               </template>
 
@@ -62,12 +67,12 @@
 
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Agregar Turno</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle" v-text="titulo"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form v-on:submit.prevent="addTurno()">
+                <form v-on:submit.prevent="(action)? addTurno() : updateTurno()">
                     <div class="modal-body">
                         <div class="form-group row">
                             <label for="Turno_last_name" class="col-md-2">Nombre</label>

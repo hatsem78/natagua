@@ -1,10 +1,15 @@
 Vue.component('vuetable', window.Vuetable.Vuetable);
 
 Vue.component('vuetable-pagination', window.Vuetable.VuetablePagination);
+$("#configuracion_general").addClass('is-expanded');
+$("#menu_turno").addClass('active');
+$("#dashboard").removeClass('active');
+
 new Vue({
     el: '#starting',
     delimiters: ['${','}'],
     data: {
+        titulo:'Agregar Turno',
         turno: [],
         loading: false,
         currentTurno: {},
@@ -56,7 +61,8 @@ new Vue({
               last: '',
             },
         }
-        }
+        },
+        action: true,
     },
     mounted: function() {
         //this.getTurnos();
@@ -84,7 +90,7 @@ new Vue({
             this.loading = true;
             HTTP.get(`turno/${id}/`)
             .then((response) => {
-                this.turno = response.data;
+                this.newTurno = response.data;
                 $("#editArticleModal").modal('show');
                 this.loading = false;
             })
@@ -94,39 +100,44 @@ new Vue({
             });
         },
         addTurno: function () {
-            this.loading = true;
+            let self = this;
+            self.loading = true;
             HTTP.post('/turno/', this.newTurno)
-                .then((response) => {
-                    this.loading = true;
-                    this.getTurnos();
-                })
-                .catch((err) => {
-                    this.loading = true;
-                    console.log(err);
-                });
-        },
-        updateArticle: function () {
-            this.loading = true;
-            HTTP.put(`/turno/${this.currentTurno.id}/`, this.currentTurno)
             .then((response) => {
-                this.loading = false;
-                this.currentTurno = response.data;
-                this.getTurnos();
+                self.newTurno.nombre = '';
+                self.refresh();
+                self.loading = true;
+
+            })
+            .catch((err) => {
+                this.loading = true;
+                console.log(err);
+            });
+        },
+        updateTurno: function () {
+            let self = this;
+            self.loading = true;
+            HTTP.put(`/turno/${self.newTurno.id}/`, self.newTurno)
+            .then((response) => {
+                self.loading = false;
+                self.refresh();
+
             })
             .catch((err) => {
                 this.loading = false;
                 console.log(err);
             })
         },
-        deleteArticle: function (id) {
+        deleteTurno: function (id) {
+            let self = this;
             this.loading = true;
             HTTP.delete(`/turno/${id}/`)
             .then((response) => {
-                this.loading = false;
-                this.getArticles();
+                self.loading = false;
+                self.refresh();
             })
             .catch((err) => {
-                this.loading = false;
+                self.loading = false;
                 console.log(err);
             })
         },
@@ -134,13 +145,26 @@ new Vue({
             this.$refs.vuetable.changePage(page)
         },
         editRow: function(rowData){
-
+            this.titulo = 'Editar Turno';
+            this.action = false;
+            this.getTurno(rowData.id);
+        },
+        addRow: function(){
+            this.titulo = 'Agregar Turno';
+            this.action = true;
         },
         deleteRow: function(rowData){
-
+            this.deleteTurno(rowData.id);
         },
         onLoading: function() {
 
+        },
+        refresh: function() {
+            let self = this;
+            self.$nextTick(()=>{
+              self.$refs.vuetable.refresh();
+              self.loading = false;
+            })
         },
         onLoaded:function () {
 

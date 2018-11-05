@@ -158,5 +158,5 @@ STATIC_URL = '/' + URL_PREFIX + '/static/'
 LOGIN_URL = 'accounts/login'
 LOGIN_REDIRECT_URL = '/'
 
-URL_PREFIX = 'natagua'
-API_PREFIX = '/api/'
+URL_PREFIXs = '/'
+API_PREFIX = 'api/'

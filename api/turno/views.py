@@ -11,6 +11,8 @@ from django.http import Http404
 from api.utils import Pagination
 from api.turno.serializers import TurnoSerializer
 from app_natagua.models import Turnos
+from django.http import Http404
+
 
 
 class TurnoList(generics.ListAPIView):
@@ -18,7 +20,7 @@ class TurnoList(generics.ListAPIView):
     serializer_class = TurnoSerializer
     pagination_class = Pagination
 
-class TurnoListt(APIView):
+class TurnoAdd(APIView):
     """
     List all snippets, or create a new snippet.
     """
@@ -35,30 +37,6 @@ class TurnoListt(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class TurnoDetail(APIView):
-    """
-    Retrieve, update or delete a snippet instance.
-    """
-    def get_object(self, pk):
-        try:
-            return Turno.objects.get(pk=pk)
-        except Turno.DoesNotExist:
-            raise Http404
-
-    def get(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        serializer = TurnoSerializer(snippet)
-        return Response(serializer.data)
-
-    def put(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        serializer = TurnoSerializer(snippet, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        snippet.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+class TurnoDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Turnos.objects.all()
+    serializer_class = TurnoSerializer
