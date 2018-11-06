@@ -7,13 +7,6 @@ from rest_framework import status
 from app_natagua.models import Turnos
 
 
-class TurnoSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Turnos
-        fields = ('id', 'nombre')
-
-
-
 class TurnoSerializer(serializers.Serializer):
 
     class Meta:

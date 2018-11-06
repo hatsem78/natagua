@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}">
+
 </head>
 <body class="app sidebar-mini rtl pace-done">
     <input id="tocken" value="{{ csrf_token }}">
@@ -115,8 +116,14 @@
                                 Turno
                             </a>
                         </li>
+                        <li>
+                            <a class="treeview-item" href="{% url 'transportista' %}">
+                                <i class="icon fa fa-circle-o"></i>
+                                Transportista
+                            </a>
+                        </li>
                         <li><a class="treeview-item" href="https://fontawesome.com/v4.7.0/icons/" target="_blank" rel="noopener"><i class="icon fa fa-circle-o"></i> Font Icons</a></li>
-                        <li><a class="treeview-item" href="ui-cards.html"><i class="icon fa fa-circle-o"></i> Cards</a></li>
+
                         <li><a class="treeview-item" href="widgets.html"><i class="icon fa fa-circle-o"></i> Widgets</a></li>
                     </ul>
                 </li>

@@ -22,7 +22,7 @@ from django.views.generic import TemplateView
 
 
 # from . import views
-from app_natagua.views import index, Turnos
+from app_natagua.views import index, Turnos, Transportista
 
 admin.site.site_header = "Natagua Admin"
 admin.site.site_title = "Natagua Admistración"
@@ -36,6 +36,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),  #
     url(r'^$', index, name='index'),
     url(r'^turno$', Turnos.as_view(), name='turno'),
+    url(r'^transportista$', Transportista.as_view(), name='transportista'),
     url(r'^api/', include('api.urls'), name="api"),
 ]
 

@@ -19,6 +19,28 @@ class Turnos(models.Model):
         Cadena que representa a la instancia particular del modelo (p. ej en el sitio de Administración)
         """
         return self.nombre
+class Transportista(models.Model):
+
+    class Meta:
+        verbose_name_plural = "Transportista"
+
+    SEXO = (
+        ('M', 'MUJER'),
+        ('H', 'HOMBRE'),
+    )
+    id = models.AutoField(primary_key=True, help_text="Id único para transportista ")
+    apellido = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100)
+    dni = models.CharField(max_length=25, default='')
+    edad = models.CharField(max_length=10)
+    sexo = models.CharField(max_length=1, choices=SEXO)
+    direccion = models.CharField(max_length=200)
+    entre_calle = models.CharField(max_length=200)
+    celular = models.CharField(max_length=50)
+    cbu = models.CharField(max_length=40)
+    mail = models.CharField(max_length=100)
+    description = models.TextField(max_length=1000)
+
 
 '''
 class CarrierType(models.Model):

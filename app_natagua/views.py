@@ -17,20 +17,6 @@ from django.contrib.auth import authenticate, login, logout
 from natagua import settings
 
 
-'''def login(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        login(request, user)
-        # Redirect to a success page.
-        return redirect((settings.LOGIN_REDIRECT_URL, request.path))
-    else:
-        # Return an 'invalid login' error message.
-        return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))'''
-
-
-
 @login_required
 def index(request):
     return render(request, 'index.html',)
@@ -51,6 +37,83 @@ class Turnos(View):
             }
         )'''
         return render(request, 'turno/turno.html', )
+
+    def post(self, request, *args, **kwargs):
+
+
+        data_parameter = json.loads(request.POST['to_excel_report_filter_option'])
+
+        info = self._info(request)
+
+        name_file = _('ListadoPasajerosConfirmados') + '_' + _('Vuelo') + '_' + data_parameter[
+            'flight_number'] + '_' + correct_date(self, data_parameter['date'].upper()) + '.xls'
+
+        response = HttpResponse(content_type="application/ms-excel")
+        response['Content-Disposition'] = 'attachment; filename=' + name_file
+
+        date_origin = datetime.datetime.strptime(info['dateflight'], '%d%b%y')
+
+        title = 'FTL: ' + info['flightcarrier'] + ' ' +  _(u'VUELO:') \
+                + ' ' + info['flightnumber'] + ' ' + info['origin'] + ' ' \
+                + str(date_origin.strftime('%a %d%b%y').upper()) + ' ' + info['daysleft'] + 'D ' \
+                + _('Listado Pasajeros Confirmados')
+
+        name_solapa = str(_(u'ListadoPasajerosConfirmados'))
+
+
+        wb = xlwt.Workbook(style_compression=2)
+        sheet = wb.add_sheet(name_solapa)
+
+        col_idx, line_idx = 0, 1
+
+        sheet.write_merge(0, 0, 3, 6, str(title),
+                          style=xlwt.Style.easyxf("font: bold on;"))
+
+        sheet.write(1, 1, _(u'#'), style=xlwt.Style.easyxf("font: bold on; align: horiz center;"))
+        sheet.write(1, 2, _(u'CÓDIGO'), style=xlwt.Style.easyxf("font: bold on; align: horiz center;"))
+        sheet.write(1, 3, _(u'NOMBRE'), style=xlwt.Style.easyxf("font: bold on; align: horiz center;"))
+        sheet.write(1, 4,'CL', style=xlwt.Style.easyxf("font: bold on; align: horiz center;"))
+        sheet.write(1, 5, _(u'ESTADO'), style=xlwt.Style.easyxf("font: bold on; align: horiz center;"))
+        sheet.write(1, 6, _(u'TK'), style=xlwt.Style.easyxf("font: bold on; align: horiz center;"))
+        sheet.write(1, 7, data_parameter['titleExtension1'], style=xlwt.Style.easyxf("font: bold on; align: horiz center;"))
+        sheet.write(1, 8, data_parameter['titleExtension2'], style=xlwt.Style.easyxf("font: bold on; align: horiz center;"))
+        for file in info['segmentdetail']:
+            line_idx += 1
+            sheet.write(line_idx, 0, file['boardingpoint'] + '-' + file['boardingoff'],
+                        style=xlwt.Style.easyxf("align: horiz center"))
+            #recorremos todos los items por tramaos
+            for item in file['paxlist']:
+                line_idx += 1
+                sheet.write(line_idx, 1, item['item'], style=xlwt.Style.easyxf("align: horiz left"))
+                sheet.write(line_idx, 2, item['recordlocator'], style=xlwt.Style.easyxf("align: horiz left"))
+                sheet.write(line_idx, 3, item['paxsurname'] + '/' + item['paxname'],
+                            style=xlwt.Style.easyxf("align: horiz left"))
+                sheet.write(line_idx, 4, item['class'] ,style=xlwt.Style.easyxf("align: horiz center"))
+                sheet.write(line_idx, 5, parser_status(item['pnr_status']),
+                            style=xlwt.Style.easyxf("align: horiz center"))
+                sheet.write(line_idx, 6, item['ticket'], style=xlwt.Style.easyxf("align: horiz center"))
+                if('EX1' in data_parameter):
+                    sheet.write(line_idx, 7, self.parser_extension(item, data_parameter['EX1']),
+                                style=xlwt.Style.easyxf("align: horiz left"))
+                else:
+                    sheet.write(line_idx, 7, '', style=xlwt.Style.easyxf("align: horiz center"))
+                if ('EX2' in data_parameter):
+                    sheet.write(line_idx, 8, self.parser_extension(item, data_parameter['EX2']),
+                                style=xlwt.Style.easyxf("align: horiz left"))
+                else:
+                    sheet.write(line_idx, 8, '', style=xlwt.Style.easyxf("align: horiz center"))
+
+        wb.save(response)
+
+        return response
+
+
+class Transportista(View):
+
+    def get(self, request, *args, **kwargs):
+
+        data_parameter = request.GET
+        return render(request, 'transportista/transportista.html',)
 
     def post(self, request, *args, **kwargs):
 
