@@ -3,7 +3,7 @@ from django.contrib import admin
 #admin.site.register(CarrierType)
 
 # Define the admin class
-from app_natagua.models import Turnos
+from app_natagua.models import Turnos, Transportista
 
 
 def definition_carrier_type(obj):
@@ -11,3 +11,4 @@ def definition_carrier_type(obj):
 
 
 admin.site.register(Turnos)
+admin.site.register(Transportista)

@@ -20,6 +20,26 @@ class Turnos(models.Model):
         """
         return self.nombre
 
+class Transportista(models.Model):
+
+    class Meta:
+        verbose_name_plural = "Transportista"
+
+    SEXO = (('M', 'Masculino'), ('F', 'Femenino'))
+
+    id = models.AutoField(primary_key=True, help_text="Id único para transportista ")
+    apellido = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100)
+    edad = models.CharField(max_length=10)
+    #carrier_type = models.ForeignKey('CarrierType', on_delete=models.SET_NULL, null=True)
+    direccion = models.CharField(max_length=200)
+    entre_calle = models.CharField(max_length=200)
+    mobile = models.CharField(max_length=50)
+    sexo = models.CharField(max_length=1, choices=SEXO)
+    cbu = models.CharField(max_length=40)
+    mail = models.CharField(max_length=100)
+    description = models.TextField(max_length=1000)
+
 '''
 class CarrierType(models.Model):
     """
@@ -38,23 +58,7 @@ class CarrierType(models.Model):
         """
         return self.name
 
-class Carrier(models.Model):
 
-    class Meta:
-        verbose_name_plural = "Transportista"
-
-    id = models.AutoField(primary_key=True, help_text="Id único para transportista ")
-    last_name = models.CharField(max_length=100)
-    name = models.CharField(max_length=100)
-    age = models.CharField(max_length=10)
-    carrier_type = models.ForeignKey('CarrierType', on_delete=models.SET_NULL, null=True)
-    tutor = models.CharField(max_length=100, default='')
-    address = models.CharField(max_length=200)
-    mobile = models.CharField(max_length=50)
-    between_street = models.CharField(max_length=200)
-    cbu = models.CharField(max_length=40)
-    mail = models.CharField(max_length=100)
-    description = models.TextField(max_length=1000)
 
 class MoveType(models.Model):
     """
