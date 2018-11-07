@@ -69,7 +69,7 @@ new Vue({
     },
     methods: {
         onPaginationData: function(paginationData) {
-            //this.$refs.pagination.setPaginationData(paginationData)
+            this.$refs.pagination.setPaginationData(paginationData)
         },
         getTurnos: function() {
             let self = this;

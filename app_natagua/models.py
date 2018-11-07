@@ -1,11 +1,43 @@
+import datetime
+
 from django.db import models
 import uuid # Requerida para las instancias de libros únicos
 # Create your models here.
 
 
+class Provincia(models.Model):
+    """
+        Modelo que representa una provincia
+    """
+
+    class Meta:
+        verbose_name_plural = "Provincia"
+        ordering = ['nombre']
+
+    id = models.AutoField(primary_key=True, help_text="Id único de provincia ")
+    nombre = models.CharField('Nombre', max_length=50)
+
+class Localidad(models.Model):
+    """
+        Modelo que representa una Localidad
+    """
+    class Meta:
+        verbose_name_plural = "Localidad"
+        unique_together = ('id_provincia', 'id')
+        ordering = ['nombre']
+
+    id = models.AutoField(primary_key=True, help_text="Id único de Localidad ")
+    id_provincia = models.ForeignKey('Provincia', related_name='provincia_localidad', on_delete=models.SET_NULL, null=True)
+    nombre = models.CharField('Nombre', max_length=50)
+    codigopostal = models.CharField('Código Postal', max_length=10)
+
+    def __str__(self):
+        return '%d: %s %s' % (self.id, self.nombre, self.codigopostal)
+
+
 class Turnos(models.Model):
     """
-    Modelo que representa un de turno
+        Modelo que representa un de turno
     """
 
     class Meta:
@@ -24,21 +56,39 @@ class Transportista(models.Model):
 
     class Meta:
         verbose_name_plural = "Transportista"
+        indexes = [
+            models.Index(fields=['apellido', 'nombre']),
+            models.Index(fields=['apellido', 'dni'], name='apellido_dni_idx'),
+        ]
 
-    SEXO = (('M', 'Masculino'), ('F', 'Femenino'))
-
+    SEXO = (
+        ('M', 'MUJER'),
+        ('H', 'HOMBRE'),
+    )
     id = models.AutoField(primary_key=True, help_text="Id único para transportista ")
-    apellido = models.CharField(max_length=100)
-    nombre = models.CharField(max_length=100)
+    apellido = models.CharField(max_length=100, null=False, db_index=True)
+    nombre = models.CharField(max_length=100, null=False, db_index=True)
+    dni = models.CharField(max_length=25, unique=True)
     edad = models.CharField(max_length=10)
-    #carrier_type = models.ForeignKey('CarrierType', on_delete=models.SET_NULL, null=True)
+    sexo = models.CharField(max_length=1, choices=SEXO, null=False, db_index=True)
     direccion = models.CharField(max_length=200)
     entre_calle = models.CharField(max_length=200)
-    mobile = models.CharField(max_length=50)
-    sexo = models.CharField(max_length=1, choices=SEXO)
+    celular = models.CharField(max_length=50, default='')
     cbu = models.CharField(max_length=40)
     mail = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    fecha_nacimiento = models.DateTimeField(default=datetime.datetime.now, blank=True)
+    fecha_creacion = models.DateTimeField(default=datetime.datetime.now)
+
+    def clean(self):
+        # tu propia logica de validacion
+        super(Transportista, self).clean()
+
+    def save(self):
+        super(Transportista, self).save()
+
+
+
 
 '''
 class CarrierType(models.Model):

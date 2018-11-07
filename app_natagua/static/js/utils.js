@@ -1,4 +1,5 @@
 var csrftoken = $("#tocken").val();
+Vue.use(VeeValidate);
 const eventBus = new Vue();
 
 const HTTP = axios.create({
@@ -12,15 +13,7 @@ const HTTP = axios.create({
 const urlApi = URL_PREFIX + '/booking/';
 
 
-moment.locale('es', {
-    months: 'Enero_Febrero_Marzo_Abril_Mayo_Junio_Julio_Agosto_Septiembre_Octubre_Noviembre_Diciembre'.split('_'),
-    weekdays: 'Domingo_Lunes_Martes_Miercoles_Jueves_Viernes_Sabado'.split('_'),
-    relativeTime: {
-        future: 'Faltan %s',
-        d: '%d día',
-        dd: '%d días'
-    }
-});
+
 
 const today = moment({ hour: '00', minute: '00' });
 
@@ -44,6 +37,7 @@ Vue.use(uiv, {prefix: 'uiv'});
 
 Vue.use(VeeValidate, {
 	inject: false,
+    locale: 'es'
 });
 
 
@@ -83,7 +77,7 @@ VeeValidate.Validator.extend('alphanumeric', {
 	getMessage: field => {
 		return ('Se ingresaron caracteres invalidos')
 	},
-  	validate: value => /^[A-Za-z0-9]+$/.test(value)
+  	validate: value => /^[A-Za-z0-9/ñ/Ñ]+$/.test(value)
 });
 
 
