@@ -1,9 +1,13 @@
 import datetime
 
+from django.core.exceptions import ValidationError
 from django.db import models
 import uuid # Requerida para las instancias de libros únicos
 # Create your models here.
 
+def _validate_number(value):
+    if type(value) == int:  # Your conditions here
+        raise ValidationError('%s some error message' % value)
 
 class Provincia(models.Model):
     """
@@ -16,6 +20,8 @@ class Provincia(models.Model):
 
     id = models.AutoField(primary_key=True, help_text="Id único de provincia ")
     nombre = models.CharField('Nombre', max_length=50)
+    def __str__(self):
+        return '%d: %s' % (self.id, self.nombre)
 
 class Localidad(models.Model):
     """
@@ -27,7 +33,7 @@ class Localidad(models.Model):
         ordering = ['nombre']
 
     id = models.AutoField(primary_key=True, help_text="Id único de Localidad ")
-    id_provincia = models.ForeignKey('Provincia', related_name='provincia_localidad', on_delete=models.SET_NULL, null=True)
+    id_provincia = models.ForeignKey('Provincia', related_name='provincia_localidad', on_delete=models.CASCADE, null=True)
     nombre = models.CharField('Nombre', max_length=50)
     codigopostal = models.CharField('Código Postal', max_length=10)
 
@@ -71,21 +77,18 @@ class Transportista(models.Model):
     dni = models.CharField(max_length=25, unique=True)
     edad = models.CharField(max_length=10)
     sexo = models.CharField(max_length=1, choices=SEXO, null=False, db_index=True)
-    direccion = models.CharField(max_length=200)
-    entre_calle = models.CharField(max_length=200)
-    celular = models.CharField(max_length=50, default='')
-    cbu = models.CharField(max_length=40)
-    mail = models.CharField(max_length=100)
-    description = models.TextField(max_length=1000)
+    direccion = models.CharField(max_length=200, blank=True, null=True)
+    entre_calle = models.CharField(max_length=200, blank=True, null=True)
+    celular = models.CharField(max_length=50, blank=True, null=True)
+    telefono = models.CharField(max_length=50, blank=True, null=True)
+    mail = models.CharField(max_length=100, blank=True, null=True)
+    description = models.TextField(max_length=1000, blank=True, null=True)
     fecha_nacimiento = models.DateTimeField(default=datetime.datetime.now, blank=True)
+    id_provincia = models.ForeignKey('Provincia', related_name='provincia', on_delete=models.CASCADE, null=True)
+    id_localidad = models.ForeignKey('Localidad', related_name='localidad', on_delete=models.CASCADE, null=True)
     fecha_creacion = models.DateTimeField(default=datetime.datetime.now)
 
-    def clean(self):
-        # tu propia logica de validacion
-        super(Transportista, self).clean()
 
-    def save(self):
-        super(Transportista, self).save()
 
 
 

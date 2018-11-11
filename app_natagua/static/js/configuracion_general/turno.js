@@ -5,7 +5,7 @@ $("#configuracion_general").addClass('is-expanded');
 $("#menu_turno").addClass('active');
 $("#dashboard").removeClass('active');
 
-new Vue({
+var turno =new Vue({
     el: '#starting',
     delimiters: ['${','}'],
     data: {
@@ -74,70 +74,73 @@ new Vue({
         getTurnos: function() {
             let self = this;
             let api_url = 'turno/';
-            self.loading = true;
+            //self.loading = true;
+            store.dispatch({type: 'setLoading',value: true});
             HTTP.get(api_url)
             .then((response) => {
                 this.articles = response.data;
                 self.onPaginationData(response.data);
-                self.loading = false;
+                store.dispatch({type: 'setLoading',value: true});
             })
             .catch((err) => {
-                self.loading = false;
+                store.dispatch({type: 'setLoading',value: false});
                 console.log(err);
             })
         },
         getTurno: function (id) {
-            this.loading = true;
+            let self = this;
+            store.dispatch({type: 'setLoading',value: true});
             HTTP.get(`turno/${id}/`)
             .then((response) => {
-                this.newTurno = response.data;
+                self.newTurno = response.data;
                 $("#editArticleModal").modal('show');
-                this.loading = false;
+                store.dispatch({type: 'setLoading',value: false});
             })
             .catch((err) => {
-                this.loading = false;
+                store.dispatch({type: 'setLoading',value: false});
                 console.log(err);
             });
         },
         addTurno: function () {
             let self = this;
-            self.loading = true;
+
+            store.dispatch({type: 'setLoading',value: true});
             HTTP.post('/turno/', this.newTurno)
             .then((response) => {
                 self.newTurno.nombre = '';
                 self.refresh();
-                self.loading = true;
+                store.dispatch({type: 'setLoading',value: false});
 
             })
             .catch((err) => {
-                this.loading = true;
+                store.dispatch({type: 'setLoading',value: false});
                 console.log(err);
             });
         },
         updateTurno: function () {
             let self = this;
-            self.loading = true;
+            store.dispatch({type: 'setLoading',value: true });
             HTTP.put(`/turno/${self.newTurno.id}/`, self.newTurno)
             .then((response) => {
-                self.loading = false;
+                store.dispatch({type: 'setLoading',value: false });
                 self.refresh();
 
             })
             .catch((err) => {
-                this.loading = false;
+                store.dispatch({type: 'setLoading',value: false });
                 console.log(err);
             })
         },
         deleteTurno: function (id) {
             let self = this;
-            this.loading = true;
+            store.dispatch({type: 'setLoading',value: true });
             HTTP.delete(`/turno/${id}/`)
             .then((response) => {
                 self.loading = false;
                 self.refresh();
             })
             .catch((err) => {
-                self.loading = false;
+                store.dispatch({type: 'setLoading',value: false });
                 console.log(err);
             })
         },
@@ -163,7 +166,7 @@ new Vue({
             let self = this;
             self.$nextTick(()=>{
               self.$refs.vuetable.refresh();
-              self.loading = false;
+              selstore.dispatch({type: 'setLoading',value: false });
             })
         },
         onLoaded:function () {

@@ -77,7 +77,7 @@ VeeValidate.Validator.extend('alphanumeric', {
 	getMessage: field => {
 		return ('Se ingresaron caracteres invalidos')
 	},
-  	validate: value => /^[A-Za-z0-9/ñ/Ñ]+$/.test(value)
+  	validate: value => /^[A-Za-z0-9/ñ/Ñ/\ ]+$/.test(value)
 });
 
 

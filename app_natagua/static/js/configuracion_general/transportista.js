@@ -5,7 +5,7 @@ $("#configuracion_general").addClass('is-expanded');
 $("#menu_transportista").addClass('active');
 $("#dashboard").removeClass('active');
 
-new Vue({
+var transportista = new Vue({
     el: '#starting',
     delimiters: ['${','}'],
     data: {
@@ -93,24 +93,26 @@ new Vue({
             this.$refs.paginationTransportista.setPaginationData(paginationData)
         },
         show_transportista:function(value){
+
             if(value){
                 this.showTransportista = value;
             }
             else{
                 this.showTransportista = value;
-                this.refresh();
             }
         },
         deleteTurno: function (id) {
             let self = this;
-            this.loading = true;
-            HTTP.delete(`/turno/${id}/`)
+            store.dispatch({type: 'setLoading',value: true });
+            HTTP.delete(`/transportista/${id}/`)
             .then((response) => {
-                self.loading = false;
+
+                store.dispatch({type: 'setLoading',value: false });
                 self.refresh();
             })
             .catch((err) => {
-                self.loading = false;
+                notifier.alert('Error ocurrete: ' + err);
+                store.dispatch({type: 'setLoading',value: false });
                 console.log(err);
             })
         },
@@ -127,7 +129,7 @@ new Vue({
             let self = this;
             self.$nextTick(()=>{
               self.$refs.vuetableTransportista.refresh();
-              self.loading = false;
+              store.dispatch({type: 'setLoading',value: false });
             })
         },
         onLoaded:function () {

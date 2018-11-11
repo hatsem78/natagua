@@ -2,8 +2,7 @@ from rest_framework import generics, serializers
 from app_natagua.models import Provincia, Localidad
 
 
-class ProvinciaSerializer(serializers.ModelSerializer):
-
+class ProvinciaSerializer(serializers.Serializer):
 
     class Meta:
         model = Provincia

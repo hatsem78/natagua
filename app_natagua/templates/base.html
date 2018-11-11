@@ -14,12 +14,14 @@
     <!-- Main CSS-->
 
     <!-- Font-icon css-->
-     {% block stylesheets %}
+    {% block stylesheets %}
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     {% endblock stylesheets %}
 
     {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/notify.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}">
+
 
 </head>
 <body class="app sidebar-mini rtl pace-done">
@@ -162,8 +164,11 @@
           </ul>
         </aside>
     {% endblock %}
+    <div id="app_content">
+         <loading></loading>
+    </div>
+    <main class="app-content" >
 
-    <main class="app-content">
         {% block content %}
             <div class="app-title">
                 <div>
@@ -260,17 +265,17 @@
     </main>
 
     <!-- Essential javascripts for application to work-->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script type="text/javascript" src="//unpkg.com/uiv/dist/uiv.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js"></script>
-
-     <!-- unpkg -->
-
-
-
-
-
+    <script src="{% static '/js/vue.js' %}"></script>
+    <script src="{% static '/js/vuex.js' %}"></script>
+    <script src="{% static '/js/axios.js' %}"></script>
+    <script src="{% static '/js/vee-validate.js' %}"></script>
+    <script src="{% static '/js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static '/js/popper.min.js' %}"></script>
+    <script src="{% static '/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/js/plugins/bootstrap-notify.min.js' %}"></script>
+    <script src="{% static '/js/notify.js' %}"></script>
+    <script src="{% static '/js/uiv.js' %}"></script>
+    <script src="{% static '/js/main.js' %}"></script>
 
 
     <!-- The javascript plugin to display page loading on top-->
@@ -281,6 +286,8 @@
     <script type="text/javascript">
         const URL_PREFIX = '{{ URL_PREFIX }}';
         const API_PREFIX = '{{ API_PREFIX }}';
+
+
         if(document.location.hostname == 'pratikborsadiya.in') {
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -290,21 +297,11 @@
             ga('send', 'pageview');
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
-    <script src="{% static '/js/jquery-3.2.1.min.js' %}"></script>
-    <script src="{% static '/js/popper.min.js' %}"></script>
-    <script src="{% static '/js/bootstrap.min.js' %}"></script>
-    <script src="{% static '/js/main.js' %}"></script>
-
     <script src="{% static '/js/plugins/moment.min.js' %}"></script>
     <script src="{% static '/js/utils.js' %}"></script>
-    <!-- jsdelivr cdn -->
-    <script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js"></script>
-
-    <!-- unpkg -->
-
-     <script src="https://unpkg.com/vee-validate@latest"></script>
-
+    <script src="{% static '/js/store.js' %}"></script>
+    <script src="{% static '/js/componentes_generales/loading.js' %}"></script>
+    <script src="{% static '/js/app_content.js' %}"></script>
     {% block javascripts %}
     {% endblock javascripts %}
 </body>

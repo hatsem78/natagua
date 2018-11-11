@@ -1,6 +1,7 @@
 (function () {
 	"use strict";
 
+
 	var treeviewMenu = $('.app-menu');
 
 	// Toggle Sidebar

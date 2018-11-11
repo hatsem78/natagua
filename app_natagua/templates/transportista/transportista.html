@@ -61,10 +61,11 @@
         ></vuetable-pagination>
 
 
-        <!-- Add Article Modal -->
+
         <div class="col-md-10">
             <persona
                 v-if="showTransportista"
+                @guardar="refresh();"
                 @close="show_transportista(false)"
             ></persona>
         </div>
@@ -73,6 +74,8 @@
 {% endblock %}
 {% block javascripts %}
     {{ block.super }}
+
+    <script src="https://unpkg.com/vue-select@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/pc-bootstrap4-datetimepicker@4.17/build/js/bootstrap-datetimepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-bootstrap-datetimepicker@5"></script>
     <script src="{% static '/js/vue-table.js' %}"></script>

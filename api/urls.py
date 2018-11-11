@@ -1,6 +1,6 @@
 # coding=utf-8
 from api.direcciones.serializers import ProvinciaSerializer
-from api.direcciones.views import ProvinciaList, ProvinciaDetail
+from api.direcciones.views import ProvinciaList, ProvinciaDetail, LocalidadList
 from api.transportista.views import TransportistaAdd, TransportistaDetail, TransportistaList
 from api.turno.views import *
 from django.conf.urls import url, include
@@ -29,5 +29,5 @@ urlpatterns = [
     path('transportista/<int:pk>/', TransportistaDetail.as_view()),
 
     path('provincia/', ProvinciaList.as_view()),
-    path('provincia/<int:pk>/', ProvinciaDetail.as_view()),
+    url(r'localidad/', LocalidadList.as_view({'get': 'get'}), name='localidad'),
 ]

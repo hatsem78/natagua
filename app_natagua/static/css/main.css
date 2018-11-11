@@ -11598,35 +11598,6 @@ body.stop-scrolling {
   }
 }
 
-.notify-alert {
-  -webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.23), 0 3px 10px rgba(0, 0, 0, 0.16);
-          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.23), 0 3px 10px rgba(0, 0, 0, 0.16);
-  border: 0 !important;
-  max-width: 400px;
-  color: #FFF;
-}
-
-.notify-alert.alert-success {
-  background-color: #28a745;
-}
-
-.notify-alert.alert-info {
-  background-color: #17a2b8;
-}
-
-.notify-alert.alert-warning {
-  background-color: #ffce3a;
-}
-
-.notify-alert.alert-danger {
-  background-color: #e04b59;
-}
-
-.notify-alert button[data-notify="dismiss"] {
-  margin-left: 5px;
-  outline: none !important;
-}
-
 .select2-container {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -15770,4 +15741,22 @@ be a descendant of the grid when it is being dragged.
 .form-control:focus~.input-group-addon {
     background-color: #FFFFFF;
     border-color: #9A9A9A;
+}
+
+
+.dropdown-toggle .clear {
+  display: none;
+}
+
+
+.dropdown-toggle {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: flex;
+    padding: 0px;
+    background: none;
+    border: 1px solid rgba(60,60,60,.26);
+    border-radius: 4px;
+    white-space: normal;
 }

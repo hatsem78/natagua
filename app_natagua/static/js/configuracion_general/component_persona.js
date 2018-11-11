@@ -12,7 +12,7 @@ moment.locale('es', {
 
 //WTrjW5aPKYW8wATg_6m4BQ
 Vue.component('date-picker', VueBootstrapDatetimePicker);
-
+Vue.component("v-select", VueSelect.VueSelect);
 
 Vue.component('persona',{
     props:{
@@ -24,6 +24,7 @@ Vue.component('persona',{
     inject:['$validator'],
     data(){
         return {
+            accion: this.tipo,
             titulo: 'Agregar Transportista',
             datos:{
                 id:'',
@@ -33,14 +34,19 @@ Vue.component('persona',{
                 dni: '',
                 direccion:'',
                 celular:'',
+                telefono: '',
                 entre_calle:'',
                 cbu:'',
                 mail:'',
                 description:'',
-                sexo:'',
+                sexo:'M',
                 cod_postal: '',
                 fecha_nacimiento: '',
             },
+            provincias: [],
+            selecteProvincia: null,
+            localidades: [{ id: -1, nombre: 'Seleccione ...'}],
+            selecteLocalidad: null,
             date: null,
             config: {
             // https://momentjs.com/docs/#/displaying/
@@ -49,7 +55,6 @@ Vue.component('persona',{
               showClear: true,
               showClose: true,
             }
-
         }
     },
     methods:{
@@ -57,11 +62,13 @@ Vue.component('persona',{
             this.$emit('close');
         },
         guardar: function () {
-
-            switch (this.tipo) {
+            let self = this;
+            switch (this.accion) {
                 case 'transportista':
-                    this.$validator.validateAll();
-                    this.addTransportista();
+                    self.addTransportista();
+                    break;
+                case 'transportista_update':
+                    self.updateTransportista();
                     break;
                 default:
                     status = false;
@@ -71,22 +78,37 @@ Vue.component('persona',{
         },
         addTransportista: function () {
             let self = this;
-            self.loading = true;
-            HTTP.post('/transportista/', this.datos)
-            .then((response) => {
-                self.newTurno.nombre = '';
-                self.refresh();
-                self.loading = true;
 
-            })
-            .catch((err) => {
-                this.loading = true;
-                console.log(err);
+            store.dispatch({type: 'setLoading',value: true });
+            this.$validator.validateAll()
+            .then(function(response){
+                if (response) {
+                    self.datos['id_provincia'] = self.selecteProvincia.id;
+                    self.datos['id_localidad'] = self.selecteLocalidad.id;
+                    HTTP.post('/transportista/', self.datos)
+                    .then((response) => {
+                        store.dispatch({type: 'setLoading',value: false });
+                        if(response.data.error && response.data.error.indexOf('UNIQUE constraint failed: app_natagua_transportista.dni') >= 0){
+                            notifier.alert('El documento ya se encuentra registrado');
+                        }
+                        else{
+                            notifier.success('El transportista se Guardo correctamente');
+                            //self.accion = 'transportista_update';
+                            //self.titulo = "Modificar Transportista";
+                            self.$emit('guardar');
+                        }
+
+                    })
+                    .catch((err) => {
+                        store.dispatch({type: 'setLoading',value: false });
+                        console.log(err);
+                    });
+                }
             });
         },
         updateTransportista: function () {
             let self = this;
-            self.loading = true;
+            store.dispatch({type: 'setLoading',value: true });
             HTTP.put(`/transportista/${self.datos.id}/`, self.datos)
             .then((response) => {
                 self.loading = false;
@@ -94,21 +116,80 @@ Vue.component('persona',{
 
             })
             .catch((err) => {
-                this.loading = false;
+                store.dispatch({type: 'setLoading',value: false });
                 console.log(err);
             })
         },
+        getProvincias(){
+            let self = this;
+            HTTP.get(`provincia`)
+            .then((response) => {
+                self.provincias = response.data;
+                self.selecteProvincia = response.data[0];
+                self.getProvinciaLocalidad(response.data[0].id)
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false });
+                console.log(err);
+            });
+        },
+        getProvinciaLocalidad(id){
+            let self = this;
+
+            HTTP.get(
+                '/localidad/', {
+                    params: {
+                         id_provincia: id,
+                    }
+                }
+            )
+            .then((response) => {
+                self.localidades = response.data;
+                self.selecteLocalidad = response.data[0];
+            })
+            .catch((err) => {
+
+                console.log(err);
+            });
+        },
+        getLocalidad(id){
+            let self = this;
+
+            HTTP.get(
+                '/localidad/', {
+                    params: {
+                         id: id,
+                    }
+                }
+            )
+            .then((response) => {
+                console.log(response.data)
+
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
 
     },
     created: function() {
 
     },
     watch:{
-        tipo: function () {
+        selecteProvincia: function (val) {
             let self = this;
+            self.getProvinciaLocalidad(val.id);
 
+        },
+        selecteLocalidad: function (val) {
+            let self = this;
+            self.getLocalidad(val.id);
         }
 
+    },
+    mounted: function() {
+        let self = this;
+        self.getProvincias();
     },
     template: `
         <div class="card col-md-10">
@@ -255,7 +336,7 @@ Vue.component('persona',{
                     <div class="col-md-3 pl-1">
                         <div class="form-group">
                             <label for="">Sexo*</label>
-                            <select class="form-control">
+                            <select v-model="datos.sexo" class="form-control">
                                 <option value="M">Mujer</option>
                                 <option value="H">Hombre</option>
                             </select>
@@ -278,7 +359,7 @@ Vue.component('persona',{
                                     name="mail" id="mail" 
                                     placeholder="Email"  
                                     v-model='datos.mail'
-                                    v-validate="'required:true|maxCustom:100|email'" 
+                                    v-validate="'required:true|maxCustom:100|email_custom'" 
                                     :class="{
                                         'input': true, 
                                         'has-error': errors.first('mail') && datos.mail == '', 
@@ -294,6 +375,71 @@ Vue.component('persona',{
                         </div>
                     </div>
                 </div>
+                
+                <div class="row">
+                    <div class="col-md-6 pr-1">
+                        <div class="form-group">
+                            <label>Celular</label>
+                            <div  :class="[
+                                      { 
+                                        'has-error': errors.first('celular'), 
+                                        'has-success': !errors.first('celular') && datos.celular !== ''
+                                      }, 
+                                      ]">
+                                      
+                                <input 
+                                    type="text" 
+                                    name="celular" id="celular" 
+                                    placeholder="Celular"  
+                                    v-model='datos.celular'
+                                    v-validate="'required:true|max:20|numeric'" 
+                                    :class="{
+                                        'input': true, 
+                                        'has-error': errors.first('celular') && datos.celular == '', 
+                                        'form-control': true
+                                    }"
+                                >
+                                <div class="errors help-block">
+                                    <span v-show="errors.first('celular')"
+                                        class="help error">{{ errors.first('celular') }}
+                                    </span>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pr-1">
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <div  :class="[
+                                      { 
+                                        'has-error': errors.first('telefono'), 
+                                        'has-success': !errors.first('telefono') && datos.telefono !== ''
+                                      }, 
+                                      ]">
+                                      
+                                <input 
+                                    type="telefono" 
+                                    name="telefono" id="telefono" 
+                                    placeholder="Teléfono"  
+                                    v-model='datos.telefono'
+                                    v-validate="'required:false|max:20|numeric'" 
+                                    :class="{
+                                        'input': true, 
+                                        'has-error': errors.first('telefono') && datos.telefono == '', 
+                                        'form-control': true
+                                    }"
+                                >
+                                <div class="errors help-block">
+                                    <span v-show="errors.first('telefono')"
+                                        class="help error">{{ errors.first('telefono') }}
+                                    </span>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
@@ -361,14 +507,14 @@ Vue.component('persona',{
                 <div class="row">
                     <div class="col-md-4 pr-1">
                         <div class="form-group">
-                            <label>Partido</label>
-                            <input type="text" class="form-control" placeholder="Partido" value="">
+                            <label>Provincia</label>
+                            <v-select label="nombre" :options="provincias" v-model="selecteProvincia"></v-select>
                         </div>
                     </div>
                     <div class="col-md-4 px-1">
                         <div class="form-group">
-                            <label>Barrio</label>
-                            <input type="text" class="form-control" placeholder="Barrio" value="">
+                            <label>Localidad</label>
+                            <v-select label="nombre" :options="localidades" v-model="selecteLocalidad"></v-select>
                         </div>
                     </div>
                     <div class="col-md-4 pl-1">
@@ -450,11 +596,4 @@ Vue.component('persona',{
             </div>
         </div>`
 
-});
-
-
-$(function () {
-    $('#date_picker').datetimepicker({
-        locale: 'ru'
-    });
 });
