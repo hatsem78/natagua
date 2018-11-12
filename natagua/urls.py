@@ -13,20 +13,30 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
-from django.conf import settings
 from django.contrib import admin
 from django.conf.urls import url, include
-from app_natagua.views import index
+from django.urls import path
+
+
+
+# from . import views
+from app_natagua.views import index, Turnos, Transportista, Profesor
+
 admin.site.site_header = "Natagua Admin"
 admin.site.site_title = "Natagua Admistración"
 admin.site.index_title = "Bien venido Natagua Sistema"
+
+
+
 urlpatterns = [
-    url(r'^$', index, name='index'),
-    url('natagua/api/', include('api.urls')),
+
     url(r'^admin/', admin.site.urls),
-
-
+    path('accounts/', include('django.contrib.auth.urls')),  #
+    url(r'^$', index, name='index'),
+    url(r'^turno$', Turnos.as_view(), name='turno'),
+    url(r'^transportista$', Transportista.as_view(), name='transportista'),
+    url(r'^profesor$', Profesor.as_view(), name='profesor'),
+    url(r'^api/', include('api.urls'), name="api"),
 ]
 
 
