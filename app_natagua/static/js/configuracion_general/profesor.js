@@ -6,7 +6,7 @@ $("#menu_profesor").addClass('active');
 $("#dashboard").removeClass('active');
 
 var profesor = new Vue({
-    el: '#starting',
+    el: '#profesor',
     delimiters: ['${','}'],
     data: {
         titulo:'Agregar Profesor',
@@ -15,7 +15,7 @@ var profesor = new Vue({
         loading: false,
         currentTurno: {},
         message: null,
-        id_profesor: 0,
+        id_update: 0,
         search_term: '',
         fieldes: [
             {
@@ -131,7 +131,7 @@ var profesor = new Vue({
         },
         editRow: function (value) {
             let self = this;
-            self.id_profesor = value.id;
+            self.id_update = value.id;
             self.titulo = "Modificar Profesor";
             self.tipo = 'profesor_update';
             self.show_profesor(true);

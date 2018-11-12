@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^turno$', Turnos.as_view(), name='turno'),
     url(r'^transportista$', Transportista.as_view(), name='transportista'),
     url(r'^profesor$', Profesor.as_view(), name='profesor'),
+    url(r'^alumno$', Profesor.as_view(), name='alumno'),
     url(r'^api/', include('api.urls'), name="api"),
 ]
 

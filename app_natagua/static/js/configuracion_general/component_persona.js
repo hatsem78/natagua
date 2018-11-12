@@ -20,7 +20,7 @@ Vue.component('persona',{
             type: String,
             default: 'transportista'
         },
-        id_transportista: null,
+        id_update: null,
         titulo_new: {
             type: String,
             default: 'Agregar Transportista'
@@ -60,7 +60,7 @@ Vue.component('persona',{
               showClear: true,
               showClose: true,
             },
-            idTransportista: this.id_transportista
+            idUpdate: this.id_update
         }
     },
     methods:{
@@ -77,6 +77,14 @@ Vue.component('persona',{
                 case 'transportista_update':
                     self.titulo = "Modificar Transportista";
                     self.updateTransportista();
+                    break;
+                case 'profesor':
+                    self.titulo = 'Agregar Profesor';
+                    self.addProfesor();
+                    break;
+                case 'profesor_update':
+                    self.titulo = "Modificar Profesor";
+                    self.updateProfesor();
                     break;
                 default:
                     status = false;
@@ -152,6 +160,77 @@ Vue.component('persona',{
                 console.log(err);
             })
         },
+
+        getProfesor: function (id) {
+            let self = this;
+            store.dispatch({type: 'setLoading',value: true});
+            HTTP.get(`profesor/${id}/`)
+            .then((response) => {
+                self.datos = response.data;
+                store.dispatch({type: 'setLoading',value: false});
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false});
+                console.log(err);
+            });
+        },
+        addProfesor: function () {
+            let self = this;
+
+            store.dispatch({type: 'setLoading',value: true });
+            this.$validator.validateAll()
+            .then(function(response){
+                if (response) {
+                    self.datos['id_provincia'] = self.selecteProvincia.id;
+                    self.datos['id_localidad'] = self.selecteLocalidad.id;
+                    HTTP.post('/profesor/', self.datos)
+                    .then((response) => {
+                        store.dispatch({type: 'setLoading',value: false });
+                        if(response.data.error && response.data.error.indexOf('UNIQUE constraint failed: app_natagua_profesor.dni') >= 0){
+                            notifier.alert('El documento ya se encuentra registrado');
+                        }
+                        else{
+                            notifier.success('El profesor se Guardo correctamente');
+                            self.accion = 'profesor_update';
+                            self.titulo = "Modificar Profesor";
+                            self.datos.id = response.data.id;
+                        }
+
+                    })
+                    .catch((err) => {
+                        store.dispatch({type: 'setLoading',value: false });
+                        console.log(err);
+                    });
+                }
+            });
+        },
+        updateProfesor: function () {
+            let self = this;
+            self.datos['id_provincia'] = self.selecteProvincia.id;
+            self.datos['id_localidad'] = self.selecteLocalidad.id;
+
+            store.dispatch({type: 'setLoading',value: true });
+
+            HTTP.put(`/profesor/${self.datos.id}/`, self.datos)
+            .then((response) => {
+                store.dispatch({type: 'setLoading',value: false });
+                if(response.data.error && response.data.error.indexOf('UNIQUE constraint failed: app_natagua_profesor.dni') >= 0){
+                    notifier.alert('El documento ya se encuentra registrado');
+                }
+                else{
+                    notifier.success('El profesor se Guardo correctamente');
+                    self.accion = 'profesor_update';
+                    self.titulo = "Modificar Profesor";
+                    self.datos.id = response.data.id;
+                }
+
+
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false });
+                console.log(err);
+            })
+        },
         getProvincias(){
             let self = this;
             HTTP.get(`provincia`)
@@ -203,7 +282,6 @@ Vue.component('persona',{
                 console.log(err);
             });
         }
-
     },
     created: function() {
 
@@ -229,7 +307,11 @@ Vue.component('persona',{
         switch (this.accion) {
             case 'transportista_update':
                 self.titulo = "Modificar Transportista";
-                self.getTransportista(self.idTransportista);
+                self.getTransportista(self.idUpdate);
+                break;
+            case 'profesor_update':
+                self.titulo = "Modificar Profesor";
+                self.getProfesor(self.idUpdate);
                 break;
         };
 
