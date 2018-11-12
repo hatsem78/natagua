@@ -91,10 +91,38 @@ class Transportista(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
 
-    def natural_key(self):
-        return (self.nombre,) + self.id_provincia.natural_key()
 
+class Profesor(models.Model):
 
+    class Meta:
+        verbose_name_plural = "Profesor"
+        indexes = [
+            models.Index(fields=['apellido', 'nombre'], name='prof_apellido_nombre_idx'),
+            models.Index(fields=['apellido', 'dni'], name='prof_apellido_dni'),
+        ]
+        ordering = ('apellido', 'nombre')
+
+    SEXO = (
+        ('M', 'MUJER'),
+        ('H', 'HOMBRE'),
+    )
+    id = models.AutoField(primary_key=True, help_text="Id único para Profesor ")
+    apellido = models.CharField(max_length=100, null=False, db_index=True)
+    nombre = models.CharField(max_length=100, null=False, db_index=True)
+    dni = models.CharField(max_length=25, unique=True)
+    edad = models.CharField(max_length=10)
+    sexo = models.CharField(max_length=1, choices=SEXO, null=False, db_index=True)
+    direccion = models.CharField(max_length=200, blank=True, null=True)
+    entre_calle = models.CharField(max_length=200, blank=True, null=True)
+    celular = models.CharField(max_length=50, blank=True, null=True)
+    telefono = models.CharField(max_length=50, blank=True, null=True)
+    email = models.EmailField(max_length=100, blank=True, null=True)
+    description = models.TextField(max_length=1000, blank=True, null=True)
+    fecha_nacimiento = models.DateTimeField(auto_now_add=True)
+    id_provincia = models.ForeignKey('Provincia', related_name='provincia_profesor', on_delete=models.CASCADE, null=True)
+    id_localidad = models.ForeignKey('Localidad', related_name='localidad_profesor', on_delete=models.CASCADE, null=True)
+    codigo_postal = models.CharField(max_length=5, blank=True, null=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
 
 
 '''

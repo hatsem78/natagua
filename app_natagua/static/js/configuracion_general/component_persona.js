@@ -21,12 +21,16 @@ Vue.component('persona',{
             default: 'transportista'
         },
         id_transportista: null,
+        titulo_new: {
+            type: String,
+            default: 'Agregar Transportista'
+        },
     },
     inject:['$validator'],
     data(){
         return {
             accion: this.tipo,
-            titulo: 'Agregar Transportista',
+            titulo: this.titulo_new,
             datos:{
                 id:'',
                 apellido:'',
@@ -213,6 +217,9 @@ Vue.component('persona',{
         selecteLocalidad: function (val) {
             let self = this;
             self.getLocalidad(val.id);
+        },
+        titulo: function (val) {
+            this.titulo = val;
         }
 
     },

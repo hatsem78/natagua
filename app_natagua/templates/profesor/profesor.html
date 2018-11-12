@@ -8,7 +8,7 @@
 {% block content %}
     <div class="app-title">
         <div>
-          <h1><i class="fa fa-dashboard"></i> Transportista</h1>
+          <h1><i class="fa fa-dashboard"></i> Profesor</h1>
           <p>Creación, modifición, eliminación y listado</p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
@@ -19,21 +19,21 @@
     <div class="tile mb-4" id="starting">
         <div class="tile-title-w-btn">
             <h3 class="title">Listado</h3>
-            <p v-if="tipo != 'transportista_update'">
+            <p v-if="tipo != 'profesor_update'">
                   <a
                       class="btn btn-info icon-btn"
                       href="#"
-                      @click="addTransportista(true)"
+                      @click="addProfesor(true)"
                   >
-                      <i class="fa fa-plus"></i>Nuevo Transportista
+                      <i class="fa fa-plus"></i>Nuevo Profesor
                   </a>
             </p>
         </div>
 
         <vuetable
-            v-if="!showTransportista"
-            ref="vuetableTransportista"
-            api-url="{% url 'transportista_list' %}"
+            v-if="!showProfesor"
+            ref="vuetableProfesor"
+            api-url="{% url 'profesor_list' %}"
             :fields="fieldes"
             :sort-order="sortOrder"
             :css="css.table"
@@ -46,7 +46,7 @@
            <template slot="actions" slot-scope="props">
                <div class="table-button-container">
               <button class="btn btn-outline-primary btn-sm" data-toggle="modal"
-                 data-target="#addTransportista" @click="editRow(props.rowData)">
+                 data-target="#addprofesor" @click="editRow(props.rowData)">
                  <span class="fa fa-lg fa-edit"></span> Editar
               </button>&nbsp;&nbsp;
               <button class="btn btn-danger btn-sm" @click="deleteRow(props.rowData)">
@@ -55,7 +55,7 @@
           </div>
            </template>
         </vuetable>
-        <vuetable-pagination v-if="!showTransportista" ref="paginationTransportista"
+        <vuetable-pagination v-if="!showProfesor" ref="paginationProfesor"
           :css="css.pagination"
           @vuetable-pagination:change-page="onChangePage"
         ></vuetable-pagination>
@@ -64,10 +64,11 @@
 
         <div class="col-md-10">
             <persona
-                v-if="showTransportista"
+                v-if="showProfesor"
                 :tipo="tipo"
-                :id_transportista="id_transportista"
-                @close="show_transportista(false)"
+                :titulo_new="titulo"
+                :id_profesor="id_profesor"
+                @close="show_profesor(false)"
             ></persona>
         </div>
     </div>
@@ -75,15 +76,11 @@
 {% endblock %}
 {% block javascripts %}
     {{ block.super }}
-
-     <script src="{% static '/js/plugins/vue-select.js' %}"></script>
+    <script src="{% static '/js/plugins/vue-select.js' %}"></script>
     <script src="{% static '/js/plugins/vue-bootstrap-datetimepicker.js' %}"></script>
     <script src="{% static '/js/plugins/bootstrap-datetimepicker.min.js' %}"></script>
     <script src="{% static '/js/vue-table.js' %}"></script>
     <script src="{% static '/js/configuracion_general/component_persona.js' %}"></script>
-    <script src="{% static '/js/configuracion_general/transportista.js' %}"></script>
-
-
-
+    <script src="{% static '/js/configuracion_general/profesor.js' %}"></script>
 
 {% endblock javascripts %}
