@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status, viewsets
 from rest_framework import generics
-from api.direcciones.serializers import ProvinciaSerializer, ProvinciaLocalidadSerializer
+from api.direcciones.serializers import ProvinciaSerializer, ProvinciaLocalidadSerializer, LocalidadSerializer
 from api.turno.serializers import TurnoSerializer
 from app_natagua.models import Provincia, Localidad
 
@@ -45,7 +45,7 @@ class LocalidadList(viewsets.ViewSet):
         else:
             snippets = Localidad.objects.all()
 
-        serializer = ProvinciaSerializer(snippets, many=True)
+        serializer = LocalidadSerializer(snippets, many=True)
 
         return Response(serializer.data)
 

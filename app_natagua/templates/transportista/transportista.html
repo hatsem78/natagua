@@ -19,11 +19,11 @@
     <div class="tile mb-4" id="starting">
         <div class="tile-title-w-btn">
             <h3 class="title">Listado</h3>
-            <p>
+            <p v-if="tipo != 'transportista_update'">
                   <a
                       class="btn btn-info icon-btn"
                       href="#"
-                      @click="show_transportista(true)"
+                      @click="addTransportista(true)"
                   >
                       <i class="fa fa-plus"></i>Nuevo Transportista
                   </a>
@@ -65,7 +65,8 @@
         <div class="col-md-10">
             <persona
                 v-if="showTransportista"
-                @guardar="refresh();"
+                :tipo="tipo"
+                :id_transportista="id_transportista"
                 @close="show_transportista(false)"
             ></persona>
         </div>

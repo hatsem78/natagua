@@ -10,13 +10,12 @@ var transportista = new Vue({
     delimiters: ['${','}'],
     data: {
         titulo:'Agregar Transportista',
+        tipo: 'transportista',
         turno: [],
         loading: false,
         currentTurno: {},
         message: null,
-        newTurno: {
-            'nombre': null,
-        },
+        id_transportista: 0,
         search_term: '',
         fieldes: [
             {
@@ -93,15 +92,17 @@ var transportista = new Vue({
             this.$refs.paginationTransportista.setPaginationData(paginationData)
         },
         show_transportista:function(value){
-
+            let self = this;
             if(value){
-                this.showTransportista = value;
+                self.showTransportista = value;
             }
             else{
-                this.showTransportista = value;
+                self.showTransportista = value;
+                self.tipo = 'transportista';
+                self.refresh();
             }
         },
-        deleteTurno: function (id) {
+        deleteTransportista: function (id) {
             let self = this;
             store.dispatch({type: 'setLoading',value: true });
             HTTP.delete(`/transportista/${id}/`)
@@ -120,7 +121,20 @@ var transportista = new Vue({
             this.$refs.vuetable.changePage(page)
         },
         deleteRow: function(rowData){
-            this.deleteTurno(rowData.id);
+            this.deleteTransportista(rowData.id);
+        },
+        addTransportista: function () {
+            let self = this;
+            self.titulo = "Agregar Transportista";
+            self.tipo = 'transportista';
+            self.show_transportista(true);
+        },
+        editRow: function (value) {
+            let self = this;
+            self.id_transportista = value.id;
+            self.titulo = "Modificar Transportista";
+            self.tipo = 'transportista_update';
+            self.show_transportista(true);
         },
         onLoading: function() {
 

@@ -66,6 +66,7 @@ class Transportista(models.Model):
             models.Index(fields=['apellido', 'nombre']),
             models.Index(fields=['apellido', 'dni'], name='apellido_dni_idx'),
         ]
+        ordering = ('apellido', 'nombre')
 
     SEXO = (
         ('M', 'MUJER'),
@@ -81,14 +82,17 @@ class Transportista(models.Model):
     entre_calle = models.CharField(max_length=200, blank=True, null=True)
     celular = models.CharField(max_length=50, blank=True, null=True)
     telefono = models.CharField(max_length=50, blank=True, null=True)
-    mail = models.CharField(max_length=100, blank=True, null=True)
+    email = models.EmailField(max_length=100, blank=True, null=True)
     description = models.TextField(max_length=1000, blank=True, null=True)
-    fecha_nacimiento = models.DateTimeField(default=datetime.datetime.now, blank=True)
+    fecha_nacimiento = models.DateTimeField(auto_now_add=True)
     id_provincia = models.ForeignKey('Provincia', related_name='provincia', on_delete=models.CASCADE, null=True)
     id_localidad = models.ForeignKey('Localidad', related_name='localidad', on_delete=models.CASCADE, null=True)
-    fecha_creacion = models.DateTimeField(default=datetime.datetime.now)
+    codigo_postal = models.CharField(max_length=5, blank=True, null=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
 
 
+    def natural_key(self):
+        return (self.nombre,) + self.id_provincia.natural_key()
 
 
 

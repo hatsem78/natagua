@@ -19,7 +19,8 @@ Vue.component('persona',{
         tipo:{
             type: String,
             default: 'transportista'
-        }
+        },
+        id_transportista: null,
     },
     inject:['$validator'],
     data(){
@@ -37,10 +38,10 @@ Vue.component('persona',{
                 telefono: '',
                 entre_calle:'',
                 cbu:'',
-                mail:'',
+                email:'',
                 description:'',
                 sexo:'M',
-                cod_postal: '',
+                codigo_postal: '',
                 fecha_nacimiento: '',
             },
             provincias: [],
@@ -54,7 +55,8 @@ Vue.component('persona',{
               useCurrent: false,
               showClear: true,
               showClose: true,
-            }
+            },
+            idTransportista: this.id_transportista
         }
     },
     methods:{
@@ -65,16 +67,29 @@ Vue.component('persona',{
             let self = this;
             switch (this.accion) {
                 case 'transportista':
+                    self.titulo = 'Agregar Transportista';
                     self.addTransportista();
                     break;
                 case 'transportista_update':
+                    self.titulo = "Modificar Transportista";
                     self.updateTransportista();
                     break;
                 default:
                     status = false;
             };
-            return status;
-
+        },
+        getTransportista: function (id) {
+            let self = this;
+            store.dispatch({type: 'setLoading',value: true});
+            HTTP.get(`transportista/${id}/`)
+            .then((response) => {
+                self.datos = response.data;
+                store.dispatch({type: 'setLoading',value: false});
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false});
+                console.log(err);
+            });
         },
         addTransportista: function () {
             let self = this;
@@ -93,9 +108,9 @@ Vue.component('persona',{
                         }
                         else{
                             notifier.success('El transportista se Guardo correctamente');
-                            //self.accion = 'transportista_update';
-                            //self.titulo = "Modificar Transportista";
-                            self.$emit('guardar');
+                            self.accion = 'transportista_update';
+                            self.titulo = "Modificar Transportista";
+                            self.datos.id = response.data.id;
                         }
 
                     })
@@ -108,11 +123,24 @@ Vue.component('persona',{
         },
         updateTransportista: function () {
             let self = this;
+            self.datos['id_provincia'] = self.selecteProvincia.id;
+            self.datos['id_localidad'] = self.selecteLocalidad.id;
+
             store.dispatch({type: 'setLoading',value: true });
+
             HTTP.put(`/transportista/${self.datos.id}/`, self.datos)
             .then((response) => {
-                self.loading = false;
-                self.refresh();
+                store.dispatch({type: 'setLoading',value: false });
+                if(response.data.error && response.data.error.indexOf('UNIQUE constraint failed: app_natagua_transportista.dni') >= 0){
+                    notifier.alert('El documento ya se encuentra registrado');
+                }
+                else{
+                    notifier.success('El transportista se Guardo correctamente');
+                    self.accion = 'transportista_update';
+                    self.titulo = "Modificar Transportista";
+                    self.datos.id = response.data.id;
+                }
+
 
             })
             .catch((err) => {
@@ -164,6 +192,7 @@ Vue.component('persona',{
             )
             .then((response) => {
                 console.log(response.data)
+                self.datos.codigo_postal = response.data[0].codigopostal
 
             })
             .catch((err) => {
@@ -189,6 +218,14 @@ Vue.component('persona',{
     },
     mounted: function() {
         let self = this;
+
+        switch (this.accion) {
+            case 'transportista_update':
+                self.titulo = "Modificar Transportista";
+                self.getTransportista(self.idTransportista);
+                break;
+        };
+
         self.getProvincias();
     },
     template: `
@@ -295,7 +332,7 @@ Vue.component('persona',{
                             <label>Fecha Nac.*</label>
                             <date-picker 
                             id="date_picker"
-                                v-model="date" 
+                                v-model="datos.fecha_nacimiento" 
                                 :config="{format: 'DD/MM/YYYY', locale: 'es'}">
                                 :useCurrent='true' 
                                 :language="es"   
@@ -349,26 +386,26 @@ Vue.component('persona',{
                             <label>Email*</label>
                             <div  :class="[
                                       { 
-                                        'has-error': errors.first('mail'), 
-                                        'has-success': !errors.first('mail') && datos.mail !== ''
+                                        'has-error': errors.first('email'), 
+                                        'has-success': !errors.first('email') && datos.email !== ''
                                       }, 
                                       ]">
                                       
                                 <input 
                                     type="text" 
-                                    name="mail" id="mail" 
+                                    name="email" id="email" 
                                     placeholder="Email"  
-                                    v-model='datos.mail'
+                                    v-model='datos.email'
                                     v-validate="'required:true|maxCustom:100|email_custom'" 
                                     :class="{
                                         'input': true, 
-                                        'has-error': errors.first('mail') && datos.mail == '', 
+                                        'has-error': errors.first('email') && datos.email == '', 
                                         'form-control': true
                                     }"
                                 >
                                 <div class="errors help-block">
-                                    <span v-show="errors.first('mail')"
-                                        class="help error">{{ errors.first('mail') }}
+                                    <span v-show="errors.first('email')"
+                                        class="help error">{{ errors.first('email') }}
                                     </span>
                                 </div> 
                             </div>
@@ -522,26 +559,26 @@ Vue.component('persona',{
                             <label>Código Postal</label>
                             <div  :class="[
                                       { 
-                                        'has-error': errors.first('cod_postal'), 
-                                        'has-success': !errors.first('cod_postal') && datos.cod_postal !== ''
+                                        'has-error': errors.first('codigo_postal'), 
+                                        'has-success': !errors.first('codigo_postal') && datos.codigo_postal !== ''
                                       }, 
                                       ]">
                                       
                                 <input 
                                     type="text" 
-                                    name="cod_postal" id="cod_postal" 
+                                    name="codigo_postal" id="codigo_postal" 
                                     placeholder="Código Postal"  
-                                    v-model='datos.cod_postal'
+                                    v-model='datos.codigo_postal'
                                     v-validate="'maxCustom:5|numeric'" 
                                     :class="{
                                         'input': true, 
-                                        'has-error': errors.first('cod_postal') && datos.cod_postal == '', 
+                                        'has-error': errors.first('codigo_postal') && datos.codigo_postal == '', 
                                         'form-control': true
                                     }"
                                 >
                                 <div class="errors help-block">
-                                    <span v-show="errors.first('cod_postal')"
-                                        class="help error">{{ errors.first('cod_postal') }}
+                                    <span v-show="errors.first('codigo_postal')"
+                                        class="help error">{{ errors.first('codigo_postal') }}
                                     </span>
                                 </div> 
                             </div>

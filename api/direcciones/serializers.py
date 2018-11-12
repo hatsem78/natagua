@@ -32,7 +32,6 @@ class LocalidadSerializer(serializers.Serializer):
         fields = ('id', 'id_provincia', 'nombre', 'codigopostal')
 
     id = serializers.IntegerField(read_only=True)
-    id_provincia = serializers.IntegerField(read_only=True)
     nombre = serializers.CharField(required=False, allow_blank=False, max_length=100)
     codigopostal = serializers.CharField(required=False, allow_blank=False, max_length=100)
 
