@@ -15,7 +15,7 @@ var transportista = new Vue({
         loading: false,
         currentTurno: {},
         message: null,
-        id_transportista: 0,
+        id_update: 0,
         search_term: '',
         fieldes: [
             {
@@ -131,7 +131,7 @@ var transportista = new Vue({
         },
         editRow: function (value) {
             let self = this;
-            self.id_transportista = value.id;
+            self.id_update = value.id;
             self.titulo = "Modificar Transportista";
             self.tipo = 'transportista_update';
             self.show_transportista(true);

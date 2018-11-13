@@ -2,15 +2,15 @@ Vue.component('vuetable', window.Vuetable.Vuetable);
 
 Vue.component('vuetable-pagination', window.Vuetable.VuetablePagination);
 $("#configuracion_general").addClass('is-expanded');
-$("#menu_profesor").addClass('active');
+$("#menu_alumno").addClass('active');
 $("#dashboard").removeClass('active');
 
-var profesor = new Vue({
-    el: '#profesor',
+var alumno = new Vue({
+    el: '#alumno',
     delimiters: ['${','}'],
     data: {
-        titulo:'Agregar Profesor',
-        tipo: 'profesor',
+        titulo:'Agregar Alumno',
+        tipo: 'alumno',
         turno: [],
         loading: false,
         currentTurno: {},
@@ -82,30 +82,30 @@ var profesor = new Vue({
         }
         },
         action: true,
-        showProfesor: false,
+        showAlumno: false,
     },
     mounted: function() {
         //this.getTurnos();
     },
     methods: {
         onPaginationData: function(paginationData) {
-            this.$refs.paginationProfesor.setPaginationData(paginationData)
+            this.$refs.paginationAlumno.setPaginationData(paginationData)
         },
-        show_profesor:function(value){
+        show_alumno:function(value){
             let self = this;
             if(value){
-                self.showProfesor = value;
+                self.showAlumno = value;
             }
             else{
-                self.showProfesor = value;
-                self.tipo = 'profesor';
+                self.showAlumno = value;
+                self.tipo = 'alumno';
                 self.refresh();
             }
         },
-        deleteProfesor: function (id) {
+        deleteAlumno: function (id) {
             let self = this;
             store.dispatch({type: 'setLoading',value: true });
-            HTTP.delete(`/profesor/${id}/`)
+            HTTP.delete(`/alumno/${id}/`)
             .then((response) => {
 
                 store.dispatch({type: 'setLoading',value: false });
@@ -121,20 +121,20 @@ var profesor = new Vue({
             this.$refs.vuetable.changePage(page)
         },
         deleteRow: function(rowData){
-            this.deleteProfesor(rowData.id);
+            this.deleteAlumno(rowData.id);
         },
-        addProfesor: function () {
+        addAlumno: function () {
             let self = this;
-            self.titulo = "Agregar Profesor";
-            self.tipo = 'profesor';
-            self.show_profesor(true);
+            self.titulo = "Agregar Alumno";
+            self.tipo = 'alumno';
+            self.show_alumno(true);
         },
         editRow: function (value) {
             let self = this;
             self.id_update = value.id;
-            self.titulo = "Modificar Profesor";
-            self.tipo = 'profesor_update';
-            self.show_profesor(true);
+            self.titulo = "Modificar Alumno";
+            self.tipo = 'alumno_update';
+            self.show_alumno(true);
         },
         onLoading: function() {
 
@@ -142,7 +142,7 @@ var profesor = new Vue({
         refresh: function() {
             let self = this;
             self.$nextTick(()=>{
-              self.$refs.vuetableProfesor.refresh();
+              self.$refs.vuetableAlumno.refresh();
               store.dispatch({type: 'setLoading',value: false });
             })
         },

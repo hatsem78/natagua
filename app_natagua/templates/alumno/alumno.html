@@ -8,7 +8,7 @@
 {% block content %}
     <div class="app-title">
         <div>
-          <h1><i class="fa fa-dashboard"></i> Transportista</h1>
+          <h1><i class="fa fa-dashboard"></i> Alumno</h1>
           <p>Creación, modifición, eliminación y listado</p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
@@ -16,24 +16,24 @@
           <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
         </ul>
     </div>
-    <div class="tile mb-4" id="starting">
+    <div class="tile mb-4" id="alumno">
         <div class="tile-title-w-btn">
             <h3 class="title">Listado</h3>
-            <p v-if="tipo != 'transportista_update'">
+            <p v-if="tipo != 'alumno_update'">
                   <a
                       class="btn btn-info icon-btn"
                       href="#"
-                      @click="addTransportista(true)"
+                      @click="addAlumno(true)"
                   >
-                      <i class="fa fa-plus"></i>Nuevo Transportista
+                      <i class="fa fa-plus"></i>Nuevo Alumno
                   </a>
             </p>
         </div>
 
         <vuetable
-            v-if="!showTransportista"
-            ref="vuetableTransportista"
-            api-url="{% url 'transportista_list' %}"
+            v-if="!showAlumno"
+            ref="vuetableAlumno"
+            api-url="{% url 'alumno_list' %}"
             :fields="fieldes"
             :sort-order="sortOrder"
             :css="css.table"
@@ -46,7 +46,7 @@
            <template slot="actions" slot-scope="props">
                <div class="table-button-container">
               <button class="btn btn-outline-primary btn-sm" data-toggle="modal"
-                 data-target="#addTransportista" @click="editRow(props.rowData)">
+                 data-target="#addalumno" @click="editRow(props.rowData)">
                  <span class="fa fa-lg fa-edit"></span> Editar
               </button>&nbsp;&nbsp;
               <button class="btn btn-danger btn-sm" @click="deleteRow(props.rowData)">
@@ -55,7 +55,7 @@
           </div>
            </template>
         </vuetable>
-        <vuetable-pagination v-if="!showTransportista" ref="paginationTransportista"
+        <vuetable-pagination v-if="!showAlumno" ref="paginationAlumno"
           :css="css.pagination"
           @vuetable-pagination:change-page="onChangePage"
         ></vuetable-pagination>
@@ -64,10 +64,11 @@
 
         <div class="col-md-10">
             <persona
-                v-if="showTransportista"
+                v-if="showAlumno"
                 :tipo="tipo"
+                :titulo_new="titulo"
                 :id_update="id_update"
-                @close="show_transportista(false)"
+                @close="show_alumno(false)"
             ></persona>
         </div>
     </div>
@@ -75,15 +76,12 @@
 {% endblock %}
 {% block javascripts %}
     {{ block.super }}
-
-     <script src="{% static '/js/plugins/vue-select.js' %}"></script>
+    <script src="{% static '/js/plugins/vue-select.js' %}"></script>
     <script src="{% static '/js/plugins/vue-bootstrap-datetimepicker.js' %}"></script>
     <script src="{% static '/js/plugins/bootstrap-datetimepicker.min.js' %}"></script>
     <script src="{% static '/js/vue-table.js' %}"></script>
+    <script src="{% static '/js/configuracion_general/alumno.js' %}"></script>
     <script src="{% static '/js/configuracion_general/component_persona.js' %}"></script>
-    <script src="{% static '/js/configuracion_general/transportista.js' %}"></script>
-
-
 
 
 {% endblock javascripts %}

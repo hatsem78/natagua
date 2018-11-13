@@ -1,4 +1,5 @@
 # coding=utf-8
+from api.alumno.views import AlumnoList, AlumnoAdd, AlumnoDetail
 from api.direcciones.serializers import ProvinciaSerializer
 from api.direcciones.views import ProvinciaList, ProvinciaDetail, LocalidadList
 from api.profesores.views import ProfesorList, ProfesorAdd, ProfesorDetail
@@ -32,6 +33,10 @@ urlpatterns = [
     url(r'profesor_list/', ProfesorList.as_view(), name='profesor_list'),
     path('profesor/', ProfesorAdd.as_view()),
     path('profesor/<int:pk>/', ProfesorDetail.as_view()),
+
+    url(r'alumno_list/', AlumnoList.as_view(), name='alumno_list'),
+    path('alumno/', AlumnoAdd.as_view()),
+    path('alumno/<int:pk>/', AlumnoDetail.as_view()),
 
     path('provincia/', ProvinciaList.as_view()),
     url(r'localidad/', LocalidadList.as_view({'get': 'get'}), name='localidad'),

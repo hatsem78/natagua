@@ -20,7 +20,7 @@ from django.urls import path
 
 
 # from . import views
-from app_natagua.views import index, Turnos, Transportista, Profesor
+from app_natagua.views import index, Turnos, Transportista, Profesor, Alumno
 
 admin.site.site_header = "Natagua Admin"
 admin.site.site_title = "Natagua Admistración"
@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^turno$', Turnos.as_view(), name='turno'),
     url(r'^transportista$', Transportista.as_view(), name='transportista'),
     url(r'^profesor$', Profesor.as_view(), name='profesor'),
+    url(r'^alumno$', Alumno.as_view(), name='alumno'),
     url(r'^api/', include('api.urls'), name="api"),
 ]
 
