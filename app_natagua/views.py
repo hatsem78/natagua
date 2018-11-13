@@ -121,3 +121,10 @@ class Profesor(View):
 
         data_parameter = request.GET
         return render(request, 'profesor/profesor.html',)
+
+class Alumno(View):
+
+    def get(self, request, *args, **kwargs):
+
+        data_parameter = request.GET
+        return render(request, 'alumno/alumno.html',)

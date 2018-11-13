@@ -140,8 +140,6 @@ class Alumno(models.Model):
         ('H', 'HOMBRE'),
     )
     id = models.AutoField(primary_key=True, help_text="Id único para alumno ")
-    id_profesor = models.AutoField(primary_key=True, help_text="id profesor ")
-    id_transportista = models.AutoField(primary_key=True, help_text="id transportista ")
     apellido = models.CharField(max_length=100, null=False, db_index=True)
     nombre = models.CharField(max_length=100, null=False, db_index=True)
     dni = models.CharField(max_length=25, unique=True)

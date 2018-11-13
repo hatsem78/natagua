@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.urls import path
 
-from app_natagua.models import Turnos, Transportista, Provincia, Localidad
+from app_natagua.models import Turnos, Transportista, Provincia, Localidad, Alumno
 
 
 def definition_carrier_type(obj):
@@ -15,6 +15,7 @@ def definition_carrier_type(obj):
 
 admin.site.register(Turnos)
 admin.site.register(Transportista)
+admin.site.register(Alumno)
 admin.site.register(Provincia)
 admin.site.register(Localidad)
 

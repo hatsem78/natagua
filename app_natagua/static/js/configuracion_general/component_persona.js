@@ -86,8 +86,16 @@ Vue.component('persona',{
                     self.titulo = "Modificar Profesor";
                     self.updateProfesor();
                     break;
+                case 'alumno':
+                    self.titulo = 'Agregar Alumno';
+                    self.addAlumno();
+                    break;
+                case 'alumno_update':
+                    self.titulo = "Modificar Alumno";
+                    self.updateAlumno();
+                    break;
                 default:
-                    status = false;
+                    break;
             };
         },
         getTransportista: function (id) {
@@ -160,7 +168,6 @@ Vue.component('persona',{
                 console.log(err);
             })
         },
-
         getProfesor: function (id) {
             let self = this;
             store.dispatch({type: 'setLoading',value: true});
@@ -231,6 +238,78 @@ Vue.component('persona',{
                 console.log(err);
             })
         },
+
+        getAlumno: function (id) {
+            let self = this;
+            store.dispatch({type: 'setLoading',value: true});
+            HTTP.get(`alumno/${id}/`)
+            .then((response) => {
+                self.datos = response.data;
+                store.dispatch({type: 'setLoading',value: false});
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false});
+                console.log(err);
+            });
+        },
+        addAlumno: function () {
+            let self = this;
+
+            store.dispatch({type: 'setLoading',value: true });
+            this.$validator.validateAll()
+            .then(function(response){
+                if (response) {
+                    self.datos['id_provincia'] = self.selecteProvincia.id;
+                    self.datos['id_localidad'] = self.selecteLocalidad.id;
+                    HTTP.post('/alumno/', self.datos)
+                    .then((response) => {
+                        store.dispatch({type: 'setLoading',value: false });
+                        if(response.data.error && response.data.error.indexOf('UNIQUE constraint failed: app_natagua_alumno.dni') >= 0){
+                            notifier.alert('El documento ya se encuentra registrado');
+                        }
+                        else{
+                            notifier.success('El alumno se Guardo correctamente');
+                            self.accion = 'alumno_update';
+                            self.titulo = "Modificar Alumno";
+                            self.datos.id = response.data.id;
+                        }
+
+                    })
+                    .catch((err) => {
+                        store.dispatch({type: 'setLoading',value: false });
+                        console.log(err);
+                    });
+                }
+            });
+        },
+        updateAlumno: function () {
+            let self = this;
+            self.datos['id_provincia'] = self.selecteProvincia.id;
+            self.datos['id_localidad'] = self.selecteLocalidad.id;
+
+            store.dispatch({type: 'setLoading',value: true });
+
+            HTTP.put(`/alumno/${self.datos.id}/`, self.datos)
+            .then((response) => {
+                store.dispatch({type: 'setLoading',value: false });
+                if(response.data.error && response.data.error.indexOf('UNIQUE constraint failed: app_natagua_alumno.dni') >= 0){
+                    notifier.alert('El documento ya se encuentra registrado');
+                }
+                else{
+                    notifier.success('El alumno se Guardo correctamente');
+                    self.accion = 'alumno_update';
+                    self.titulo = "Modificar Alumno";
+                    self.datos.id = response.data.id;
+                }
+
+
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false });
+                console.log(err);
+            })
+        },
+
         getProvincias(){
             let self = this;
             HTTP.get(`provincia`)
@@ -312,6 +391,10 @@ Vue.component('persona',{
             case 'profesor_update':
                 self.titulo = "Modificar Profesor";
                 self.getProfesor(self.idUpdate);
+                break;
+            case 'alumno_update':
+                self.titulo = "Modificar Alumno";
+                self.getAlumno(self.idUpdate);
                 break;
         };
 
