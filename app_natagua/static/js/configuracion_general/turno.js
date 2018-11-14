@@ -166,7 +166,7 @@ var turno =new Vue({
             let self = this;
             self.$nextTick(()=>{
               self.$refs.vuetable.refresh();
-              selstore.dispatch({type: 'setLoading',value: false });
+              self.store.dispatch({type: 'setLoading',value: false });
             })
         },
         onLoaded:function () {

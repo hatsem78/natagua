@@ -9,7 +9,7 @@ class Pagination(PageNumberPagination):
 
     def get_paginated_response(self, data):
 
-        if(int(self.request.query_params['page']) <= int(self.page_size) ):
+        if ('page' in self.request.query_params and (str(self.page_size) == self.request.query_params['page'])):
             return Response({
                 "prev_page_url": self.get_previous_link(),
                 "from": self.page.paginator.page_range.start,
@@ -27,9 +27,9 @@ class Pagination(PageNumberPagination):
                 "from": 1,
                 "to": self.page.paginator.num_pages,
                 "total": self.page.paginator.num_pages,
-                "per_page": self.request.query_params['per_page'],
+                "per_page": 1,
                 "current_page": self.page.number,
-                "last_page": 14,
+                "last_page": 1,
                 "next_page_url": self.get_next_link(),
                 'data': data,
             })
