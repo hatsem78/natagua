@@ -3,6 +3,7 @@ Vue.component('vuetable', window.Vuetable.Vuetable);
 $("#configuracion_general").addClass('is-expanded');
 $("#menu_grupos").addClass('active');
 $("#dashboard").removeClass('active');
+Vue.component("v-select", VueSelect.VueSelect);
 
 Vue.component('grupos_action',{
     props:{
@@ -23,11 +24,39 @@ Vue.component('grupos_action',{
             titulo: this.titulo_new,
             datos:{
                 id:'',
-                nombre:'',
-                telefono: '',
-                direccion:'',
-                email: '',
+                edad_min:'',
+                edad_max: '',
+                complejo:'',
+                turno: '',
             },
+            mes: [
+                { id: 1, nombre: 'Enero'},
+                { id: 2, nombre: 'Febrero'},
+                { id: 3, nombre: 'Marzo'},
+                { id: 4, nombre: 'Abril'},
+                { id: 5, nombre: 'Mayo'},
+                { id: 6, nombre: 'Junio'},
+                { id: 7, nombre: 'Julio'},
+                { id: 8, nombre: 'Agosto'},
+                { id: 9, nombre: 'Septiembre'},
+                { id: 10, nombre: 'Octubre'},
+                { id: 11, nombre: 'Noviembre'},
+                { id: 12, nombre: 'Diciembre'}
+            ],
+            selecteMes: { id: 1, nombre: 'Enero'},
+            complejos: [],
+            turnos:[],
+            selecteTurno: null,
+            selecteComplejo: null,
+            profesores: [],
+            SelectProfesores: [],
+            grupoProfesores: [],
+            profesoresSeleccionados: [],
+            alumnos: [],
+            alumnosFilter: [],
+            SelectAlumnos: [],
+            grupoAlumnos: [],
+            alumnosSeleccionados: [],
             idUpdate: this.id_update
         }
     },
@@ -52,10 +81,61 @@ Vue.component('grupos_action',{
         },
         getGrupos: function (id) {
             let self = this;
-            store.dispatch({type: 'setLoading',value: true});
+
             HTTP.get(`grupos/${id}/`)
             .then((response) => {
+
                 self.datos = response.data;
+                let selecte_mes = self.mes.filter((value, index, array) => {
+                    if(parseInt(self.datos.mes) == value.id){
+                        return value
+                    }
+                });
+
+                self.datos.selecteMes = selecte_mes;
+
+                let select_profesor = self.profesores.filter((value, index, array) => {
+                    let obj = Object.values(self.datos.profesor).find((o, i) => {
+                        if (o === value.id ) {
+                           return  o;
+                        }
+                    });
+                    return obj
+                });
+
+                self.grupoProfesores = select_profesor;
+
+
+                self.grupoProfesores.filter((value, index, array) => {
+                    let info = self.profesores.indexOf(value);
+                    if (info > -1) {
+                        self.profesores.splice(info, 1);
+                    }
+                });
+
+
+                let select_alumno = self.alumnos.filter((value, index, array) => {
+                    let obj = Object.values(self.datos.alumno).find((o, i) => {
+                        if (o === value.id ) {
+                           return  o;
+                        }
+                    });
+                    return obj
+                });
+
+                self.grupoAlumnos = select_alumno;
+
+                self.grupoAlumnos.filter((value, index, array) => {
+                    let info = self.alumnos.indexOf(value);
+                    if (info > -1) {
+                        self.alumnos.splice(info, 1);
+                    }
+                });
+
+                self.datos.id = id;
+
+                self.selecteMes = selecteMes;
+
                 store.dispatch({type: 'setLoading',value: false});
             })
             .catch((err) => {
@@ -70,6 +150,15 @@ Vue.component('grupos_action',{
             this.$validator.validateAll()
             .then(function(response){
                 if (response) {
+                    self.datos['profesor'] = self.grupoProfesores.map((profesor) => {
+                        return profesor.id
+                    });
+                    self.datos['alumno'] = self.grupoAlumnos.map((alumno) => {
+                        return alumno.id
+                    });
+                    self.datos['complejo_id'] = self.selecteComplejo.id;
+                    self.datos['turno_id'] = self.selecteTurno.id;
+                    self.datos['mes'] = self.selecteMes.id;
 
                     HTTP.post('/grupos/', self.datos)
                     .then((response) => {
@@ -96,6 +185,15 @@ Vue.component('grupos_action',{
             let self = this;
 
             store.dispatch({type: 'setLoading',value: true });
+            self.datos['profesor'] = self.grupoProfesores.map((profesor) => {
+                return profesor.id
+            });
+            self.datos['alumno'] = self.grupoAlumnos.map((alumno) => {
+                return alumno.id
+            });
+            self.datos['complejo_id'] = self.selecteComplejo.id;
+            self.datos['turno_id'] = self.selecteTurno.id;
+            self.datos['mes'] = self.selecteMes.id;
 
             HTTP.put(`/grupos/${self.datos.id}/`, self.datos)
             .then((response) => {
@@ -115,7 +213,212 @@ Vue.component('grupos_action',{
                 console.log(err);
             })
         },
+        getAllComplejo(){
+            let self = this;
+            HTTP.get(`complejo`)
+            .then((response) => {
+                const listado = response.data.map((complejo) => {
+                    return {
+                        id: complejo.id,
+                        nombre: complejo.nombre
+                    }
+                });
+                self.complejos = listado;
+                self.selecteComplejo = listado[0];
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false });
+                console.log(err);
+            });
+        },
+        getAllTurnos(){
+            let self = this;
+            HTTP.get(`turno`)
+            .then((response) => {
+                const listado = response.data.map((complejo) => {
+                    return {
+                        id: complejo.id,
+                        nombre: complejo.nombre
+                    }
+                });
+                self.turnos = listado;
+                self.selecteTurno = listado[0];
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false });
+                console.log(err);
+            });
+        },
+        getAllProfesores(){
+            let self = this;
+            HTTP.get(`profesor`)
+            .then((response) => {
+                const listado = response.data.map((profesor) => {
+                    return {
+                        id: profesor.id,
+                        nombre:`${profesor.apellido} ${profesor.nombre}`
+                    }
+                });
+                self.profesores = listado;
+                //self.SelectProfesores = listado[0];
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false });
+                console.log(err);
+            });
+        },
+        getAllAlumnos(){
+            let self = this;
+            HTTP.get(`alumno`)
+            .then((response) => {
+                const listado = response.data.map((alumno) => {
+                    return {
+                        id: alumno.id,
+                        nombre:`${alumno.apellido} ${alumno.nombre}`,
+                        edad: alumno.edad,
+                    }
+                });
+                self.alumnos = listado;
+                self.alumnosFilter = listado;
+                //self.SelectProfesores = listado[0];
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false });
+                console.log(err);
+            });
+        },
+        enterSeleccionGrupoProfesor(e){
 
+            if(e.key === 'Enter' || e.key == 'ArrowLeft') {
+                let self = this;
+                let val = self.profesoresSeleccionados;
+                if(self.grupoProfesores.length == 1 ){
+                    let index = self.grupoProfesores.indexOf(val[0]);
+                    if (index > -1) {
+                        self.grupoProfesores.splice(index, 1);
+                        self.profesores.push(val[0]);
+                        self.profesoresSeleccionados = [] ;
+                    }
+                }else{
+                    for(seleccion in val){
+                        let index = self.grupoProfesores.indexOf(val[seleccion]);
+                        self.grupoProfesores.splice(index, 1);
+                        self.profesores.push(val[seleccion]);
+                    }
+                    self.profesoresSeleccionados = [] ;
+                }
+
+            }
+        },
+        deleteSeleccionGrupoProfesor(val){
+            let self = this;
+
+            let index = self.grupoProfesores.indexOf(val[0]);
+            if (index > -1) {
+                self.grupoProfesores.splice(index, 1);
+                self.profesores.push(val[0]);
+            }
+        },
+        enterSeleccionProfesor(e){
+            console.log(e)
+            if(e.key === 'Enter' || e.key == 'ArrowRight') {
+                let self = this;
+                let val = self.SelectProfesores;
+                if(self.profesores.length == 1 ){
+                    let index = self.profesores.indexOf(val[0]);
+                    if (index > -1) {
+                        self.profesores.splice(index, 1);
+                        self.grupoProfesores.push(val[0]);
+                        self.SelectProfesores = [];
+                    }
+                }else{
+                    for(seleccion in val){
+                        let index = self.profesores.indexOf(val[seleccion]);
+                        self.profesores.splice(index, 1);
+                        self.grupoProfesores.push(val[seleccion]);
+                    }
+                    self.SelectProfesores = []
+                }
+
+            }
+        },
+        deleteSeleccionProfesor(val){
+            let self = this;
+            let index = self.profesores.indexOf(val[0]);
+            if (index > -1) {
+                self.profesores.splice(index, 1);
+                self.grupoProfesores.push(val[0]);
+            }
+        },
+        enterSeleccionGrupoAlumno(e){
+
+            if(e.key === 'Enter' || e.key == 'ArrowLeft') {
+                let self = this;
+                let val = self.alumnosSeleccionados;
+                if(self.grupoAlumnos.length == 1 ){
+                    let index = self.grupoAlumnos.indexOf(val[0]);
+                    if (index > -1) {
+                        self.grupoAlumnos.splice(index, 1);
+                        self.alumnos.push(val[0]);
+                        self.alumnosSeleccionados = [] ;
+                    }
+                }else{
+                    for(seleccion in val){
+                        let index = self.grupoAlumnos.indexOf(val[seleccion]);
+                        self.grupoAlumnos.splice(index, 1);
+                        self.alumnos.push(val[seleccion]);
+                    }
+                    self.alumnosSeleccionados = [] ;
+                }
+            }
+        },
+        deleteSeleccionGrupoAlumno(val){
+            let self = this;
+
+            let index = self.grupoAlumnos.indexOf(val[0]);
+            if (index > -1) {
+                self.grupoAlumnos.splice(index, 1);
+                self.alumnos.push(val[0]);
+            }
+        },
+        enterSeleccionAlumno(e){
+            if(e.key === 'Enter' || e.key == 'ArrowRight') {
+                let self = this;
+                let val = self.SelectAlumnos;
+                if(self.alumnos.length == 1 ){
+                    let index = self.alumnos.indexOf(val[0]);
+                    if (index > -1) {
+                        self.alumnos.splice(index, 1);
+                        self.grupoAlumnos.push(val[0]);
+                        self.SelectAlumnos = [];
+                    }
+                }else{
+                    for(seleccion in val){
+                        let index = self.alumnos.indexOf(val[seleccion]);
+                        self.alumnos.splice(index, 1);
+                        self.grupoAlumnos.push(val[seleccion]);
+                    }
+                    self.SelectAlumnos = []
+                }
+            }
+        },
+        deleteSeleccionAlumno(val){
+            let self = this;
+            let index = self.alumnos.indexOf(val[0]);
+            if (index > -1) {
+                self.alumnos.splice(index, 1);
+                self.grupoAlumnos.push(val[0]);
+            }
+        },
+        filterAlumnoEdad(value){
+            let self = this;
+            if(self.datos.edad_min == ''){
+                return value
+            }
+            else if((value.edad >= self.datos.edad_min) && (value.edad <= self.datos.edad_max) ){
+                return value
+            }
+        }
     },
     created: function() {
 
@@ -123,185 +426,223 @@ Vue.component('grupos_action',{
     watch:{
         titulo: function (val) {
             this.titulo = val;
+        },
+        'datos.edad_min': function (val) {
+            let self = this;
+            if(val >= self.datos.edad_max && self.datos.edad_max != '' ){
+                self.datos.edad_max = val;
+            }
+            else if(self.datos.edad_max == '' ){
+                self.datos.edad_max = val;
+            }
+            self.alumnos = self.alumnosFilter.filter(self.filterAlumnoEdad)
+        },
+        'datos.edad_max': function (val) {
+            let self = this;
+            self.alumnos = self.alumnosFilter.filter(self.filterAlumnoEdad)
         }
-
     },
     mounted: function() {
         let self = this;
 
+        self.getAllTurnos();
+        self.getAllComplejo();
+        self.getAllProfesores();
+        self.getAllAlumnos();
+
         switch (this.accion) {
             case 'grupos_update':
                 self.titulo = "Modificar Grupos";
-                self.getTransportista(self.idUpdate);
+                store.dispatch({type: 'setLoading',value: true});
+                setTimeout(function(){ self.getGrupos(self.idUpdate); }, 300);
+
+
                 break;
-        };
+        }
     },
     template: `
-        <div class="card col-md-10">
+        <div class="card col-md-12">
             <div class="card-header"><h4 class="card-title">  {{ titulo }}</h4></div>
             <div class="card-body">
+            
+                <div class="row">
+                    <div class="col-md-4 pr-1">
+                        <div class="form-group">
+                            <label>Complejo</label>
+                            <v-select label="nombre" :options="complejos" v-model="selecteComplejo"></v-select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 pr-1">
+                        <div class="form-group">
+                            <label>Turnos</label>
+                            <v-select label="nombre" :options="turnos" v-model="selecteTurno"></v-select>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
                 
                 <div class="row">
-                    <div class="col-md-6 pl-1">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            <label>Nombre*</label>
+                            <label>Edad minima</label>
                             <div  :class="[
                                       { 
-                                        'has-error': errors.first('nombre'), 
-                                        'has-success': !errors.first('nombre') && datos.nombre !== ''
+                                        'has-error': errors.first('edad_min'), 
+                                        'has-success': !errors.first('edad_min') && datos.edad_min !== ''
                                       }, 
                                       ]">
                                       
                                 <input 
                                     type="text" 
-                                    name="nombre" id="nombre" 
-                                    placeholder="Nombre"  
-                                    v-model='datos.nombre'
-                                    v-validate="'required:true|max:127|alphanumeric'" 
+                                    name="edad_min" id="edad_min" 
+                                    placeholder="Edad Minima"  
+                                    v-model='datos.edad_min'
+                                    v-validate="'required: true|maxCustom:5|numeric'" 
                                     :class="{
                                         'input': true, 
-                                        'has-error': errors.first('nombre') && datos.nombre == '', 
+                                        'has-error': errors.first('edad_min') && datos.edad_min == '', 
                                         'form-control': true
                                     }"
                                 >
                                 <div class="errors help-block">
-                                    <span v-show="errors.first('nombre')"
-                                        class="help error">{{ errors.first('nombre') }}
-                                    </span>
-                                </div> 
-                            </div>  
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Email</label>
-                            <div  :class="[
-                                      { 
-                                        'has-error': errors.first('email'), 
-                                        'has-success': !errors.first('email') && datos.email !== ''
-                                      }, 
-                                      ]">
-                                      
-                                <input 
-                                    type="text" 
-                                    name="email" id="email" 
-                                    placeholder="Email"  
-                                    v-model='datos.email'
-                                    v-validate="'maxCustom:100|email_custom'" 
-                                    :class="{
-                                        'input': true, 
-                                        'has-error': errors.first('email') && datos.email == '', 
-                                        'form-control': true
-                                    }"
-                                >
-                                <div class="errors help-block">
-                                    <span v-show="errors.first('email')"
-                                        class="help error">{{ errors.first('email') }}
-                                    </span>
-                                </div> 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-6 pr-1">
-                        <div class="form-group">
-                            <label>Teléfono</label>
-                            <div  :class="[
-                                      { 
-                                        'has-error': errors.first('telefono'), 
-                                        'has-success': !errors.first('telefono') && datos.telefono !== ''
-                                      }, 
-                                      ]">
-                                      
-                                <input 
-                                    type="telefono" 
-                                    name="telefono" id="telefono" 
-                                    placeholder="Teléfono"  
-                                    v-model='datos.telefono'
-                                    v-validate="'max:20|numeric'" 
-                                    :class="{
-                                        'input': true, 
-                                        'has-error': errors.first('telefono') && datos.telefono == '', 
-                                        'form-control': true
-                                    }"
-                                >
-                                <div class="errors help-block">
-                                    <span v-show="errors.first('telefono')"
-                                        class="help error">{{ errors.first('telefono') }}
+                                    <span v-show="errors.first('edad_min')"
+                                        class="help error">{{ errors.first('edad_min') }}
                                     </span>
                                 </div> 
                             </div>
                         </div>
                     </div>
                     
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            <label>Dirección</label>
+                            <label>Edad Maxima</label>
                             <div  :class="[
                                       { 
-                                        'has-error': errors.first('direccion'), 
-                                        'has-success': !errors.first('direccion') && datos.direccion !== ''
+                                        'has-error': errors.first('edad_max'), 
+                                        'has-success': !errors.first('edad_max') && datos.edad_max !== ''
                                       }, 
                                       ]">
                                       
                                 <input 
+                                    :disabled="datos.edad_min == ''"
                                     type="text" 
-                                    name="direccion" id="direccion" 
-                                    placeholder="Dirección"  
-                                    v-model='datos.direccion'
-                                    v-validate="'maxCustom:100|alphanumeric'" 
+                                    name="edad_max" id="edad_max" 
+                                    placeholder="Edad Maxima"  
+                                    v-model='datos.edad_max'
+                                    v-validate="'required: true|maxCustom:5|numeric'" 
                                     :class="{
                                         'input': true, 
-                                        'has-error': errors.first('direccion') && datos.direccion == '', 
+                                        'has-error': errors.first('edad_max') && datos.edad_max == '', 
                                         'form-control': true
                                     }"
                                 >
                                 <div class="errors help-block">
-                                    <span v-show="errors.first('direccion')"
-                                        class="help error">{{ errors.first('direccion') }}
+                                    <span v-show="errors.first('edad_max')"
+                                        class="help error">{{ errors.first('edad_max') }}
                                     </span>
                                 </div> 
                             </div>
                         </div>
                     </div>
-                </div>
-               
-                
-                <div class="row">                        
-                    <div class="col-md-12">
+                    
+                    <div class="col-md-3">
                         <div class="form-group">
-                            <label>Descripción</label>
-                            <div id="comment-add" :class="{ 'custom-actions': true, ' has-error': errors.first('comentario'), 
-		                        'has-success': !errors.first('comentario') && datos.description !== '' }">
-                            <textarea 
-                                name="comentario"
-                                id="comentario"
-                                rows="5"
-                                maxlength="197"
-                                placeholder="Descripción"
-                                v-model='datos.description'
-                                v-validate="'maxCustom:198|remarks'"
-                                :class="{'input': true, 'has-error': errors.first('comentario'), 'form-control': true }" 
-                            >
-                            </textarea>
-                            
-                            <div class="errors help-block" id="comment-error">
-                                <span v-show="errors.first('comentario')"
-                                    class="help error">{{ errors.first('comentario') }}
-                                </span>
-                            </div>
-                        </div>
+                            <label>Mes</label>
+                            <v-select label="nombre" :options="mes" v-model="selecteMes"></v-select>
                         </div>
                     </div>
+                
                 </div>
+                
+                <!-- Lista Profesores-->
+                <div class="row">
+                    <div class="col-md-4 pr-3">
+                        <div class="form-group">
+                            <label>Seleccionar Profesores</label>
+                            <select 
+                                @keydown="enterSeleccionProfesor"   
+                                v-model="SelectProfesores" 
+                                multiple class="form-control custom-select">
+                                <option 
+                                    @dblclick="deleteSeleccionProfesor(SelectProfesores)"  
+                                    @keydown="enterSeleccionProfesor" 
+                                    v-for="profesor in profesores" :value='profesor' 
+                                    :key="profesor.id"
+                                >
+                                   {{ profesor.nombre }}
+                                </option>
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-4 pl-2">
+                        <div class="form-group">
+                            <label>Grupo Profesores</label>
+                            <select 
+                                @keydown="enterSeleccionGrupoProfesor" 
+                                v-model="profesoresSeleccionados" 
+                                multiple class="form-control custom-select">
+                                <option 
+                                    @dblclick="deleteSeleccionGrupoProfesor(profesoresSeleccionados)"  
+                                    v-for="profesor in grupoProfesores" :value='profesor' 
+                                    :key="profesor.id"
+                                >
+                                   {{ profesor.nombre }}
+                                 </option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+                
+                <!-- Lista Alumnos
+                    SelectAlumnos: [],
+            grupoAlumnos: [],
+            alumnosSeleccionados: [],
+                -->
+                <div class="row">
+                    <div class="col-md-4 pr-3">
+                        <div class="form-group">
+                            <label>Seleccionar Alumnos</label>
+                            <select 
+                                @keydown="enterSeleccionAlumno"   
+                                v-model="SelectAlumnos" multiple class="form-control custom-select">
+                                <option 
+                                    @dblclick="deleteSeleccionAlumno(SelectAlumnos)"  
+                                    @keydown="enterSeleccionAlumno"  
+                                    v-for="alumno in alumnos" :value='alumno' :key="alumno.id"
+                                >
+                                   {{ alumno.nombre }}
+                                </option>
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-4 pl-2">
+                        <div class="form-group">
+                            <label>Grupo Alumnos</label>
+                            <select 
+                                @keydown="enterSeleccionGrupoAlumno" 
+                                v-model="alumnosSeleccionados" multiple class="form-control custom-select">
+                                 <option 
+                                    @dblclick="deleteSeleccionGrupoAlumno(alumnosSeleccionados)"  
+                                    v-for="alumno in grupoAlumnos" 
+                                    :value='alumno' 
+                                    :key="alumno.id"
+                                 >
+                                   {{ alumno.nombre }}
+                                 </option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+                
+                <!--botones -->
                 <div class="row">
                     <div class="col-md-12 text-right">
                         <button 
@@ -348,19 +689,19 @@ var grupos = new Vue({
                 sortField: 'id'
             },
             {
-                name: 'nombre',
-                title: 'Nombre',
-                sortField: 'nombre'
+                name: 'get_turno_name',
+                title: 'Turno',
+                sortField: 'get_turno_name'
             },
             {
-                name: 'telefono',
-                title: 'Teléfono',
-                sortField: 'telefono'
+                name: 'get_edad',
+                title: 'Edad',
+                sortField: 'get_edad'
             },
             {
-                name: 'direccion',
-                title: 'Dirección',
-                sortField: 'direccion'
+                name: 'get_profesor',
+                title: 'Profesores Asignados',
+                sortField: 'get_profesor'
             },
             {
                 name: 'email',

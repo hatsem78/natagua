@@ -3,8 +3,8 @@ from api.alumno.views import AlumnoList, AlumnoAdd, AlumnoDetail
 from api.complejo.views import ComplejoList, ComplejoAdd, ComplejoDetail
 
 from api.direcciones.views import ProvinciaList, ProvinciaDetail, LocalidadList
-#from api.grupos.views import GruposList
-from api.grupos.views import GruposList
+
+from api.grupos.views import GruposList, GruposAdd, GruposDetail
 from api.profesores.views import ProfesorList, ProfesorAdd, ProfesorDetail
 from api.transportista.views import TransportistaAdd, TransportistaDetail, TransportistaList
 from api.turno.views import *
@@ -12,15 +12,7 @@ from django.conf.urls import url, include
 from rest_framework import routers
 from django.urls import path
 
-
-
 router = routers.DefaultRouter()
-
-
-
-router = routers.DefaultRouter()
-
-
 
 urlpatterns = [
 
@@ -29,7 +21,8 @@ urlpatterns = [
     url(r'^', include(router.urls)),
 
     url(r'grupos_list/', GruposList.as_view(), name='grupos_list'),
-
+    path('grupos/', GruposAdd.as_view()),
+    path('grupos/<int:pk>/', GruposDetail.as_view()),
 
     url(r'complejo_list/', ComplejoList.as_view(), name='complejo_list'),
     path('complejo/', ComplejoAdd.as_view()),
