@@ -194,10 +194,11 @@ class Grupos(models.Model):
 
     fecha = models.DateTimeField(auto_now_add=True)
     complejo = models.ForeignKey(Complejo, on_delete=models.CASCADE, null=True, blank=True)
-    turno = models.ForeignKey('Turnos', related_name='provincia_alumno', on_delete=models.CASCADE)
+    turno = models.ForeignKey('Turnos', related_name='grupos_turnos', on_delete=models.CASCADE)
     profesor = models.ManyToManyField('Profesor')
-
-    #libraries = models.ManyToManyField('book.Library')
+    edad_min = models.IntegerField(default=1)
+    edad_max = models.IntegerField(default=1)
+    turno = models.ManyToManyField(Turnos)
 
     @property
     def get_profesor(self):
@@ -210,9 +211,6 @@ class GruposAlumno(models.Model):
 
     fecha = models.DateTimeField(auto_now_add=True)
     sexo = models.CharField(max_length=1, choices=SEXO, null=False, db_index=True)
-    edad_min = models.IntegerField(default=1)
-    edad_max = models.IntegerField(default=1)
-    turno = models.ManyToManyField(Turnos)
     grupo = models.ManyToManyField(Grupos)
     alumonos = models.ManyToManyField(Alumno)
 

@@ -3,6 +3,7 @@ Vue.component('vuetable', window.Vuetable.Vuetable);
 $("#configuracion_general").addClass('is-expanded');
 $("#menu_grupos").addClass('active');
 $("#dashboard").removeClass('active');
+Vue.component("v-select", VueSelect.VueSelect);
 
 Vue.component('grupos_action',{
     props:{
@@ -23,11 +24,17 @@ Vue.component('grupos_action',{
             titulo: this.titulo_new,
             datos:{
                 id:'',
-                nombre:'',
-                telefono: '',
+                edad_minima:'',
+                edad_maxima: '',
                 direccion:'',
                 email: '',
             },
+            complejos: [],
+            selecteComplejo: null,
+            profesores: [],
+            SelectProfesores: [],
+            grupoProfesores: [],
+            profesoresSeleccionados: [],
             idUpdate: this.id_update
         }
     },
@@ -115,6 +122,101 @@ Vue.component('grupos_action',{
                 console.log(err);
             })
         },
+        getAllComplejo(){
+            let self = this;
+            HTTP.get(`complejo`)
+            .then((response) => {
+                const listado = response.data.map((complejo) => {
+                    return {
+                        id: complejo.id,
+                        nombre: complejo.nombre
+                    }
+                });
+                self.complejos = listado;
+                self.selecteComplejo = listado[0];
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false });
+                console.log(err);
+            });
+        },
+        getAllProfesores(){
+            let self = this;
+            HTTP.get(`profesor`)
+            .then((response) => {
+                const listado = response.data.map((profesor) => {
+                    return {
+                        id: profesor.id,
+                        nombre:`${profesor.apellido} ${profesor.nombre}`
+                    }
+                });
+                self.profesores = listado;
+                //self.SelectProfesores = listado[0];
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false });
+                console.log(err);
+            });
+        },
+        enterSeleccionGrupoProfesor(e){
+            console.log(e)
+            if(e.key === 'Enter' || e.key == 'ArrowLeft') {
+                let self = this;
+                let val = self.profesoresSeleccionados;
+                if(self.profesores.length == 1 ){
+                    let index = self.profesores.indexOf(val[0]);
+                    if (index > -1) {
+                        self.grupoProfesores.splice(index, 1);
+                        self.profesores.push(val[0]);
+                    }
+                }else{
+                    for(seleccion in val){
+                        let index = self.profesores.indexOf(val[seleccion]);
+                        self.grupoProfesores.splice(index, 1);
+                        self.profesores.push(val[seleccion]);
+                    }
+                }
+
+            }
+        },
+        deleteSeleccionGrupoProfesor(val){
+            let self = this;
+
+            let index = self.grupoProfesores.indexOf(val[0]);
+            if (index > -1) {
+                self.grupoProfesores.splice(index, 1);
+                self.profesores.push(val[0]);
+            }
+        },
+        enterSeleccionProfesor(e){
+            console.log(e)
+            if(e.key === 'Enter' || e.key == 'ArrowRight') {
+                let self = this;
+                let val = self.SelectProfesores;
+                if(self.profesores.length == 1 ){
+                    let index = self.profesores.indexOf(val[0]);
+                    if (index > -1) {
+                        self.profesores.splice(index, 1);
+                        self.grupoProfesores.push(val[0]);
+                    }
+                }else{
+                    for(seleccion in val){
+                        let index = self.profesores.indexOf(val[seleccion]);
+                        self.profesores.splice(index, 1);
+                        self.grupoProfesores.push(val[seleccion]);
+                    }
+                }
+
+            }
+        },
+        deleteSeleccionProfesor(val){
+            let self = this;
+            let index = self.profesores.indexOf(val[0]);
+            if (index > -1) {
+                self.profesores.splice(index, 1);
+                self.grupoProfesores.push(val[0]);
+            }
+        },
 
     },
     created: function() {
@@ -123,8 +225,7 @@ Vue.component('grupos_action',{
     watch:{
         titulo: function (val) {
             this.titulo = val;
-        }
-
+        },
     },
     mounted: function() {
         let self = this;
@@ -134,174 +235,113 @@ Vue.component('grupos_action',{
                 self.titulo = "Modificar Grupos";
                 self.getTransportista(self.idUpdate);
                 break;
-        };
+        }
+
+        self.getAllComplejo();
+        self.getAllProfesores();
     },
     template: `
-        <div class="card col-md-10">
+        <div class="card col-md-12">
             <div class="card-header"><h4 class="card-title">  {{ titulo }}</h4></div>
             <div class="card-body">
-                
+            
                 <div class="row">
-                    <div class="col-md-6 pl-1">
+                    <div class="col-md-4 pr-1">
                         <div class="form-group">
-                            <label>Nombre*</label>
-                            <div  :class="[
-                                      { 
-                                        'has-error': errors.first('nombre'), 
-                                        'has-success': !errors.first('nombre') && datos.nombre !== ''
-                                      }, 
-                                      ]">
-                                      
-                                <input 
-                                    type="text" 
-                                    name="nombre" id="nombre" 
-                                    placeholder="Nombre"  
-                                    v-model='datos.nombre'
-                                    v-validate="'required:true|max:127|alphanumeric'" 
-                                    :class="{
-                                        'input': true, 
-                                        'has-error': errors.first('nombre') && datos.nombre == '', 
-                                        'form-control': true
-                                    }"
-                                >
-                                <div class="errors help-block">
-                                    <span v-show="errors.first('nombre')"
-                                        class="help error">{{ errors.first('nombre') }}
-                                    </span>
-                                </div> 
-                            </div>  
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Email</label>
-                            <div  :class="[
-                                      { 
-                                        'has-error': errors.first('email'), 
-                                        'has-success': !errors.first('email') && datos.email !== ''
-                                      }, 
-                                      ]">
-                                      
-                                <input 
-                                    type="text" 
-                                    name="email" id="email" 
-                                    placeholder="Email"  
-                                    v-model='datos.email'
-                                    v-validate="'maxCustom:100|email_custom'" 
-                                    :class="{
-                                        'input': true, 
-                                        'has-error': errors.first('email') && datos.email == '', 
-                                        'form-control': true
-                                    }"
-                                >
-                                <div class="errors help-block">
-                                    <span v-show="errors.first('email')"
-                                        class="help error">{{ errors.first('email') }}
-                                    </span>
-                                </div> 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-6 pr-1">
-                        <div class="form-group">
-                            <label>Teléfono</label>
-                            <div  :class="[
-                                      { 
-                                        'has-error': errors.first('telefono'), 
-                                        'has-success': !errors.first('telefono') && datos.telefono !== ''
-                                      }, 
-                                      ]">
-                                      
-                                <input 
-                                    type="telefono" 
-                                    name="telefono" id="telefono" 
-                                    placeholder="Teléfono"  
-                                    v-model='datos.telefono'
-                                    v-validate="'max:20|numeric'" 
-                                    :class="{
-                                        'input': true, 
-                                        'has-error': errors.first('telefono') && datos.telefono == '', 
-                                        'form-control': true
-                                    }"
-                                >
-                                <div class="errors help-block">
-                                    <span v-show="errors.first('telefono')"
-                                        class="help error">{{ errors.first('telefono') }}
-                                    </span>
-                                </div> 
-                            </div>
+                            <label>Complejo</label>
+                            <v-select label="nombre" :options="complejos" v-model="selecteComplejo"></v-select>
                         </div>
                     </div>
                     
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-2 pl-2">
                         <div class="form-group">
-                            <label>Dirección</label>
+                            <label>Edad minima</label>
                             <div  :class="[
                                       { 
-                                        'has-error': errors.first('direccion'), 
-                                        'has-success': !errors.first('direccion') && datos.direccion !== ''
+                                        'has-error': errors.first('edad_minima'), 
+                                        'has-success': !errors.first('edad_minima') && datos.edad_minima !== ''
                                       }, 
                                       ]">
                                       
                                 <input 
                                     type="text" 
-                                    name="direccion" id="direccion" 
-                                    placeholder="Dirección"  
-                                    v-model='datos.direccion'
-                                    v-validate="'maxCustom:100|alphanumeric'" 
+                                    name="edad_minima" id="edad_minima" 
+                                    placeholder="Edad Minima"  
+                                    v-model='datos.edad_minima'
+                                    v-validate="'maxCustom:5|numeric'" 
                                     :class="{
                                         'input': true, 
-                                        'has-error': errors.first('direccion') && datos.direccion == '', 
+                                        'has-error': errors.first('edad_minima') && datos.edad_minima == '', 
                                         'form-control': true
                                     }"
                                 >
                                 <div class="errors help-block">
-                                    <span v-show="errors.first('direccion')"
-                                        class="help error">{{ errors.first('direccion') }}
+                                    <span v-show="errors.first('edad_minima')"
+                                        class="help error">{{ errors.first('edad_minima') }}
+                                    </span>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 pl-2">
+                        <div class="form-group">
+                            <label>Edad Maxima</label>
+                            <div  :class="[
+                                      { 
+                                        'has-error': errors.first('edad_maxima'), 
+                                        'has-success': !errors.first('edad_maxima') && datos.edad_maxima !== ''
+                                      }, 
+                                      ]">
+                                      
+                                <input 
+                                    type="text" 
+                                    name="edad_maxima" id="edad_maxima" 
+                                    placeholder="Edad Maxima"  
+                                    v-model='datos.edad_maxima'
+                                    v-validate="'maxCustom:5|numeric'" 
+                                    :class="{
+                                        'input': true, 
+                                        'has-error': errors.first('edad_maxima') && datos.edad_maxima == '', 
+                                        'form-control': true
+                                    }"
+                                >
+                                <div class="errors help-block">
+                                    <span v-show="errors.first('edad_maxima')"
+                                        class="help error">{{ errors.first('edad_maxima') }}
                                     </span>
                                 </div> 
                             </div>
                         </div>
                     </div>
                 </div>
-               
                 
-                <div class="row">                        
-                    <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4 pr-1">
                         <div class="form-group">
-                            <label>Descripción</label>
-                            <div id="comment-add" :class="{ 'custom-actions': true, ' has-error': errors.first('comentario'), 
-		                        'has-success': !errors.first('comentario') && datos.description !== '' }">
-                            <textarea 
-                                name="comentario"
-                                id="comentario"
-                                rows="5"
-                                maxlength="197"
-                                placeholder="Descripción"
-                                v-model='datos.description'
-                                v-validate="'maxCustom:198|remarks'"
-                                :class="{'input': true, 'has-error': errors.first('comentario'), 'form-control': true }" 
-                            >
-                            </textarea>
-                            
-                            <div class="errors help-block" id="comment-error">
-                                <span v-show="errors.first('comentario')"
-                                    class="help error">{{ errors.first('comentario') }}
-                                </span>
-                            </div>
+                            <label>Seleccionar Profesores</label>
+                            <select @keydown="enterSeleccionProfesor"   v-model="SelectProfesores" multiple class="form-control custom-select">
+                                 <option @dblclick="deleteSeleccionProfesor(SelectProfesores)"  @keydown="enterSeleccionProfesor" v-for="profesor in profesores" :value='profesor' :key="profesor.id">
+                                   {{ profesor.nombre }}
+                                 </option>
+                            </select>
                         </div>
+                        
+                    </div>
+                    <div class="col-md-4 pl-2">
+                        <div class="form-group">
+                            <label>Grupo Profesores</label>
+                            <select @keydown="enterSeleccionGrupoProfesor" v-model="profesoresSeleccionados" multiple class="form-control custom-select">
+                                 <option @dblclick="deleteSeleccionGrupoProfesor(profesoresSeleccionados)"  v-for="profesor in grupoProfesores" :value='profesor' :key="profesor.id">
+                                   {{ profesor.nombre }}
+                                 </option>
+                            </select>
                         </div>
                     </div>
+                    
+                    
                 </div>
+                
+                <!--botones -->
                 <div class="row">
                     <div class="col-md-12 text-right">
                         <button 

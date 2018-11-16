@@ -3,7 +3,6 @@ from api.alumno.views import AlumnoList, AlumnoAdd, AlumnoDetail
 from api.complejo.views import ComplejoList, ComplejoAdd, ComplejoDetail
 
 from api.direcciones.views import ProvinciaList, ProvinciaDetail, LocalidadList
-#from api.grupos.views import GruposList
 from api.grupos.views import GruposList
 from api.profesores.views import ProfesorList, ProfesorAdd, ProfesorDetail
 from api.transportista.views import TransportistaAdd, TransportistaDetail, TransportistaList
@@ -12,15 +11,8 @@ from django.conf.urls import url, include
 from rest_framework import routers
 from django.urls import path
 
-
-
 router = routers.DefaultRouter()
-
-
-
 router = routers.DefaultRouter()
-
-
 
 urlpatterns = [
 
