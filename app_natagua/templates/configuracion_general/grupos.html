@@ -1,94 +1,84 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% block stylesheets %}
+    {{ block.super }}
+    <link href="https://cdn.jsdelivr.net/npm/pc-bootstrap4-datetimepicker@4.17/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+{% block content %}
+    <div class="app-title">
+        <div>
+          <h1><i class="fa fa-dashboard"></i> Grupos</h1>
+          <p>Creación, modifición, eliminación y listado</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+        </ul>
+    </div>
+    <div class="tile mb-4" id="grupos">
+        <div class="tile-title-w-btn">
+            <h3 class="title">Listado</h3>
+            <p v-if="tipo != 'grupos_update'">
+                  <a
+                      class="btn btn-info icon-btn"
+                      href="#"
+                      @click="addGrupos(true)"
+                  >
+                      <i class="fa fa-plus"></i>Nuevo Grupos
+                  </a>
+            </p>
+        </div>
 
-{% load i18n static %}<!DOCTYPE html>
-{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
-<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
-<head>
-<title>{% block title %}{% endblock %}</title>
-<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}">
-{% block extrastyle %}{% endblock %}
-{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}">{% endif %}
-{% block extrahead %}{% endblock %}
-{% block responsive %}
-    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive.css" %}">
-    {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive_rtl.css" %}">{% endif %}
+        <vuetable
+            v-if="!showGrupos"
+            ref="vuetableGrupos"
+            api-url="{% url 'grupos_list' %}"
+            :fields="fieldes"
+            :sort-order="sortOrder"
+            :css="css.table"
+            pagination-path=""
+            :per-page="3"
+            @vuetable:pagination-data="onPaginationData"
+            @vuetable:loading="onLoading"
+            @vuetable:loaded="onLoaded">
+
+           <template slot="actions" slot-scope="props">
+               <div class="table-button-container">
+              <button class="btn btn-outline-primary btn-sm" data-toggle="modal"
+                 data-target="#addomplejo" @click="editRow(props.rowData)">
+                 <span class="fa fa-lg fa-edit"></span> Editar
+              </button>&nbsp;&nbsp;
+              <button class="btn btn-danger btn-sm" @click="deleteRow(props.rowData)">
+                <span class="fa fa-lg fa-trash"></span> Eliminar
+              </button>&nbsp;&nbsp;
+          </div>
+           </template>
+        </vuetable>
+        <vuetable-pagination v-if="!showGrupos" ref="paginationGrupos"
+          :css="css.pagination"
+          @vuetable-pagination:change-page="onChangePage"
+        ></vuetable-pagination>
+
+
+
+        <div class="col-md-10">
+            <grupos_action
+                v-if="showGrupos"
+                :tipo="tipo"
+                :titulo_new="titulo"
+                :id_update="id_update"
+                @close="show_grupos(false)"
+            ></grupos_action>
+        </div>
+    </div>
+
 {% endblock %}
-{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
-</head>
-{% load i18n %}
-
-<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
-  data-admin-utc-offset="{% now "Z" %}">
-
-<!-- Container -->
-<div id="container">
-
-    {% if not is_popup %}
-    <!-- Header -->
-    <div id="header">
-        <div id="branding">
-        {% block branding %}{% endblock %}
-        </div>
-        {% block usertools %}
-        {% if has_permission %}
-        <div id="user-tools">
-            {% block welcome-msg %}
-                {% trans 'Welcome,' %}
-                <strong>{% firstof user.get_short_name user.get_username %}</strong>.
-            {% endblock %}
-            {% block userlinks %}
-                {% if site_url %}
-                    <a href="{{ site_url }}">{% trans 'View site' %}</a> /
-                {% endif %}
-                {% if user.is_active and user.is_staff %}
-                    {% url 'django-admindocs-docroot' as docsroot %}
-                    {% if docsroot %}
-                        <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
-                    {% endif %}
-                {% endif %}
-                {% if user.has_usable_password %}
-                <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
-                {% endif %}
-                <a href="{% url 'admin:app_natagua.grupos' %}">{% trans 'Log out' %}</a>
-            {% endblock %}
-        </div>
-        {% endif %}
-        {% endblock %}
-        {% block nav-global %}{% endblock %}
-    </div>
-    <!-- END Header -->
-    {% block breadcrumbs %}
-    <div class="breadcrumbs">
-    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-    {% if title %} &rsaquo; {{ title }}{% endif %}
-    </div>
-    {% endblock %}
-    {% endif %}
-
-    {% block messages %}
-        {% if messages %}
-        <ul class="messagelist">{% for message in messages %}
-          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}</ul>
-        {% endif %}
-    {% endblock messages %}
-
-    <!-- Content -->
-    <div id="content" class="{% block coltype %}colM{% endblock %}">
-        {% block pretitle %}{% endblock %}
-        {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
-        {% block content %}
-        {% block object-tools %}{% endblock %}
-        {{ content }}
-        {% endblock %}
-        {% block sidebar %}{% endblock %}
-        <br class="clear">
-    </div>
-    <!-- END Content -->
-
-    {% block footer %}<div id="footer"></div>{% endblock %}
-</div>
-<!-- END Container -->
-
-</body>
-</html>
+{% block javascripts %}
+    {{ block.super }}
+    <script src="{% static '/js/plugins/vue-select.js' %}"></script>
+    <script src="{% static '/js/plugins/vue-bootstrap-datetimepicker.js' %}"></script>
+    <script src="{% static '/js/plugins/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static '/js/vue-table.js' %}"></script>
+    <script src="{% static '/js/configuracion_general/grupos.js' %}"></script>
+{% endblock javascripts %}
