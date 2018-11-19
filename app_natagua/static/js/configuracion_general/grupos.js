@@ -26,10 +26,12 @@ Vue.component('grupos_action',{
                 id:'',
                 edad_minima:'',
                 edad_maxima: '',
-                direccion:'',
-                email: '',
+                complejo:'',
+                turno: '',
             },
             complejos: [],
+            turnos:[],
+            selecteTurno: null,
             selecteComplejo: null,
             profesores: [],
             SelectProfesores: [],
@@ -77,7 +79,9 @@ Vue.component('grupos_action',{
             this.$validator.validateAll()
             .then(function(response){
                 if (response) {
-
+                    self.datos['profesor'] = [1,2,3];
+                    self.datos['complejo_id'] = self.selecteComplejo.id;
+                    self.datos['turno_id'] = self.selecteTurno.id;
                     HTTP.post('/grupos/', self.datos)
                     .then((response) => {
                         if(response.data.error && response.data.error.indexOf('UNIQUE constraint failed: app_natagua_grupos.nombre') >= 0){
@@ -140,6 +144,24 @@ Vue.component('grupos_action',{
                 console.log(err);
             });
         },
+        getAllTurnos(){
+            let self = this;
+            HTTP.get(`turno`)
+            .then((response) => {
+                const listado = response.data.map((complejo) => {
+                    return {
+                        id: complejo.id,
+                        nombre: complejo.nombre
+                    }
+                });
+                self.turnos = listado;
+                self.selecteTurno = listado[0];
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false });
+                console.log(err);
+            });
+        },
         getAllProfesores(){
             let self = this;
             HTTP.get(`profesor`)
@@ -163,18 +185,20 @@ Vue.component('grupos_action',{
             if(e.key === 'Enter' || e.key == 'ArrowLeft') {
                 let self = this;
                 let val = self.profesoresSeleccionados;
-                if(self.profesores.length == 1 ){
-                    let index = self.profesores.indexOf(val[0]);
+                if(self.grupoProfesores.length == 1 ){
+                    let index = self.grupoProfesores.indexOf(val[0]);
                     if (index > -1) {
                         self.grupoProfesores.splice(index, 1);
                         self.profesores.push(val[0]);
+                        self.profesoresSeleccionados = [] ;
                     }
                 }else{
                     for(seleccion in val){
-                        let index = self.profesores.indexOf(val[seleccion]);
+                        let index = self.grupoProfesores.indexOf(val[seleccion]);
                         self.grupoProfesores.splice(index, 1);
                         self.profesores.push(val[seleccion]);
                     }
+                    self.profesoresSeleccionados = [] ;
                 }
 
             }
@@ -198,6 +222,7 @@ Vue.component('grupos_action',{
                     if (index > -1) {
                         self.profesores.splice(index, 1);
                         self.grupoProfesores.push(val[0]);
+                        self.SelectProfesores = [];
                     }
                 }else{
                     for(seleccion in val){
@@ -205,6 +230,7 @@ Vue.component('grupos_action',{
                         self.profesores.splice(index, 1);
                         self.grupoProfesores.push(val[seleccion]);
                     }
+                    self.SelectProfesores = []
                 }
 
             }
@@ -239,6 +265,7 @@ Vue.component('grupos_action',{
 
         self.getAllComplejo();
         self.getAllProfesores();
+        self.getAllTurnos();
     },
     template: `
         <div class="card col-md-12">
@@ -253,7 +280,18 @@ Vue.component('grupos_action',{
                         </div>
                     </div>
                     
-                    <div class="col-md-2 pl-2">
+                    <div class="col-md-4 pr-1">
+                        <div class="form-group">
+                            <label>Turnos</label>
+                            <v-select label="nombre" :options="turnos" v-model="selecteTurno"></v-select>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label>Edad minima</label>
                             <div  :class="[
@@ -283,7 +321,7 @@ Vue.component('grupos_action',{
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 pl-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label>Edad Maxima</label>
                             <div  :class="[
@@ -313,10 +351,11 @@ Vue.component('grupos_action',{
                             </div>
                         </div>
                     </div>
+                
                 </div>
                 
                 <div class="row">
-                    <div class="col-md-4 pr-1">
+                    <div class="col-md-4 pr-3">
                         <div class="form-group">
                             <label>Seleccionar Profesores</label>
                             <select @keydown="enterSeleccionProfesor"   v-model="SelectProfesores" multiple class="form-control custom-select">
@@ -388,19 +427,19 @@ var grupos = new Vue({
                 sortField: 'id'
             },
             {
-                name: 'nombre',
-                title: 'Nombre',
-                sortField: 'nombre'
+                name: 'get_turno_name',
+                title: 'Turno',
+                sortField: 'get_turno_name'
             },
             {
-                name: 'telefono',
-                title: 'Teléfono',
-                sortField: 'telefono'
+                name: 'get_edad',
+                title: 'Edad',
+                sortField: 'get_edad'
             },
             {
-                name: 'direccion',
-                title: 'Dirección',
-                sortField: 'direccion'
+                name: 'get_profesor',
+                title: 'Profesores Asignados',
+                sortField: 'get_profesor'
             },
             {
                 name: 'email',

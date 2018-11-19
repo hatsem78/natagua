@@ -11,6 +11,11 @@ SEXO = (
     ('H', 'HOMBRE'),
 )
 
+MES = (
+    (1, 'Enero'),
+
+)
+
 def _validate_number(value):
     if type(value) == int:  # Your conditions here
         raise ValidationError('%s some error message' % value)
@@ -95,11 +100,6 @@ class Transportista(models.Model):
         ]
         ordering = ('apellido', 'nombre')
 
-    SEXO = (
-        ('M', 'MUJER'),
-        ('H', 'HOMBRE'),
-    )
-
     id = models.AutoField(primary_key=True, help_text="Id único para transportista ")
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
     apellido = models.CharField(max_length=100, null=False, db_index=True)
@@ -130,10 +130,6 @@ class Profesor(models.Model):
         ]
         ordering = ('apellido', 'nombre')
 
-    SEXO = (
-        ('M', 'MUJER'),
-        ('H', 'HOMBRE'),
-    )
     id = models.AutoField(primary_key=True, help_text="Id único para Profesor ")
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
     apellido = models.CharField(max_length=100, null=False, db_index=True)
@@ -190,20 +186,39 @@ class Alumno(models.Model):
 
 class Grupos(models.Model):
     class Meta:
-        verbose_name_plural = "Grupo"
+        verbose_name_plural = "Grupos"
 
     fecha = models.DateTimeField(auto_now_add=True)
-    complejo = models.ForeignKey(Complejo, on_delete=models.CASCADE, null=True, blank=True)
-    turno = models.ForeignKey('Turnos', related_name='grupos_turnos', on_delete=models.CASCADE)
-    profesor = models.ManyToManyField('Profesor')
+    mes = models.CharField(max_length=1, choices=MES, null=False, db_index=True)
+    complejo = models.ForeignKey(Complejo, on_delete=models.CASCADE)
+    turno = models.ForeignKey(Turnos, on_delete=models.CASCADE)
     edad_min = models.IntegerField(default=1)
     edad_max = models.IntegerField(default=1)
-    turno = models.ManyToManyField(Turnos)
+    profesor = models.ManyToManyField('Profesor')
+    alumonos = models.ManyToManyField(Alumno)
+
 
     @property
     def get_profesor(self):
-        return (profesor.get_name for profesor in self.profesor.all())
+        return ', '.join(profesor.get_name for profesor in self.profesor.all())
 
+    @property
+    def getfecha(self):
+        fecha = datetime.datetime.strptime(str(self.fecha).replace('/', '-')[:10], '%Y-%m-%d')
+        return fecha.strftime('%d/%m/%Y')
+
+    @property
+    def get_turno_name(self):
+        return self.turno.nombre
+
+    @property
+    def get_edad(self):
+        edad = ''
+        if self.edad_min == self.edad_max:
+                edad = str(self.edad_min)
+        else:
+            str(self.edad_min) + ' ' + str(self.edad_max)
+        return edad
 
 class GruposAlumno(models.Model):
     class Meta:

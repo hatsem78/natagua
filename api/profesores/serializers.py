@@ -27,6 +27,8 @@ class ProfesorPagSerializer(serializers.Serializer):
 
 
 
+
+
 class ProfesorSerializer(serializers.Serializer):
 
 
