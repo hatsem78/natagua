@@ -14,6 +14,7 @@ class GruposPagSerializer(serializers.ModelSerializer):
 
 
 class GruposSerializer(serializers.ModelSerializer):
+
     complejo_id = serializers.IntegerField()
     turno_id = serializers.IntegerField()
     profesor = serializers.PrimaryKeyRelatedField(queryset=Profesor.objects.all(), many=True)
@@ -43,3 +44,24 @@ class GruposSerializer(serializers.ModelSerializer):
 
         return grupo
 
+    def update(self, instance, validated_data):
+        """
+            Update and return an existing `Alumno` instance, given the validated data.
+        """
+        instance.edad_min = validated_data.get('edad_min', instance.edad_min)
+        instance.edad_max = validated_data.get('edad_max', instance.edad_max)
+        instance.complejo_id = validated_data.get('complejo_id', instance.complejo_id)
+        instance.turno_id = validated_data.get('turno_id', instance.turno_id)
+        instance.profesor.set(validated_data.get('profesor', instance.profesor))
+        instance.alumno.set(validated_data.get('alumno', instance.alumno))
+        instance.mes = validated_data.get('mes', instance.mes)
+        #instance.direccion = validated_data.get('direccion', instance.direccion)
+        profesor_data = validated_data.pop('profesor')
+        alumno_data = validated_data.pop('alumno')
+
+        #Grupos.objects.filter(profesor=instance.profesor).delete()
+
+
+        instance.save()
+
+        return instance

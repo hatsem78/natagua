@@ -108,8 +108,6 @@ Vue.component('grupos_action',{
                 });
 
 
-
-
                 let select_alumno = self.alumnos.filter((value, index, array) => {
                     if(parseInt(self.datos.alumno[index]) == value.id){
                         return value
@@ -117,13 +115,14 @@ Vue.component('grupos_action',{
                 });
                 self.grupoAlumnos = select_alumno;
 
-
                 self.grupoAlumnos.filter((value, index, array) => {
                     let info = self.alumnos.indexOf(value);
                     if (info > -1) {
                         self.alumnos.splice(info, 1);
                     }
                 });
+
+                self.datos.id = id;
 
                 self.selecteMes = selecteMes;
 
@@ -176,6 +175,15 @@ Vue.component('grupos_action',{
             let self = this;
 
             store.dispatch({type: 'setLoading',value: true });
+            self.datos['profesor'] = self.grupoProfesores.map((profesor) => {
+                return profesor.id
+            });
+            self.datos['alumno'] = self.grupoAlumnos.map((alumno) => {
+                return alumno.id
+            });
+            self.datos['complejo_id'] = self.selecteComplejo.id;
+            self.datos['turno_id'] = self.selecteTurno.id;
+            self.datos['mes'] = self.selecteMes.id;
 
             HTTP.put(`/grupos/${self.datos.id}/`, self.datos)
             .then((response) => {
