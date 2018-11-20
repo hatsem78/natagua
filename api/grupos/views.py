@@ -38,8 +38,7 @@ class GruposDetail(APIView):
             Update and return an existing `transportista` instance, given the validated data.
         """
         instance = {}
-        instance['id'] = validated_data.id
-        instance['id_provincia'] = validated_data.id_provincia_id
+
         instance['id_localidad'] = validated_data.id_localidad_id
         instance['apellido'] = validated_data.apellido
         instance['nombre'] = validated_data.nombre
@@ -70,7 +69,7 @@ class GruposDetail(APIView):
     def get(self, request, pk, format=None):
         snippet = self.get_object(pk)
         serializer = GruposSerializer(snippet)
-        result = self._getInstance(snippet)
+        result = serializer.data
 
         return Response(result)
 
