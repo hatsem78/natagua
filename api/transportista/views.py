@@ -12,7 +12,7 @@ from app_natagua.models import Transportista, Localidad, Provincia
 
 
 class TransportistaList(generics.ListAPIView):
-    queryset = snippets = Transportista.objects.get_queryset().order_by('id')
+    queryset = Transportista.objects.get_queryset().order_by('id')
     serializer_class = TransportistaPagZerializer
     pagination_class = Pagination
 

@@ -12,7 +12,7 @@ from app_natagua.models import Localidad, Provincia, Alumno
 
 
 class AlumnoList(generics.ListAPIView):
-    queryset = snippets = Alumno.objects.get_queryset().order_by('id')
+    queryset = Alumno.objects.get_queryset().order_by('id')
     serializer_class = AlumnoPagSerializer
     pagination_class = Pagination
 

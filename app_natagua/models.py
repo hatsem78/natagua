@@ -11,6 +11,11 @@ SEXO = (
     ('H', 'HOMBRE'),
 )
 
+PRESENTE = (
+    (0, 'PRESENTE'),
+    ('H', 'AUSENTE'),
+)
+
 MES = (
     ('1', 'Enero'),
     ('2', 'Febrero'),
@@ -229,3 +234,15 @@ class Grupos(models.Model):
             str(self.edad_min) + ' ' + str(self.edad_max)
         return edad
 
+class ListadoAlumnosPresentes(models.Model):
+    class Meta:
+        verbose_name_plural = "ListadoAlumnosPresente"
+
+    grupo = models.ForeignKey(Grupos, on_delete=models.CASCADE)
+    alumnos = models.ManyToManyField(Alumno)
+    fecha = models.DateTimeField()
+
+    @property
+    def getfecha(self):
+        fecha = datetime.datetime.strptime(str(self.fecha).replace('/', '-')[:10], '%Y-%m-%d')
+        return fecha.strftime('%d-%m-%Y')

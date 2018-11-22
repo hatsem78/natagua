@@ -22,6 +22,15 @@ def index(request):
     return render(request, 'index.html',)
 
 
+class ListadoPresentes(View):
+
+    def get(self, request, *args, **kwargs):
+
+        data_parameter = request.GET
+        return render(request, 'general/listado_presentes.html',)
+
+
+
 class Turnos(View):
 
     def get(self, request, *args, **kwargs):

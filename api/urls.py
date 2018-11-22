@@ -5,6 +5,7 @@ from api.complejo.views import ComplejoList, ComplejoAdd, ComplejoDetail
 from api.direcciones.views import ProvinciaList, ProvinciaDetail, LocalidadList
 
 from api.grupos.views import GruposList, GruposAdd, GruposDetail
+from api.lista_presentes.views import ListaPresenteList, ListaPresenteAdd, ListaPresenteDetail
 from api.profesores.views import ProfesorList, ProfesorAdd, ProfesorDetail
 from api.transportista.views import TransportistaAdd, TransportistaDetail, TransportistaList
 from api.turno.views import *
@@ -19,6 +20,10 @@ urlpatterns = [
 
 
     url(r'^', include(router.urls)),
+
+    url(r'listado_presente_list/', ListaPresenteList.as_view(), name='grupos_list'),
+    path('listado_presente/', ListaPresenteAdd.as_view()),
+    path('listado_presente/<int:pk>/', ListaPresenteDetail.as_view()),
 
     url(r'grupos_list/', GruposList.as_view(), name='grupos_list'),
     path('grupos/', GruposAdd.as_view()),
