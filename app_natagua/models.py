@@ -11,6 +11,21 @@ SEXO = (
     ('H', 'HOMBRE'),
 )
 
+MES = (
+    ('1', 'Enero'),
+    ('2', 'Febrero'),
+    ('3', 'Marzo'),
+    ('4', 'Abril'),
+    ('5', 'Mayo'),
+    ('6', 'Junio'),
+    ('7', 'Julio'),
+    ('8', 'Agosto'),
+    ('9', 'Septiembre'),
+    ('10', 'Octubre'),
+    ('11', 'Noviembre'),
+    ('12', 'Diciembre'),
+)
+
 def _validate_number(value):
     if type(value) == int:  # Your conditions here
         raise ValidationError('%s some error message' % value)
@@ -95,11 +110,6 @@ class Transportista(models.Model):
         ]
         ordering = ('apellido', 'nombre')
 
-    SEXO = (
-        ('M', 'MUJER'),
-        ('H', 'HOMBRE'),
-    )
-
     id = models.AutoField(primary_key=True, help_text="Id único para transportista ")
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
     apellido = models.CharField(max_length=100, null=False, db_index=True)
@@ -130,10 +140,6 @@ class Profesor(models.Model):
         ]
         ordering = ('apellido', 'nombre')
 
-    SEXO = (
-        ('M', 'MUJER'),
-        ('H', 'HOMBRE'),
-    )
     id = models.AutoField(primary_key=True, help_text="Id único para Profesor ")
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
     apellido = models.CharField(max_length=100, null=False, db_index=True)
@@ -190,181 +196,36 @@ class Alumno(models.Model):
 
 class Grupos(models.Model):
     class Meta:
-        verbose_name_plural = "Grupo"
+        verbose_name_plural = "Grupos"
 
     fecha = models.DateTimeField(auto_now_add=True)
-    complejo = models.ForeignKey(Complejo, on_delete=models.CASCADE, null=True, blank=True)
-    turno = models.ForeignKey('Turnos', related_name='provincia_alumno', on_delete=models.CASCADE)
+    mes = models.CharField(max_length=1, choices=MES, null=False, db_index=True)
+    complejo = models.ForeignKey(Complejo, on_delete=models.CASCADE)
+    turno = models.ForeignKey(Turnos, on_delete=models.CASCADE)
+    edad_min = models.IntegerField(default=1)
+    edad_max = models.IntegerField(default=1)
     profesor = models.ManyToManyField('Profesor')
-
-    #libraries = models.ManyToManyField('book.Library')
+    alumno = models.ManyToManyField(Alumno)
 
     @property
     def get_profesor(self):
-        return (profesor.get_name for profesor in self.profesor.all())
+        return ', '.join(profesor.get_name for profesor in self.profesor.all())
 
+    @property
+    def getfecha(self):
+        fecha = datetime.datetime.strptime(str(self.fecha).replace('/', '-')[:10], '%Y-%m-%d')
+        return fecha.strftime('%d/%m/%Y')
 
-class GruposAlumno(models.Model):
-    class Meta:
-        verbose_name_plural = "GrupoAlumnos"
+    @property
+    def get_turno_name(self):
+        return self.turno.nombre
 
-    fecha = models.DateTimeField(auto_now_add=True)
-    sexo = models.CharField(max_length=1, choices=SEXO, null=False, db_index=True)
-    edad_min = models.IntegerField(default=1)
-    edad_max = models.IntegerField(default=1)
-    turno = models.ManyToManyField(Turnos)
-    grupo = models.ManyToManyField(Grupos)
-    alumonos = models.ManyToManyField(Alumno)
+    @property
+    def get_edad(self):
+        edad = ''
+        if self.edad_min == self.edad_max:
+                edad = str(self.edad_min)
+        else:
+            str(self.edad_min) + ' ' + str(self.edad_max)
+        return edad
 
-
-
-'''
-class CarrierType(models.Model):
-    """
-    Modelo que representa un tipo de transportista
-    """
-
-    class Meta:
-        verbose_name_plural = "Tipo de Transportista"
-
-    id = models.AutoField(primary_key=True, help_text="Id único para tipo de transportista ")
-    name = models.CharField('Nombre', max_length=200)
-
-    def __str__(self):
-        """
-        Cadena que representa a la instancia particular del modelo (p. ej en el sitio de Administración)
-        """
-        return self.name
-
-
-
-class MoveType(models.Model):
-    """
-    Modelo que representa un tipo de movimiento del transportista
-    """
-    class Meta:
-        verbose_name_plural = "Movimiento Transportista"
-
-    id = models.AutoField(primary_key=True, help_text="Id único tipo de movimiento ")
-    name_move = models.CharField(max_length=200, help_text="Tipo movimiento del transportista")
-
-    def __str__(self):
-        """
-        Cadena que representa a la instancia particular del modelo (p. ej en el sitio de Administración)
-        """
-        return self.name_move
-
-class CarrierRoute(models.Model):
-
-    class Meta:
-        verbose_name_plural = "Transportista Ruta"
-
-    id = models.AutoField(primary_key=True, help_text="Id único para ruta de  transportista ")
-    origin = models.CharField(max_length=100)
-    destination = models.CharField(max_length=100)
-    carrier = models.ForeignKey('Carrier', on_delete=models.SET_NULL, null=True)
-    move_type = models.ForeignKey('MoveType', on_delete=models.SET_NULL, null=True)
-    date_route = models.DateField(null=True, blank=True)
-
-class TutorRelationship(models.Model):
-    """
-    Modelo que representa un tipo de transportista
-    """
-    class Meta:
-        verbose_name_plural = "Tutor Relación"
-
-    id = models.AutoField(primary_key=True, help_text="Id único  para tutor relación")
-    name = models.CharField(max_length=200)
-
-    def __str__(self):
-        """
-        Cadena que representa a la instancia particular del modelo (p. ej en el sitio de Administración)
-        """
-        return self.name
-
-class Tutor(models.Model):
-
-    class Meta:
-        verbose_name_plural = "Tutor del Estudiante"
-
-    id = models.AutoField(primary_key=True, help_text="Id único tutor ")
-    last_name = models.CharField(max_length=100)
-    name = models.CharField(max_length=100)
-    age = models.CharField(max_length=10)
-    birth_date = models.DateField(null=True, blank=True)
-    address = models.CharField(max_length=200)
-    mobile = models.CharField(max_length=50)
-    between_street = models.CharField(max_length=200)
-    cbu = models.CharField(max_length=40)
-    mail = models.CharField(max_length=100)
-    description = models.TextField(max_length=1000)
-    tutor_relationship = models.ForeignKey('TutorRelationship', on_delete=models.SET_NULL, null=True)
-
-class Student(models.Model):
-
-    class Meta:
-        verbose_name_plural = "Estudiante"
-
-    id = models.AutoField(primary_key=True, help_text="Id único estudiante ")
-    last_name = models.CharField(max_length=100)
-    name = models.CharField(max_length=100)
-    age = models.CharField(max_length=10)
-    birth_date = models.DateField(null=True, blank=True)
-    address = models.CharField(max_length=200)
-    mobile = models.CharField(max_length=50)
-    between_street = models.CharField(max_length=200)
-    cbu = models.CharField(max_length=40)
-    mail = models.CharField(max_length=100)
-    description = models.TextField(max_length=1000)
-    tutor = models.ForeignKey('tutor', on_delete=models.SET_NULL, null=True)
-
-class TeacherType(models.Model):
-    """
-       Modelo que representa un tipo de profesor
-    """
-
-    class Meta:
-        verbose_name_plural = "Tipo profesor"
-
-    id = models.AutoField(primary_key=True, help_text="Id único tipo de profesor ")
-    name = models.CharField(max_length=200)
-
-    def __str__(self):
-        """
-        Cadena que representa a la instancia particular del modelo (p. ej en el sitio de Administración)
-        """
-        return self.name
-
-class Teacher(models.Model):
-
-    class Meta:
-        verbose_name_plural = "Profesor"
-
-    id = models.AutoField(primary_key=True, help_text="Id único para profesor ")
-    last_name = models.CharField(max_length=100)
-    name = models.CharField(max_length=100)
-    age = models.CharField(max_length=10)
-    birth_date = models.DateField(null=True, blank=True)
-    address = models.CharField(max_length=200)
-    mobile = models.CharField(max_length=50)
-    between_street = models.CharField(max_length=200)
-    cbu = models.CharField(max_length=40)
-    mail = models.CharField(max_length=100)
-    description = models.TextField(max_length=1000)
-    teacher_type = models.ForeignKey('TeacherType', on_delete=models.SET_NULL, null=True)
-
-
-
-class Address_custom(models.Model):
-    class Meta:
-        verbose_name_plural = "Dirección"
-
-    id = models.AutoField(primary_key=True, help_text="Id único para dirección ")
-    raw = models.CharField(max_length=100)
-    street_number = models.CharField(max_length=10)
-    route = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=10)
-    state = models.CharField(max_length=100, help_text="Estado provincia ")
-    state_code = models.CharField(max_length=100, help_text="Código del Estado Ejemplo Ar ")
-    country = models.CharField(max_length=100, help_text="Pais ")
-    country_code = models.CharField(max_length=100, help_text="Cod. Pais ")'''
