@@ -274,7 +274,7 @@ Vue.component('grupos_action',{
                 const listado = response.data.map((alumno) => {
                     return {
                         id: alumno.id,
-                        nombre:`${alumno.apellido} ${alumno.nombre}`,
+                        nombre:`${alumno.apellido} ${alumno.nombre}, edad: ${alumno.edad}`,
                         edad: alumno.edad,
                     }
                 });
@@ -320,7 +320,6 @@ Vue.component('grupos_action',{
             }
         },
         enterSeleccionProfesor(e){
-            console.log(e)
             if(e.key === 'Enter' || e.key == 'ArrowRight') {
                 let self = this;
                 let val = self.SelectProfesores;
