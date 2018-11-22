@@ -12,7 +12,7 @@ from app_natagua.models import Localidad, Provincia, Profesor
 
 
 class ProfesorList(generics.ListAPIView):
-    queryset = snippets = Profesor.objects.get_queryset().order_by('id')
+    queryset = Profesor.objects.get_queryset().order_by('id')
     serializer_class = ProfesorPagSerializer
     pagination_class = Pagination
 

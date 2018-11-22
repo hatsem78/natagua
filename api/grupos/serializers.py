@@ -24,7 +24,7 @@ class GruposSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Grupos
-        fields = ('edad_min', 'edad_max', 'complejo_id', 'turno_id', 'profesor', 'alumno', 'mes')
+        fields = ('edad_min', 'edad_max', 'complejo_id', 'turno_id', 'profesor', 'alumno', 'mes', 'get_profesor')
 
     def create(self, validated_data):
 
