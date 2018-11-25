@@ -110,3 +110,4 @@ venv.bak/
 .idea/workspace.xml
 .idea/inspectionProfiles/Project_Default.xml
 .idea/workspace.xml
+__pycache__
