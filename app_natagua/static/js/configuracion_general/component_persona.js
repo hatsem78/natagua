@@ -122,7 +122,7 @@ Vue.component('persona',{
                     self.datos['id_localidad'] = self.selecteLocalidad.id;
                     HTTP.post('/transportista/', self.datos)
                     .then((response) => {
-                        store.dispatch({type: 'setLoading',value: false });
+
                         if(response.data.error && response.data.error.indexOf('UNIQUE constraint failed: app_natagua_transportista.dni') >= 0){
                             notifier.alert('El documento ya se encuentra registrado');
                         }
@@ -139,6 +139,7 @@ Vue.component('persona',{
                         console.log(err);
                     });
                 }
+                store.dispatch({type: 'setLoading',value: false });
             });
         },
         updateTransportista: function () {

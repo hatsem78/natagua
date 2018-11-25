@@ -1,5 +1,0 @@
-Django==2.1.2
-#DRF
-djangorestframework
-django-crispy-forms
-django-admin-tools

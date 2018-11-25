@@ -6,7 +6,7 @@ from app_natagua.models import Alumno, Provincia, Localidad
 class AlumnoPagSerializer(serializers.Serializer):
     class Meta:
         model = Alumno
-        fields = fields = ('id', 'apellido', 'nombre', 'dni', 'edad', 'direccion', 'entre_calle',
+        fields = ('id', 'apellido', 'nombre', 'dni', 'edad', 'direccion', 'entre_calle',
                            'celular', 'telefono', 'sexo', 'fecha_nacimiento',
                            'email', 'description', 'get_id_provincia', 'localidad', 'codigo_postal')
 
@@ -59,7 +59,6 @@ class AlumnoSerializer(serializers.Serializer):
         """
         Create and return a new `Alumno` instance, given the validated data.
         """
-        print(validated_data)
 
         validated_data['id_localidad'] = Localidad.objects.get(id=validated_data['id_localidad'])
         validated_data['id_provincia'] = Provincia.objects.get(id=validated_data['id_provincia'])

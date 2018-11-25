@@ -36,7 +36,7 @@ class Turnos(View):
                 'titleExtension2': '',
             }
         )'''
-        return render(request, 'turno/turno.html', )
+        return render(request, 'configuracion_general/turno.html', )
 
     def post(self, request, *args, **kwargs):
 
@@ -113,18 +113,33 @@ class Transportista(View):
     def get(self, request, *args, **kwargs):
 
         data_parameter = request.GET
-        return render(request, 'transportista/transportista.html',)
+        return render(request, 'configuracion_general/transportista.html',)
 
 class Profesor(View):
 
     def get(self, request, *args, **kwargs):
 
         data_parameter = request.GET
-        return render(request, 'profesor/profesor.html',)
+        return render(request, 'configuracion_general/profesor.html',)
 
 class Alumno(View):
 
     def get(self, request, *args, **kwargs):
 
         data_parameter = request.GET
-        return render(request, 'alumno/alumno.html',)
+        return render(request, 'configuracion_general/alumno.html',)
+
+class Complejo(View):
+
+    def get(self, request, *args, **kwargs):
+
+        data_parameter = request.GET
+        return render(request, 'configuracion_general/complejo.html',)
+
+
+class Grupos(View):
+
+    def get(self, request, *args, **kwargs):
+
+        data_parameter = request.GET
+        return render(request, 'configuracion_general/grupos.html',)
