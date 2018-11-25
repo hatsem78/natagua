@@ -10,7 +10,7 @@ from app_natagua.models import Complejo
 
 
 class ComplejoList(generics.ListAPIView):
-    queryset = snippets = Complejo.objects.get_queryset().order_by('id')
+    queryset = Complejo.objects.get_queryset().order_by('id')
     serializer_class = ComplejoSerializer
     pagination_class = Pagination
 

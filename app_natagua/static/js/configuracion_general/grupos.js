@@ -666,10 +666,6 @@ Vue.component('grupos_action',{
 });
 
 
-
-
-
-
 var grupos = new Vue({
     el: '#grupos',
     delimiters: ['${','}'],
@@ -701,11 +697,6 @@ var grupos = new Vue({
                 name: 'get_profesor',
                 title: 'Profesores Asignados',
                 sortField: 'get_profesor'
-            },
-            {
-                name: 'email',
-                title: 'Email',
-                sortField: 'email'
             },
             {
               name: '__slot:actions',   // <----
