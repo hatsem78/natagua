@@ -29,6 +29,13 @@ class ListadoPresentes(View):
         data_parameter = request.GET
         return render(request, 'general/listado_presentes.html',)
 
+class Pagos(View):
+
+    def get(self, request, *args, **kwargs):
+
+        data_parameter = request.GET
+        return render(request, 'general/pagos.html',)
+
 
 
 class Turnos(View):

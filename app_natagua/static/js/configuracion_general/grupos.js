@@ -699,6 +699,11 @@ var grupos = new Vue({
                 sortField: 'get_profesor'
             },
             {
+                name: 'get_mes',
+                title: 'Mes',
+                sortField: 'get_mes'
+            },
+            {
               name: '__slot:actions',   // <----
               title: 'Actions',
               titleClass: 'center aligned',

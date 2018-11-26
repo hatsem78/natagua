@@ -50,9 +50,6 @@ urlpatterns = [
     path('alumno/', AlumnoAdd.as_view()),
     path('alumno/<int:pk>/', AlumnoDetail.as_view()),
 
-    #url(r'grupos_list/', GruposList.as_view(), name='grupos_list'),
-
-
     path('provincia/', ProvinciaList.as_view()),
     url(r'localidad/', LocalidadList.as_view({'get': 'get'}), name='localidad'),
     url(r'^api-auth', include('rest_framework.urls', namespace='rest_framework')),

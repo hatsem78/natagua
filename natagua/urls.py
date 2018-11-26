@@ -20,7 +20,7 @@ from django.urls import path
 
 
 # from . import views
-from app_natagua.views import index, Turnos, Transportista, Profesor, Alumno, Complejo, Grupos, ListadoPresentes
+from app_natagua.views import index, Turnos, Transportista, Profesor, Alumno, Complejo, Grupos, ListadoPresentes, Pagos
 
 admin.site.site_header = "Natagua Admin"
 admin.site.site_title = "Natagua Admistración"
@@ -35,6 +35,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),  #
     url(r'^$', index, name='index'),
     url(r'^listado_presentes/', ListadoPresentes.as_view(), name='listado_presentes'),
+    url(r'^pagos/', Pagos.as_view(), name='pagos'),
     url(r'^complejo', Complejo.as_view(), name='complejo'),
     url(r'^turno$', Turnos.as_view(), name='turno'),
     url(r'^transportista$', Transportista.as_view(), name='transportista'),

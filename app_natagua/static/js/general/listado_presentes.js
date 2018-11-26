@@ -238,6 +238,24 @@ Vue.component('lista_alumnos',{
                 console.log(err);
             });
         },
+        getGrupos: function (id) {
+            let self = this;
+
+            HTTP.get(`grupos/${self.id_update}/`)
+            .then((response) => {
+
+                get_profesor
+
+
+                //get_profesor
+
+                store.dispatch({type: 'setLoading',value: false});
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false});
+                console.log(err);
+            });
+        },
         getAllAlumnos(){
             let self = this;
             HTTP.get(`alumno`)
@@ -304,8 +322,10 @@ Vue.component('lista_alumnos',{
         }
 
         self.getAllProfesores();
+        self.getGrupos();
         self.getAllAlumnos();
         self.getPresente();
+
     },
     template: `
         <div class="col-md-12">

@@ -31,6 +31,20 @@ MES = (
     ('12', 'Diciembre'),
 )
 
+MES_LIST = {
+    1: 'Enero',
+    2: 'Febrero',
+    3: 'Marzo',
+    4: 'Abril',
+    5: 'Mayo',
+    6: 'Junio',
+    7: 'Julio',
+    8: 'Agosto',
+    9: 'Septiembre',
+    10: 'Octubre',
+    11: 'Noviembre',
+    12: 'Diciembre',
+}
 def _validate_number(value):
     if type(value) == int:  # Your conditions here
         raise ValidationError('%s some error message' % value)
@@ -224,6 +238,10 @@ class Grupos(models.Model):
     @property
     def get_turno_name(self):
         return self.turno.nombre
+
+    @property
+    def get_mes(self):
+        return MES_LIST[int(self.mes)]
 
     @property
     def get_edad(self):
