@@ -4,11 +4,6 @@ $("#configuracion_general").removeClass('is-expanded');
 $("#listado_presentes").addClass('active');
 $("#dashboard").removeClass('active');
 
-      var dias=['Dom',"Lun", "Mar", "Mie", "Jue", "Vie",'Sab'];
-      var dt = new Date();
-
-
-
 
 Vue.component("v-select", VueSelect.VueSelect);
 
@@ -244,7 +239,7 @@ Vue.component('lista_alumnos',{
             HTTP.get(`grupos/${self.id_update}/`)
             .then((response) => {
 
-                get_profesor
+               // get_profesor
 
 
                 //get_profesor
@@ -294,11 +289,11 @@ Vue.component('lista_alumnos',{
     mounted: function() {
         let self = this;
 
-        var dia_hoy = new Date("2018-11-21"),
+        var dia_hoy = new Date(),
             numero_dia = dia_hoy.getUTCDay(),
             limite = 0;
         self.numeroDiaSemana = numero_dia;
-
+        console.log(self.numeroDiaSemana);
         if(numero_dia >= 0 &&  numero_dia <= 6){
             for( x = 1; x <= numero_dia; x++){
                 self.listHabliitados.push(x);

@@ -1,5 +1,6 @@
 import datetime
 
+from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.utils import json
 from rest_framework.views import APIView
@@ -12,9 +13,21 @@ from app_natagua.models import Localidad, Provincia, Alumno
 
 
 class AlumnoList(generics.ListAPIView):
-    queryset = Alumno.objects.get_queryset().order_by('id')
+    #queryset = Alumno.objects.get_queryset().order_by('id')
     serializer_class = AlumnoPagSerializer
     pagination_class = Pagination
+
+    def get_queryset(self):
+        filter = self.request.GET.get('filter', None)
+        if filter != None:
+            alumnos = Alumno.objects.filter(
+                apellido__startswith=filter
+            ) | Alumno.objects.filter(
+                nombre__startswith=filter
+            ).order_by('id')
+        else:
+            alumnos = Alumno.objects.get_queryset().order_by('id')
+        return alumnos
 
 
 

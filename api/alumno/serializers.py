@@ -6,7 +6,7 @@ from app_natagua.models import Alumno, Provincia, Localidad
 class AlumnoPagSerializer(serializers.Serializer):
     class Meta:
         model = Alumno
-        fields = ('id', 'apellido', 'nombre', 'dni', 'edad', 'direccion', 'entre_calle',
+        fields = ('id', 'get_fullName', 'apellido', 'nombre', 'dni', 'edad', 'direccion', 'entre_calle',
                            'celular', 'telefono', 'sexo', 'fecha_nacimiento',
                            'email', 'description', 'get_id_provincia', 'localidad', 'codigo_postal')
 
@@ -24,6 +24,7 @@ class AlumnoPagSerializer(serializers.Serializer):
     sexo = serializers.CharField(max_length=2)
     codigo_postal = serializers.CharField(max_length=5)
     fecha_nacimiento = serializers.DateTimeField()
+    get_fullName = serializers.CharField(read_only=True)
 
 
 

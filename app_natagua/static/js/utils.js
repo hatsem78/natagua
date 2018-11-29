@@ -81,6 +81,14 @@ VeeValidate.Validator.extend('alphanumeric', {
 });
 
 
+VeeValidate.Validator.extend('decimal', {
+	getMessage: field => {
+		return ('Número invalido solo dos decimales')
+	},
+  	validate: value => /^\d+(\.\d{1,2})?$/.test(value)
+});
+
+
 VeeValidate.Validator.extend('maxCustom', {
 	getMessage: (field, args) => {
 		return ('Ha superado el límite de texto, el cual es de '+args+' caracteres')

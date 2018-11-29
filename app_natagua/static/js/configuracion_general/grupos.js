@@ -711,7 +711,7 @@ var grupos = new Vue({
             }
         ],
         sortOrder: [
-            { field: 'name', direction: 'asc' }
+            { field: 'get_turno_name', direction: 'asc' }
         ],
         css: {
             table: {
@@ -739,6 +739,8 @@ var grupos = new Vue({
         action: true,
         showGrupos: false,
         id_update: 0,
+        filterText: '',
+        moreParams: {}
     },
     mounted: function() {
         //this.getTurnos();
@@ -774,7 +776,7 @@ var grupos = new Vue({
             })
         },
         onChangePage: function(page) {
-            this.$refs.vuetable.changePage(page)
+            this.$refs.vuetableGrupos.changePage(page)
         },
         deleteRow: function(rowData){
             this.deleteGrupos(rowData.id);
@@ -804,7 +806,18 @@ var grupos = new Vue({
         },
         onLoaded:function () {
 
-        }
+        },
+        /*onFilterSet () {
+            let self = this;
+      		this.moreParams['get_mes'] = self.filterText;
+			this.$nextTick( () => this.$refs.vuetableGrupos.refresh() );
+		},
+		onFilterReset () {
+			delete this.moreParams.filter;
+			this.searchFor = '';
+			this.$nextTick( () => this.$refs.vuetableGrupos.refresh() );
+		}*/
+
     }
 
 });

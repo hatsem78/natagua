@@ -182,7 +182,6 @@ class Profesor(models.Model):
     def get_name(self):
         return "%s %s" % (self.apellido, self.nombre)
 
-
 class Alumno(models.Model):
 
     class Meta:
@@ -211,7 +210,11 @@ class Alumno(models.Model):
     id_localidad = models.ForeignKey('Localidad', related_name='localidad_alumno', on_delete=models.CASCADE, null=True)
     codigo_postal = models.CharField(max_length=5, blank=True, null=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
+    activo = models.BooleanField(default=True)
 
+    @property
+    def get_fullName(self):
+        return "%s %s" % (self.apellido, self.nombre)
 
 class Grupos(models.Model):
     class Meta:
@@ -264,3 +267,39 @@ class ListadoAlumnosPresentes(models.Model):
     def getfecha(self):
         fecha = datetime.datetime.strptime(str(self.fecha).replace('/', '-')[:10], '%Y-%m-%d')
         return fecha.strftime('%d-%m-%Y')
+
+
+class ListadoPagos(models.Model):
+    class Meta:
+        verbose_name_plural = "ListadoPagos"
+
+    alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)
+    complejo = models.ForeignKey(Complejo, on_delete=models.CASCADE)
+    turno = models.ForeignKey(Turnos, on_delete=models.CASCADE)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateTimeField()
+    cuota = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    matricula = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    adicional = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    pre_hora = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    transporte = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    total_pagar = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    pago_parcial = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    faltante = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    activo = models.BooleanField(default=True)
+
+
+
+    @property
+    def fecha_creacion(self):
+        fecha = datetime.datetime.strptime(str(self.fecha).replace('/', '-')[:10], '%Y-%m-%d')
+        return self.fecha_creacion.strftime('%d-%m-%Y')
+
+    @property
+    def fecha_creacion(self):
+        fecha = datetime.datetime.strptime(str(self.fecha).replace('/', '-')[:10], '%Y-%m-%d')
+        return self.fecha.strftime('%d-%m-%Y')
+
+    @property
+    def get_alumno(self):
+        return self.alumno.get_fullName
