@@ -12,7 +12,8 @@ class ListaPagosPagSerializer(serializers.ModelSerializer):
             'alumno_id', 'fecha', 'cuota',
             'matricula', 'adicional', 'pre_hora',
             'transporte', 'total_pagar', 'pago_parcial',
-            'faltante', 'complejo_id', 'turno_id', 'get_alumno'
+            'faltante', 'complejo_id', 'turno_id', 'get_alumno',
+            'description', 'forma_pago'
         )
 
 
@@ -33,6 +34,8 @@ class ListaPagosSerializer(serializers.ModelSerializer):
     total_pagar = serializers.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     pago_parcial = serializers.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     faltante = serializers.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    forma_pago = serializers.IntegerField()
+    description = serializers.CharField(max_length=500, allow_blank=True)
 
 
     class Meta:
@@ -41,7 +44,8 @@ class ListaPagosSerializer(serializers.ModelSerializer):
             'alumno_id', 'fecha', 'cuota',
             'matricula', 'adicional', 'pre_hora',
             'transporte', 'total_pagar', 'pago_parcial',
-            'faltante', 'complejo_id', 'turno_id'
+            'faltante', 'complejo_id', 'turno_id',
+            'description', 'forma_pago'
         )
 
     def create(self, validated_data):
@@ -53,25 +57,28 @@ class ListaPagosSerializer(serializers.ModelSerializer):
         validated_data['turno_id'] = validated_data['turno_id'].pk
         validated_data['alumno_id'] = validated_data['alumno_id'].pk
 
-
-
         pagos = ListadoPagos.objects.create(**validated_data)
-
-
 
         return pagos
 
     def update(self, instance, validated_data):
         """
-            Update and return an existing `Alumno` instance, given the validated data.
+            Update and return an existing `pago` instance, given the validated data.
         """
-        instance.edad_min = validated_data.get('edad_min', instance.edad_min)
-        instance.edad_max = validated_data.get('edad_max', instance.edad_max)
+        instance.alumno_id = validated_data.get('alumno_id', instance.alumno_id)
         instance.complejo_id = validated_data.get('complejo_id', instance.complejo_id)
         instance.turno_id = validated_data.get('turno_id', instance.turno_id)
-        instance.profesor.set(validated_data.get('profesor', instance.profesor))
-        instance.alumno.set(validated_data.get('alumno', instance.alumno))
-        instance.mes = validated_data.get('mes', instance.mes)
+        instance.fecha = validated_data.get('fecha', instance.fecha)
+        instance.cuota = validated_data.get('cuota', instance.cuota)
+        instance.matricula = validated_data.get('matricula', instance.matricula)
+        instance.adicional = validated_data.get('adicional', instance.adicional)
+        instance.pre_hora = validated_data.get('pre_hora', instance.pre_hora)
+        instance.transporte = validated_data.get('transporte', instance.transporte)
+        instance.total_pagar = validated_data.get('total_pagar', instance.total_pagar)
+        instance.pago_parcial = validated_data.get('pago_parcial', instance.pago_parcial)
+        instance.faltante = validated_data.get('faltante', instance.faltante)
+        instance.forma_pago = validated_data.get('forma_pago', instance.forma_pago)
+        instance.description = validated_data.get('description', instance.description)
 
         instance.save()
 

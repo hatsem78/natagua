@@ -34,31 +34,40 @@
 
         <div class="col-md-12">
             <vuetable
+                v-if="showTablaPago"
+                ref="vuetableListadoPagos"
+                api-url="{% url 'listado_pagos_list' %}"
+                :fields="fieldes"
+                :sort-order="sortOrder"
+                :css="css.table"
+                pagination-path=""
+                :per-page="3"
+                @vuetable:pagination-data="onPaginationData"
+                @vuetable:loading="onLoading"
+                @vuetable:loaded="onLoaded">
 
-            ref="vuetableListadoPagos"
-            api-url="{% url 'listado_pagos_list' %}"
-            :fields="fieldes"
-            :sort-order="sortOrder"
-            :css="css.table"
-            pagination-path=""
-            :per-page="3"
-            @vuetable:pagination-data="onPaginationData"
-            @vuetable:loading="onLoading"
-            @vuetable:loaded="onLoaded">
+                <template slot="actions" slot-scope="props">
+                    <div class="table-button-container">
+                       <a class="btn-outline-primary " href="#"
+                            data-toggle="tooltip" title="Editar Pago"
+                            @click="editRow(props.rowData)"
+                       >
+                           <i class="fa fa-lg fa-edit"></i>
+                       </a>
+                       <a class="btn-outline-danger  btn-danger"
+                            href="#" data-toggle="tooltip" title="Eliminar Pago"
+                            >
+                           <i class="fa fa-lg fa-trash"></i>
+                       </a>
 
-            <template slot="actions" slot-scope="props">
-                <div class="table-button-container">
-                   <a class="btn-outline-primary " href="#"><i class="fa fa-lg fa-edit"></i></a>
-                   <a class="btn-danger " href="#"><i class="fa fa-lg fa-trash"></i></a>
+                    </div>
+                </template>
 
-                </div>
-            </template>
-
-        </vuetable>
-        <vuetable-pagination  ref="paginationListadoPagos"
-          :css="css.pagination"
-          @vuetable-pagination:change-page="onChangePage"
-        ></vuetable-pagination>
+            </vuetable>
+            <vuetable-pagination  v-if="showTablaPago" ref="paginationListadoPagos"
+              :css="css.pagination"
+              @vuetable-pagination:change-page="onChangePage"
+            ></vuetable-pagination>
 
 
             <input type="hidden" id="alumno_url" value="{% url 'alumno_list' %}">

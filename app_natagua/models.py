@@ -31,6 +31,12 @@ MES = (
     ('12', 'Diciembre'),
 )
 
+FORMA_PAGO = (
+    (1, 'Efectivo'),
+    (2, 'CBU'),
+    (3, 'Factura'),
+ )
+
 MES_LIST = {
     1: 'Enero',
     2: 'Febrero',
@@ -268,16 +274,29 @@ class ListadoAlumnosPresentes(models.Model):
         fecha = datetime.datetime.strptime(str(self.fecha).replace('/', '-')[:10], '%Y-%m-%d')
         return fecha.strftime('%d-%m-%Y')
 
+class Promocion(models.Model):
+    class Meta:
+        verbose_name_plural = "Promocion"
+
+    fecha = models.DateTimeField(auto_now_add=True)
+    nombre = models.CharField(max_length=100, null=False, db_index=True)
+    porcentaje = models.CharField(max_length=3, blank=True, null=True)
+    fecha_expiracion = models.DateTimeField()
+    expiracion = models.BooleanField(default=False)
+    activo = models.BooleanField(default=True)
+    description = models.TextField(max_length=1000, blank=True, null=True)
+
 
 class ListadoPagos(models.Model):
     class Meta:
-        verbose_name_plural = "ListadoPagos"
+        verbose_name_plural = "Listado_pagos"
 
     alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)
     complejo = models.ForeignKey(Complejo, on_delete=models.CASCADE)
     turno = models.ForeignKey(Turnos, on_delete=models.CASCADE)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha = models.DateTimeField()
+    models.ForeignKey(Promocion, blank=True, null=True, on_delete=models.CASCADE)
     cuota = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     matricula = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     adicional = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
@@ -286,7 +305,9 @@ class ListadoPagos(models.Model):
     total_pagar = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     pago_parcial = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     faltante = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    forma_pago = models.CharField(max_length=1, choices=FORMA_PAGO, null=False, db_index=True)
     activo = models.BooleanField(default=True)
+    description = models.TextField(max_length=1000, blank=True, null=True)
 
 
 

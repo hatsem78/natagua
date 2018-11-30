@@ -24,6 +24,10 @@ class AlumnoList(generics.ListAPIView):
                 apellido__startswith=filter
             ) | Alumno.objects.filter(
                 nombre__startswith=filter
+            ) | Alumno.objects.filter(
+                dni__startswith=filter
+            ) | Alumno.objects.filter(
+                celular__startswith=filter
             ).order_by('id')
         else:
             alumnos = Alumno.objects.get_queryset().order_by('id')

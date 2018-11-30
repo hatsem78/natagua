@@ -117,6 +117,21 @@ VeeValidate.Validator.extend('required', {
     }
 });
 
+VeeValidate.Validator.extend('porcentaje', {
+	getMessage: field => {
+		return ('El porcentaje no puede superar 100%')
+	},
+  	validate(value, option) {
+	    if(value > 100){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+});
+
+
 VeeValidate.Validator.extend('numeric', {
 	getMessage: field => {
 		return ('Se ingresaron caracteres invalidos')

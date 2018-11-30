@@ -32,10 +32,13 @@ Vue.component('pagos_action',{
                 alumno:this.data_alumno,
                 cuota: 0,
                 matricula:0,
+                pre_hora: 0,
                 transporte: 0,
                 pago_parcial: 0,
                 total_pagar: 0,
                 faltante: 0,
+                description: '',
+                forma_pago: ''
             },
             anio: '',
             mes: [
@@ -53,6 +56,12 @@ Vue.component('pagos_action',{
                 { id: 12, nombre: 'Diciembre'}
             ],
             selecteMes: { id: 1, nombre: 'Enero'},
+            formaPago: [
+                { id: 1, nombre:'Efectivo'},
+                { id: 2, nombre:'CBU'},
+                { id: 3, nombre:'Factura'},
+            ],
+            selectFormaPago: { id: 1, nombre:'Efectivo'},
             complejos: [],
             turnos:[],
             selecteTurno: null,
@@ -73,9 +82,9 @@ Vue.component('pagos_action',{
                     self.titulo = 'Alta de Pagos';
                     self.addPagos();
                     break;
-                case 'grupos_update':
+                case 'pago_update':
                     self.titulo = "Modificar Pagos";
-                    self.updateGrupos();
+                    self.updatePago();
                     break;
                 default:
                     break;
@@ -88,13 +97,22 @@ Vue.component('pagos_action',{
             self.datos['complejo_id'] = self.selecteComplejo.id;
             self.datos['turno_id'] = self.selecteTurno.id;
             self.datos['alumno_id'] = self.datos.alumno.id;
+            self.datos['forma_pago'] = self.selectFormaPago.id;
 
 
             store.dispatch({type: 'setLoading',value: true});
             HTTP.post(`listado_pagos/`,self.datos)
             .then((response) => {
 
-                self.datos = response.data;
+                if(response.data.error ){
+                    notifier.alert('Ocurrio un error');
+                }
+                else{
+                    notifier.success('El Pago se guardo');
+                    self.accion = 'pago_update';
+                    self.titulo = "Modificar Pago";
+                    self.datos.id = response.data.id;
+                }
 
 
                 store.dispatch({type: 'setLoading',value: false});
@@ -104,69 +122,28 @@ Vue.component('pagos_action',{
                 console.log(err);
             });
         },
-        addGrupos: function () {
+        updatePago: function () {
             let self = this;
 
             store.dispatch({type: 'setLoading',value: true });
-            this.$validator.validateAll()
-            .then(function(response){
-                if (response) {
-                    self.datos['profesor'] = self.grupoProfesores.map((profesor) => {
-                        return profesor.id
-                    });
-                    self.datos['alumno'] = self.grupoAlumnos.map((alumno) => {
-                        return alumno.id
-                    });
-                    self.datos['complejo_id'] = self.selecteComplejo.id;
-                    self.datos['turno_id'] = self.selecteTurno.id;
-                    self.datos['mes'] = self.selecteMes.id;
 
-                    HTTP.post('/grupos/', self.datos)
-                    .then((response) => {
-                        if(response.data.error && response.data.error.indexOf('UNIQUE constraint failed: app_natagua_grupos.nombre') >= 0){
-                            notifier.alert('El Grupos ya se encuentra registrado');
-                        }
-                        else{
-                            notifier.success('El Grupos se Guardo correctamente');
-                            self.accion = 'grupos_update';
-                            self.titulo = "Modificar Grupos";
-                            self.datos.id = response.data.id;
-                        }
-
-                    })
-                    .catch((err) => {
-                        store.dispatch({type: 'setLoading',value: false });
-                        console.log(err);
-                    });
-                }
-                store.dispatch({type: 'setLoading',value: false });
-            });
-        },
-        updateGrupos: function () {
-            let self = this;
-
-            store.dispatch({type: 'setLoading',value: true });
-            self.datos['profesor'] = self.grupoProfesores.map((profesor) => {
-                return profesor.id
-            });
-            self.datos['alumno'] = self.grupoAlumnos.map((alumno) => {
-                return alumno.id
-            });
-            self.datos['complejo_id'] = self.selecteComplejo.id;
-            self.datos['turno_id'] = self.selecteTurno.id;
+            self.datos['complejo_id'] = self.selecteComplejo[0].id;
+            self.datos['turno_id'] = self.selecteTurno[0].id;
             self.datos['mes'] = self.selecteMes.id;
+            self.datos['fecha'] = `01-${self.selecteMes.id}-${self.anio}`;
+            self.datos['forma_pago'] = self.selectFormaPago.id;
 
-            HTTP.put(`/grupos/${self.datos.id}/`, self.datos)
+
+            HTTP.put(`/listado_pagos/${self.datos.id}/`, self.datos)
             .then((response) => {
                 store.dispatch({type: 'setLoading',value: false });
-                if(response.data.error && response.data.error.indexOf('UNIQUE constraint failed: app_natagua_grupos.nombre') >= 0){
-                    notifier.alert('El Grupos ya se encuentra registrado');
+                if(response.data.error ){
+                    notifier.alert('Se genero un error al guardar');
                 }
                 else{
-                    notifier.success('El Grupos se Guardo correctamente');
-                    self.accion = 'grupos_update';
-                    self.titulo = "Modificar Grupos";
-                    self.datos.id = response.data.id;
+                    notifier.success('El Pago se Guardo correctamente');
+                    self.accion = 'pago_update';
+                    self.titulo = "Modificar Pago";
                 }
             })
             .catch((err) => {
@@ -248,7 +225,57 @@ Vue.component('pagos_action',{
                 console.log(err);
             });
         },
+        getPago: function (id) {
+            let self = this;
+            store.dispatch({type: 'setLoading',value: true});
+            HTTP.get(`listado_pagos/${id}/`)
+            .then((response) => {
+                var dia_hoy = new moment(response.data.fecha, 'YYYY-MM-DD');
+                self.anio =dia_hoy.year();
 
+                mes =dia_hoy.month();
+
+                self.datos = response.data;
+                self.datos.total_pagar = 0.00;
+                self.datos['alumno'] = {
+                    id: response.data.alumno_id,
+                    get_fullName: response.data.get_alumno,
+                };
+
+                self.selecteTurno = null;
+                self.selecteComplejo = self.complejos.filter((elemento) => elemento.id == self.datos.complejo_id);
+                self.selecteTurno = self.turnos.filter((elemento) => elemento.id == self.datos.turno_id);
+                self.selecteMes = self.mes[mes];
+                self.selectFormaPago = null;
+                self.selectFormaPago = self.formaPago.filter((elemento) => elemento.id == self.datos.forma_pago);
+                self.selectFormaPago = self.selectFormaPago[0];
+
+
+                store.dispatch({type: 'setLoading',value: false});
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false});
+                console.log(err);
+            });
+        },
+        calcular: function () {
+            this.datos.total_pagar =(
+                parseFloat(this.datos.cuota)+
+                parseFloat(this.datos.transporte)+
+                parseFloat(this.datos.pre_hora)+
+                parseFloat(this.datos.matricula)
+            );
+        },
+        pagoParcial: function () {
+            let self = this;
+
+            if(isNaN(self.datos.pago_parcial)){
+                self.calcular();
+            }
+            else{
+                self.datos.faltante = parseFloat(self.datos.total_pagar) - parseFloat(self.datos.pago_parcial);
+            }
+        }
     },
     created: function() {
 
@@ -265,7 +292,29 @@ Vue.component('pagos_action',{
         titulo: function (val) {
             this.titulo = val;
         },
-
+        'datos.cuota': function (val) {
+            this.calcular();
+        },
+        'datos.matricula': function (val) {
+            this.calcular();
+        },
+        'datos.transporte': function (val) {
+            this.calcular();
+        },
+        'datos.pre_hora': function (val) {
+            this.calcular();
+        },'datos.pago_parcial': function (val) {
+            this.pagoParcial();
+        },'datos.total_pagar': function (val) {
+            if(isNaN(val)){
+                this.datos.total_pagar = parseFloat('0.00').toFixed(2);
+            }
+        }
+        ,'datos.faltante': function (val) {
+            if(isNaN(val) || parseFloat(val) <= 0){
+                this.datos.faltante = parseFloat('0.00').toFixed(2);
+            }
+        }
     },
     mounted: function() {
         let self = this;
@@ -279,10 +328,10 @@ Vue.component('pagos_action',{
         self.anio =dia_hoy.getFullYear();
 
         switch (this.accion) {
-            case 'grupos_update':
-                self.titulo = "Modificar Grupos";
+            case 'pago_update':
+                self.titulo = "Modificar Pagos";
                 store.dispatch({type: 'setLoading',value: true});
-                setTimeout(function(){ self.getGrupos(self.idUpdate); }, 300);
+                setTimeout(function(){ self.getPago(self.idUpdate); }, 300);
 
 
                 break;
@@ -299,23 +348,9 @@ Vue.component('pagos_action',{
             </div>
                                 
            <div class="card-body">
-            
-                <div class="row">
-                    <div class="col-md-4 pr-1">
-                        <div class="form-group">
-                            <label>Complejo</label>
-                            <v-select label="nombre" :options="complejos" v-model="selecteComplejo"></v-select>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-4 pr-1">
-                        <div class="form-group">
-                            <label>Turnos</label>
-                            <v-select label="nombre" :options="turnos" v-model="selecteTurno"></v-select>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-2">
+           
+                <div class="row">  
+                     <div class="col-md-2">
                         <div class="form-group">
                             <label>Mes</label>
                             <v-select label="nombre" :options="mes" v-model="selecteMes"></v-select>
@@ -351,7 +386,35 @@ Vue.component('pagos_action',{
                                 </div> 
                             </div>
                         </div>
-                    </div> 
+                    </div>  
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Forma De Pago</label>
+                            <v-select label="nombre" :options="formaPago" v-model="selectFormaPago"></v-select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Promación</label>
+                            <v-select label="nombre" :options="formaPago" v-model="selectFormaPago"></v-select>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Complejo</label>
+                            <v-select label="nombre" :options="complejos" v-model="selecteComplejo"></v-select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Turnos</label>
+                            <v-select label="nombre" :options="turnos" v-model="selecteTurno"></v-select>
+                        </div>
+                    </div>
                     
                 </div>
                 
@@ -452,6 +515,43 @@ Vue.component('pagos_action',{
                     
                     <div class="col-md-2">
                         <div class="form-group">
+                            <label>Pre Hora</label>
+                            <div  :class="[
+                                      { 
+                                        'has-error': errors.first('pre_hora'), 
+                                        'has-success': !errors.first('pre_hora') && datos.pre_hora !== ''
+                                      }, 
+                                      ]">
+                                      
+                                <input 
+                                    type="text" 
+                                    name="pre_hora" id="pre_hora" 
+                                    placeholder=""  
+                                    v-model='datos.pre_hora'
+                                    v-validate="'required: true|maxCustom:10|decimal'" 
+                                    :class="{
+                                        'input': true, 
+                                        'has-error': errors.first('pre_hora') && datos.pre_hora == '', 
+                                        'form-control': true
+                                    }"
+                                >
+                                <div class="errors help-block">
+                                    <span v-show="errors.first('pre_hora')"
+                                        class="help error">{{ errors.first('pre_hora') }}
+                                    </span>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                   
+                   
+                    
+                
+                </div>
+                    
+                <div class="row">
+                     <div class="col-md-2">
+                        <div class="form-group">
                             <label>Pago Parcial</label>
                             <div  :class="[
                                       { 
@@ -480,9 +580,7 @@ Vue.component('pagos_action',{
                             </div>
                         </div>
                     </div>
-                    <!-- : 0,
-                total_pagar: 0,
-                faltante: 0-->
+                    
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>Debe</label>
@@ -494,6 +592,7 @@ Vue.component('pagos_action',{
                                       ]">
                                       
                                 <input 
+                                    :disabled="true"
                                     type="text" 
                                     name="faltante" id="faltante" 
                                     placeholder=""  
@@ -525,7 +624,8 @@ Vue.component('pagos_action',{
                                       ]">
                                       
                                 <input 
-                                    type="text" 
+                                    type="text"  
+                                    :disabled="true"
                                     name="total_pagar" id="total_pagar" 
                                     placeholder=""  
                                     v-model='datos.total_pagar'
@@ -544,7 +644,42 @@ Vue.component('pagos_action',{
                             </div>
                         </div>
                     </div>
+                    
+                    
+                </div>
                 
+                
+                
+                <div class="row">                        
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Descripción</label>
+                            <div id="comment-add" :class="{ 'custom-actions': true, ' has-error': errors.first('comentario'), 
+		                        'has-success': !errors.first('comentario') && datos.description !== '' }">
+                            <textarea 
+                                name="comentario"
+                                id="comentario"
+                                rows="5"
+                                maxlength="197"
+                                placeholder="Descripción"
+                                v-model='datos.description'
+                                v-validate="'maxCustom:198|remarks'"
+                                :class="{'input': true, 'has-error': errors.first('comentario'), 'form-control': true }" 
+                            >
+                            </textarea>
+                            
+                            <div class="errors help-block" id="comment-error">
+                                <span v-show="errors.first('comentario')"
+                                    class="help error">{{ errors.first('comentario') }}
+                                </span>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-4 text-right d-print-none mt-4">
+                        <a href="javascript:window.print();" target="_blank" class="btn btn-primary">
+                        <i class="fa fa-print"></i> Print</a></div>
+                    </div>
                 </div>
                 
                 <!--botones -->
@@ -558,6 +693,7 @@ Vue.component('pagos_action',{
                             Cancelar
                         </button>
                         <button 
+                            :disabled="parseFloat(datos.total_pagar) <= 0"
                             type="submit" 
                             class="btn btn-primary"
                             @click="guardar()"
@@ -675,39 +811,8 @@ Vue.component('seleccion_alumno',{
                 self.refresh();
             }
         },
-        deleteAlumno: function (id) {
-            let self = this;
-            store.dispatch({type: 'setLoading',value: true });
-            HTTP.delete(`/alumno/${id}/`)
-            .then((response) => {
-
-                store.dispatch({type: 'setLoading',value: false });
-                self.refresh();
-            })
-            .catch((err) => {
-                notifier.alert('Error ocurrete: ' + err);
-                store.dispatch({type: 'setLoading',value: false });
-                console.log(err);
-            })
-        },
         onChangePage: function(page) {
             this.$refs.vuetable.changePage(page)
-        },
-        deleteRow: function(rowData){
-            this.deleteAlumno(rowData.id);
-        },
-        addAlumno: function () {
-            let self = this;
-            self.titulo = "Agregar Alumno";
-            self.tipo = 'alumno';
-            self.show_alumno(true);
-        },
-        editRow: function (value) {
-            let self = this;
-            self.id_update = value.id;
-            self.titulo = "Modificar Alumno";
-            self.tipo = 'alumno_update';
-            self.show_alumno(true);
         },
         onLoading: function() {
 
@@ -772,8 +877,7 @@ Vue.component('seleccion_alumno',{
                         </div>
                     </div>
                     
-                    <vuetable
-                                                   
+                    <vuetable                      
                         ref="vuetableAlumno"
                         :api-url="alumno_url"
                         :fields="fieldes"
@@ -787,14 +891,11 @@ Vue.component('seleccion_alumno',{
                         @vuetable:loaded="onLoaded"
                         @vuetable:row-dblclicked="onDblClicked"
                         >
-            
-                       
                     </vuetable>
                     <vuetable-pagination v-if="!showAlumno" ref="paginationAlumno"
                           :css="css.pagination"
                           @vuetable-pagination:change-page="onChangePage">
                     </vuetable-pagination>
-                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary m-progress" data-dismiss="modal">Cancelar</button>
@@ -908,6 +1009,7 @@ var pagos = new Vue({
         showSelectAlumnos: false,
         id_update: 0,
         dataAlumno: '',
+        showTablaPago: true,
     },
     mounted: function() {
 
@@ -924,6 +1026,7 @@ var pagos = new Vue({
             else{
                 self.showPagos = value;
                 self.tipo = 'presente';
+                self.showTablaPago = true;
                 //self.refresh();
             }
         },
@@ -931,9 +1034,11 @@ var pagos = new Vue({
             let self = this;
             if(value){
                 self.showSelectAlumnos = value;
+
             }
             else{
                 self.showSelectAlumnos = value;
+                self.showTablaPago = true;
             }
         },
         deleteGrupos: function (id) {
@@ -959,6 +1064,7 @@ var pagos = new Vue({
             //self.id_update = value.id;
             self.titulo = "Alta de Pagos";
             self.tipo = 'pagos';
+
             self.show_pagos(true);
         },
         onLoading: function() {
@@ -980,7 +1086,17 @@ var pagos = new Vue({
             self.dataAlumno = data;
             $('#select_alumnos').modal('toggle');
             self.show_pagos(true);
-        }
+            self.showTablaPago = false;
+        },
+        editRow: function (value) {
+            let self = this;
+            self.id_update = value.id;
+            self.titulo = "Modificar Pago";
+            self.tipo = 'pago_update';
+            self.showTablaPago = false;
+            self.show_pagos(true);
+
+        },
     }
 
 });

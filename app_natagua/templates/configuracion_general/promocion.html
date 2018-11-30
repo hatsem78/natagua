@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% block stylesheets %}
+    {{ block.super }}
+    <link href="https://cdn.jsdelivr.net/npm/pc-bootstrap4-datetimepicker@4.17/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+{% block content %}
+    <div class="app-title">
+        <div>
+          <h1><i class="fa fa-dashboard"></i> Promoción</h1>
+          <p>Creación, modifición, eliminación y listado</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+        </ul>
+    </div>
+    <div class="tile mb-4" id="promocion">
+        <div class="tile-title-w-btn">
+            <h3 class="title">Listado</h3>
+            <p v-if="tipo != 'prormocion_update'">
+                  <a
+                      class="btn btn-info icon-btn"
+                      href="#"
+                      @click="addPromocion(true)"
+                  >
+                      <i class="fa fa-plus"></i>Nuevo Promoción
+                  </a>
+            </p>
+        </div>
+
+        <vuetable
+            v-if="!showPromocion"
+            ref="vuetablePromocion"
+            api-url="{% url 'promocion_list' %}"
+            :fields="fieldes"
+            :sort-order="sortOrder"
+            :css="css.table"
+            pagination-path=""
+            :per-page="3"
+            @vuetable:pagination-data="onPaginationData"
+            @vuetable:loading="onLoading"
+            @vuetable:loaded="onLoaded">
+
+           <template slot="actions" slot-scope="props">
+               <div class="table-button-container">
+              <button class="btn btn-outline-primary btn-sm" data-toggle="modal"
+                 data-target="#addomplejo" @click="editRow(props.rowData)">
+                 <span class="fa fa-lg fa-edit"></span> Editar
+              </button>&nbsp;&nbsp;
+              <button class="btn btn-danger btn-sm" @click="deleteRow(props.rowData)">
+                <span class="fa fa-lg fa-trash"></span> Eliminar
+              </button>&nbsp;&nbsp;
+          </div>
+           </template>
+        </vuetable>
+        <vuetable-pagination v-if="!showPromocion" ref="paginationPromocion"
+          :css="css.pagination"
+          @vuetable-pagination:change-page="onChangePage"
+        ></vuetable-pagination>
+
+
+
+        <div class="col-md-10">
+            <promocion_action
+                v-if="showPromocion"
+                :tipo="tipo"
+                :titulo_new="titulo"
+                :id_update="id_update"
+                @close="show_promocion(false)"
+            ></promocion_action>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ block.super }}
+    <script src="{% static '/js/plugins/vue-select.js' %}"></script>
+    <script src="{% static '/js/plugins/vue-bootstrap-datetimepicker.js' %}"></script>
+    <script src="{% static '/js/plugins/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static '/js/vue-table.js' %}"></script>
+    <script src="{% static '/js/configuracion_general/promocion.js' %}"></script>
+{% endblock javascripts %}

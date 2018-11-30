@@ -134,7 +134,10 @@ Vue.component('grupos_action',{
 
                 self.datos.id = id;
 
-                self.selecteMes = selecteMes;
+                self.selecteTurno = null;
+                self.selecteComplejo = self.complejos.filter((elemento) => elemento.id == self.datos.complejo_id);
+                self.selecteTurno = self.turnos.filter((elemento) => elemento.id == self.datos.turno_id);
+                self.selecteMes = self.mes[self.datos.mes-1];
 
                 store.dispatch({type: 'setLoading',value: false});
             })
@@ -156,9 +159,9 @@ Vue.component('grupos_action',{
                     self.datos['alumno'] = self.grupoAlumnos.map((alumno) => {
                         return alumno.id
                     });
-                    self.datos['complejo_id'] = self.selecteComplejo.id;
-                    self.datos['turno_id'] = self.selecteTurno.id;
-                    self.datos['mes'] = self.selecteMes.id;
+                    self.datos['complejo_id'] = self.datos.complejo_id;
+                    self.datos['turno_id'] = self.datos.turno_id;
+                    self.datos['mes'] = self.datos.mes;
 
                     HTTP.post('/grupos/', self.datos)
                     .then((response) => {
@@ -191,8 +194,8 @@ Vue.component('grupos_action',{
             self.datos['alumno'] = self.grupoAlumnos.map((alumno) => {
                 return alumno.id
             });
-            self.datos['complejo_id'] = self.selecteComplejo.id;
-            self.datos['turno_id'] = self.selecteTurno.id;
+            self.datos['complejo_id'] = self.selecteComplejo[0].id;
+            self.datos['turno_id'] = self.selecteTurno[0].id;
             self.datos['mes'] = self.selecteMes.id;
 
             HTTP.put(`/grupos/${self.datos.id}/`, self.datos)
