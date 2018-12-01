@@ -20,7 +20,7 @@ class PromocionPagSerializer(serializers.Serializer):
 
     id = serializers.IntegerField(read_only=True)
     nombre = serializers.CharField(required=True, allow_blank=False, max_length=100)
-    fecha_expiracion= serializers.DateTimeField()
+    fecha_expiracion= serializers.DateTimeField(allow_null=True, default='0000-00-00')
     porcentaje = serializers.CharField(required=True, allow_blank=False, max_length=3)
     expiracion = serializers.BooleanField(False)
     activo = serializers.BooleanField(True)

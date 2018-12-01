@@ -1,3 +1,5 @@
+import datetime
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -15,7 +17,7 @@ class PromocionList(generics.ListAPIView):
     pagination_class = Pagination
 
 
-class ComplejoAdd(APIView):
+class PromocionAdd(APIView):
     """
     List all snippets, or create a new snippet.
     """
@@ -25,6 +27,10 @@ class ComplejoAdd(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
+        if request.data['fecha_expiracion'] == '':
+            request.data['fecha_expiracion'] = '01-01-1900'
+        fecha = datetime.datetime.strptime(request.data['fecha_expiracion'].replace('/', '-'), '%d-%m-%Y')
+        request.data['fecha_expiracion'] = fecha
         serializer = PromocionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -32,6 +38,39 @@ class ComplejoAdd(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ComplejoDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Promocion.objects.all()
-    serializer_class = PromocionSerializer
+class PromocionDetail(APIView):
+
+    def get_object(self, pk):
+        try:
+            object = Promocion.objects.get(pk=pk)
+            return object
+        except Promocion.DoesNotExist:
+            from django.http import Http404
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        cuota = self.get_object(pk)
+        serializer = PromocionSerializer(cuota)
+        result = serializer.data
+
+        return Response(result)
+
+    def put(self, request, pk, format=None):
+        object = self.get_object(pk)
+        if request.data['fecha_expiracion'] == '':
+            request.data['fecha_expiracion'] = '01-01-1900'
+        fecha = datetime.datetime.strptime(request.data['fecha_expiracion'].replace('/', '-'), '%d-%m-%Y')
+        request.data['fecha_expiracion'] = fecha
+        serializer = PromocionSerializer(object, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            fecha = datetime.datetime.strptime(serializer.data['fecha_expiracion'][:10].replace('/', '-'), '%Y-%m-%d')
+            request.data['fecha_expiracion'] = fecha.strftime('%Y-%m-%d')
+
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        snippet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

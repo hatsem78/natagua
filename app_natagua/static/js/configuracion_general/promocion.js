@@ -80,7 +80,14 @@ Vue.component('promocion_action',{
             store.dispatch({type: 'setLoading',value: true});
             HTTP.get(`promocion/${id}/`)
             .then((response) => {
+
                 self.datos = response.data;
+                if(self.datos.fecha_expiracion.indexOf('1900') >= 0){
+                    self.datos.fecha_expiracion = '';
+                }
+                else{
+                    self.datos.fecha_expiracion = moment(self.datos.fecha_expiracion, 'YYYY-MM-DD').format('DD-MM-YYYY');
+                }
                 store.dispatch({type: 'setLoading',value: false});
             })
             .catch((err) => {
@@ -121,8 +128,11 @@ Vue.component('promocion_action',{
             let self = this;
 
             store.dispatch({type: 'setLoading',value: true });
+            if(!self.datos.expiracion){
+                self.datos.fecha_expiracion = ''
+            }
 
-            HTTP.put(`/promocion/${self.datos.id}/`, self.datos)
+            HTTP.put(`/promocion/${self.idUpdate}/`, self.datos)
             .then((response) => {
                 store.dispatch({type: 'setLoading',value: false });
                 if(response.data.error ){
@@ -157,7 +167,7 @@ Vue.component('promocion_action',{
         switch (this.accion) {
             case 'promocion_update':
                 self.titulo = "Modificar Promoción";
-                self.getTransportista(self.idUpdate);
+                self.getPromocion(self.idUpdate);
                 break;
         };
     },
@@ -345,16 +355,19 @@ var promocion = new Vue({
             {
                 name: 'fecha_expiracion',
                 title: 'Fecha Expiración',
+                callback: 'expiracion',
                 sortField: 'fecha_expiracion'
             },
             {
                 name: 'expiracion',
                 title: 'Expiracion',
+                callback: 'activo',
                 sortField: 'expiracion'
             },
             {
                 name: 'activo',
                 title: 'Activo',
+                callback: 'activo',
                 sortField: 'activo'
             },
             {
@@ -398,6 +411,13 @@ var promocion = new Vue({
         //this.getTurnos();
     },
     methods: {
+        activo: function(value){
+            return (value)? 'Activo': 'Inactivo';
+        },
+        expiracion: function(value){
+
+            return (value.indexOf('1900') <= -1)? moment(value, 'YYYY-MM-DD').format('DD-MM-YYYY'): '';
+        },
         onPaginationData: function(paginationData) {
             this.$refs.paginationPromocion.setPaginationData(paginationData)
         },

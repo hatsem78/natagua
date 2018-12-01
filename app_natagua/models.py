@@ -281,7 +281,7 @@ class Promocion(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
     nombre = models.CharField(max_length=100, null=False, db_index=True)
     porcentaje = models.CharField(max_length=3, blank=True, null=True)
-    fecha_expiracion = models.DateTimeField()
+    fecha_expiracion = models.DateTimeField(null=True)
     expiracion = models.BooleanField(default=False)
     activo = models.BooleanField(default=True)
     description = models.TextField(max_length=1000, blank=True, null=True)

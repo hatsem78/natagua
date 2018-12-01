@@ -45,14 +45,18 @@
 
            <template slot="actions" slot-scope="props">
                <div class="table-button-container">
-              <button class="btn btn-outline-primary btn-sm" data-toggle="modal"
-                 data-target="#addomplejo" @click="editRow(props.rowData)">
-                 <span class="fa fa-lg fa-edit"></span> Editar
-              </button>&nbsp;&nbsp;
-              <button class="btn btn-danger btn-sm" @click="deleteRow(props.rowData)">
-                <span class="fa fa-lg fa-trash"></span> Eliminar
-              </button>&nbsp;&nbsp;
-          </div>
+                   <a class="btn-outline-primary " href="#"
+                        data-toggle="tooltip" title="Editar Pago"
+                        @click="editRow(props.rowData)"
+                   >
+                       <i class="fa fa-lg fa-edit"></i>
+                   </a>
+                   <a class="btn-outline-danger  btn-danger"
+                        href="#" data-toggle="tooltip" title="Eliminar Pago"
+                        >
+                       <i class="fa fa-lg fa-trash"></i>
+                   </a>
+               </div>
            </template>
         </vuetable>
         <vuetable-pagination v-if="!showComplejo" ref="paginationComplejo"

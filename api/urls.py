@@ -8,7 +8,7 @@ from api.grupos.views import GruposList, GruposAdd, GruposDetail
 from api.lista_presentes.views import ListaPresenteList, ListaPresenteAdd, ListaPresenteDetail
 from api.listado_pagos.views import ListaPagosList, ListadoPagosAdd, ListadoPagosDetail
 from api.profesores.views import ProfesorList, ProfesorAdd, ProfesorDetail
-from api.promocion.views import PromocionList
+from api.promocion.views import PromocionList, PromocionAdd, PromocionDetail
 from api.transportista.views import TransportistaAdd, TransportistaDetail, TransportistaList
 from api.turno.views import *
 from django.conf.urls import url, include
@@ -23,8 +23,8 @@ urlpatterns = [
 
     url(r'^', include(router.urls)),
     url(r'promocion_list/', PromocionList.as_view(), name='promocion_list'),
-    #path('listado_pagos/', ListadoPagosAdd.as_view()),
-    #path('listado_pagos/<int:pk>/', ListadoPagosDetail.as_view()),
+    path('promocion/', PromocionAdd.as_view()),
+    path('promocion/<int:pk>/', PromocionDetail.as_view()),
 
     url(r'listado_pagos_list/', ListaPagosList.as_view(), name='listado_pagos_list'),
     path('listado_pagos/', ListadoPagosAdd.as_view()),
