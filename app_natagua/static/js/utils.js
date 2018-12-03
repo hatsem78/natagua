@@ -194,7 +194,7 @@ VeeValidate.Validator.extend('remarks', {
 	getMessage: field => {
 		return (`Se ingresaron caracteres invalidos`);
 	},
-  	validate: value => /^[A-Za-z0-9\*\.\-\@\?\/\ ]+$/.test(value)
+  	validate: value => /^[A-Za-z0-9\*\.\-\@\%\?\/\ ]+$/.test(value)
 });
 
 VeeValidate.Validator.extend('email_custom', {

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from app_natagua.models import ListadoPagos, Complejo, Turnos, Alumno
+from app_natagua.models import ListadoPagos, Complejo, Turnos, Alumno, Promocion
 
 
 class ListaPagosPagSerializer(serializers.ModelSerializer):
@@ -13,7 +13,7 @@ class ListaPagosPagSerializer(serializers.ModelSerializer):
             'matricula', 'adicional', 'pre_hora',
             'transporte', 'total_pagar', 'pago_parcial',
             'faltante', 'complejo_id', 'turno_id', 'get_alumno',
-            'description', 'forma_pago'
+            'description', 'forma_pago', 'promocion_id'
         )
 
 
@@ -24,6 +24,7 @@ class ListaPagosSerializer(serializers.ModelSerializer):
 
     alumno_id = serializers.IntegerField()
     complejo_id = serializers.IntegerField()
+    promocion_id = serializers.IntegerField()
     turno_id = serializers.IntegerField()
     fecha = serializers.DateTimeField()
     cuota = serializers.DecimalField(max_digits=6, decimal_places=2, default=0.00)
@@ -45,7 +46,7 @@ class ListaPagosSerializer(serializers.ModelSerializer):
             'matricula', 'adicional', 'pre_hora',
             'transporte', 'total_pagar', 'pago_parcial',
             'faltante', 'complejo_id', 'turno_id',
-            'description', 'forma_pago'
+            'description', 'forma_pago', 'promocion_id'
         )
 
     def create(self, validated_data):
@@ -53,9 +54,11 @@ class ListaPagosSerializer(serializers.ModelSerializer):
         validated_data['complejo_id'] = Complejo.objects.get(id=validated_data['complejo_id'])
         validated_data['alumno_id'] = Alumno.objects.get(id=validated_data['alumno_id'])
         validated_data['turno_id'] = Turnos.objects.get(id=validated_data['turno_id'])
+        validated_data['promocion_id'] = Promocion.objects.get(id=validated_data['promocion_id'])
         validated_data['complejo_id'] = validated_data['complejo_id'].pk
         validated_data['turno_id'] = validated_data['turno_id'].pk
         validated_data['alumno_id'] = validated_data['alumno_id'].pk
+        validated_data['promocion_id'] = validated_data['promocion_id'].pk
 
         pagos = ListadoPagos.objects.create(**validated_data)
 
@@ -79,6 +82,7 @@ class ListaPagosSerializer(serializers.ModelSerializer):
         instance.faltante = validated_data.get('faltante', instance.faltante)
         instance.forma_pago = validated_data.get('forma_pago', instance.forma_pago)
         instance.description = validated_data.get('description', instance.description)
+        instance.promocion_id = validated_data.get('promocion_id', instance.promocion_id)
 
         instance.save()
 

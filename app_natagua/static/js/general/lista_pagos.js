@@ -7,6 +7,100 @@ $("#dashboard").removeClass('active');
 
 Vue.component("v-select", VueSelect.VueSelect);
 
+Vue.component("impresion_factura",{
+
+   data(){
+       return {
+           titulo: 'Impresión Factura'
+       }
+   },
+   template:`
+   <div class="modal fade show" id="impresion_factura" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" width="100">
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="title_impresion_factura" v-text="titulo"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                    
+                <div class="modal-body">
+                    <div class="tile">
+                        <section class="invoice">
+                            <div class="row mb-4">
+                                <div class="col-6">
+                                  <h2 class="page-header"><i class="fa fa-globe"></i> Natagua</h2>
+                                </div>
+                                <div class="col-6">
+                                  <h5 class="text-right">Fecha: 01/01/2016</h5>
+                                </div>
+                            </div>
+                            <div class="row invoice-info">
+                                <div class="col-6">
+                                    <h5>Alumno</h5>
+                                    <address>
+                                        <strong>Vali Inc.</strong>
+                                        <br>518 Akshar Avenue
+                                        <br>Gandhi Marg
+                                        <br>New Delhi
+                                        <br>Email: hello@vali.com
+                                    </address>
+                                    
+                                    
+                                </div>
+                                <div class="col-6">
+                                    <h5>Natagua</h5>
+                                    <address>
+                                        <br>518 Akshar Avenue
+                                        <br>Gandhi Marg
+                                        <br>New Delhi
+                                        <br>Email: hello@vali.com
+                                    </address>
+                                </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-12 table-responsive">
+                              <table class="table table-striped">
+                                <thead>
+                                  <tr>
+                                    <th>id</th>
+                                    <th>Item</th>
+                                    <th class="text-right" >Subtotal</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>1</td>
+                                    <td>Pre-hora</td>
+                                    <td class="text-right">$41.32</td>
+                                  </tr>
+                                  
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                            <div class="row d-print-none mt-2">
+                            <div class="col-12 text-right" style="margin-left: -14px;">
+                                 <strong>200</strong>
+                            </div>
+                          </div>
+                        </section>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary m-progress" data-dismiss="modal">Cancelar</button>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>    
+   `
+});
+
 Vue.component('pagos_action',{
     props:{
         tipo:{
@@ -38,7 +132,9 @@ Vue.component('pagos_action',{
                 total_pagar: 0,
                 faltante: 0,
                 description: '',
-                forma_pago: ''
+                forma_pago: '',
+                promocion_id: 0,
+
             },
             anio: '',
             mes: [
@@ -68,7 +164,10 @@ Vue.component('pagos_action',{
             selecteComplejo: null,
             alumnos: [],
             SelectAlumnos: [],
-            idUpdate: this.id_update
+            idUpdate: this.id_update,
+            promocion: [],
+            selectPromocion: null,
+
         }
     },
     methods:{
@@ -132,6 +231,8 @@ Vue.component('pagos_action',{
             self.datos['mes'] = self.selecteMes.id;
             self.datos['fecha'] = `01-${self.selecteMes.id}-${self.anio}`;
             self.datos['forma_pago'] = self.selectFormaPago.id;
+            self.datos['promocion_id'] = self.selectPromocion.id;
+
 
 
             HTTP.put(`/listado_pagos/${self.datos.id}/`, self.datos)
@@ -151,6 +252,43 @@ Vue.component('pagos_action',{
                 console.log(err);
             })
         },
+        getPago: function (id) {
+            let self = this;
+            store.dispatch({type: 'setLoading',value: true});
+            HTTP.get(`listado_pagos/${id}/`)
+            .then((response) => {
+                var dia_hoy = new moment(response.data.fecha, 'YYYY-MM-DD');
+                self.anio =dia_hoy.year();
+
+                mes =dia_hoy.month();
+
+                self.datos = response.data;
+                self.datos.total_pagar = 0.00;
+                self.datos['alumno'] = {
+                    id: response.data.alumno_id,
+                    get_fullName: response.data.get_alumno,
+                };
+
+                self.selecteTurno = null;
+                self.selecteComplejo = self.complejos.filter((elemento) => elemento.id == self.datos.complejo_id);
+                self.selecteTurno = self.turnos.filter((elemento) => elemento.id == self.datos.turno_id);
+                self.selecteMes = self.mes[mes];
+                self.selectFormaPago = null;
+                self.selectFormaPago = self.formaPago.filter((elemento) => elemento.id == self.datos.forma_pago);
+                self.selectFormaPago = self.selectFormaPago[0];
+
+                self.selectPromocion = self.promocion[0];;
+                self.selectPromocion = self.promocion.filter((elemento) => elemento.id == self.datos.promocion_id);
+                self.selectPromocion = self.selectPromocion[0];
+
+
+                store.dispatch({type: 'setLoading',value: false});
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false});
+                console.log(err);
+            });
+        },
         getAllComplejo(){
             let self = this;
             HTTP.get(`complejo`)
@@ -163,6 +301,30 @@ Vue.component('pagos_action',{
                 });
                 self.complejos = listado;
                 self.selecteComplejo = listado[0];
+            })
+            .catch((err) => {
+                store.dispatch({type: 'setLoading',value: false });
+                console.log(err);
+            });
+        },
+        getAllPromocion(){
+            let self = this;
+            HTTP.get(`promocion`)
+            .then((response) => {
+                const listado = response.data.map((promocion) => {
+                    return {
+                        id: promocion.id,
+                        nombre: promocion.nombre,
+                        porcentaje: promocion.porcentaje
+                    }
+                });
+                self.promocion = listado;
+                self.promocion.unshift({
+                    id: -1,
+                    nombre: 'Seleccionar',
+                    porcentaje: 0
+                });
+                self.selectPromocion = self.promocion[0];
             })
             .catch((err) => {
                 store.dispatch({type: 'setLoading',value: false });
@@ -225,46 +387,24 @@ Vue.component('pagos_action',{
                 console.log(err);
             });
         },
-        getPago: function (id) {
-            let self = this;
-            store.dispatch({type: 'setLoading',value: true});
-            HTTP.get(`listado_pagos/${id}/`)
-            .then((response) => {
-                var dia_hoy = new moment(response.data.fecha, 'YYYY-MM-DD');
-                self.anio =dia_hoy.year();
-
-                mes =dia_hoy.month();
-
-                self.datos = response.data;
-                self.datos.total_pagar = 0.00;
-                self.datos['alumno'] = {
-                    id: response.data.alumno_id,
-                    get_fullName: response.data.get_alumno,
-                };
-
-                self.selecteTurno = null;
-                self.selecteComplejo = self.complejos.filter((elemento) => elemento.id == self.datos.complejo_id);
-                self.selecteTurno = self.turnos.filter((elemento) => elemento.id == self.datos.turno_id);
-                self.selecteMes = self.mes[mes];
-                self.selectFormaPago = null;
-                self.selectFormaPago = self.formaPago.filter((elemento) => elemento.id == self.datos.forma_pago);
-                self.selectFormaPago = self.selectFormaPago[0];
-
-
-                store.dispatch({type: 'setLoading',value: false});
-            })
-            .catch((err) => {
-                store.dispatch({type: 'setLoading',value: false});
-                console.log(err);
-            });
-        },
         calcular: function () {
-            this.datos.total_pagar =(
-                parseFloat(this.datos.cuota)+
-                parseFloat(this.datos.transporte)+
-                parseFloat(this.datos.pre_hora)+
-                parseFloat(this.datos.matricula)
-            );
+            let self = this;
+            self.datos.total_pagar =(
+                parseFloat(self.datos.cuota)+
+                parseFloat(self.datos.transporte)+
+                parseFloat(self.datos.pre_hora)+
+                parseFloat(self.datos.matricula)
+            ).toFixed(2);
+            if(self.selectPromocion.id > -1){
+                self.datos.total_pagar = (self.datos.total_pagar / parseFloat('1.'+self.selectPromocion.porcentaje)).toFixed(2);
+            }
+
+             if(isNaN(self.datos.pago_parcial)){
+                self.calcular();
+            }
+            else{
+                self.datos.faltante = (parseFloat(self.datos.total_pagar) - parseFloat(self.datos.pago_parcial)).toFixed(2);
+            }
         },
         pagoParcial: function () {
             let self = this;
@@ -273,19 +413,19 @@ Vue.component('pagos_action',{
                 self.calcular();
             }
             else{
-                self.datos.faltante = parseFloat(self.datos.total_pagar) - parseFloat(self.datos.pago_parcial);
+                self.datos.faltante = parseFloat(self.datos.total_pagar) - parseFloat(self.datos.pago_parcial).toFixed(2);
             }
-        }
+        },
+        show_factura(data){
+            let self = this;
+            //self.tipo = "pagos";
+            //self.dataAlumno = data;
+            $('#impresion_factura').modal('toggle');
+            //self.show_pagos(true);
+            //self.showTablaPago = false;
+        },
     },
     created: function() {
-
-    },
-    mounted: function() {
-        let self = this;
-
-        var dia_hoy = new Date();
-        self.anio =dia_hoy.getFullYear()
-
 
     },
     watch:{
@@ -314,6 +454,12 @@ Vue.component('pagos_action',{
             if(isNaN(val) || parseFloat(val) <= 0){
                 this.datos.faltante = parseFloat('0.00').toFixed(2);
             }
+            else{
+                this.datos.faltante = parseFloat(val).toFixed(2);
+            }
+        },
+        selectPromocion: function (val) {
+            this.calcular();
         }
     },
     mounted: function() {
@@ -322,6 +468,7 @@ Vue.component('pagos_action',{
         self.getAllTurnos();
         self.getAllComplejo();
         self.getAllProfesores();
+        self.getAllPromocion();
 
 
         var dia_hoy = new Date();
@@ -338,6 +485,7 @@ Vue.component('pagos_action',{
         }
     },
     template: `
+    <div>
         <div class="card col-md-12">
            <div class="card-header">
                 <div class="input-group-append" >
@@ -350,7 +498,7 @@ Vue.component('pagos_action',{
            <div class="card-body">
            
                 <div class="row">  
-                     <div class="col-md-2">
+                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Mes</label>
                             <v-select label="nombre" :options="mes" v-model="selecteMes"></v-select>
@@ -387,16 +535,20 @@ Vue.component('pagos_action',{
                             </div>
                         </div>
                     </div>  
-                    <div class="col-md-2">
+                    
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Forma De Pago</label>
                             <v-select label="nombre" :options="formaPago" v-model="selectFormaPago"></v-select>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Promación</label>
-                            <v-select label="nombre" :options="formaPago" v-model="selectFormaPago"></v-select>
+                            <v-select label="nombre" :options="promocion" v-model="selectPromocion"></v-select>
                         </div>
                     </div>
                 </div>
@@ -544,9 +696,6 @@ Vue.component('pagos_action',{
                         </div>
                     </div>
                    
-                   
-                    
-                
                 </div>
                     
                 <div class="row">
@@ -586,8 +735,8 @@ Vue.component('pagos_action',{
                             <label>Debe</label>
                             <div  :class="[
                                       { 
-                                        'has-error': errors.first('faltante'), 
-                                        'has-success': !errors.first('faltante') && datos.faltante !== ''
+                                        'has-error': (datos.faltante > 0), 
+                                        'has-success': (datos.faltante <= 0)
                                       }, 
                                       ]">
                                       
@@ -600,7 +749,7 @@ Vue.component('pagos_action',{
                                     v-validate="'required: true|maxCustom:10|decimal'" 
                                     :class="{
                                         'input': true, 
-                                        'has-error': errors.first('faltante') && datos.faltante == '', 
+                                        'has-error': (datos.faltante > 0), 
                                         'form-control': true
                                     }"
                                 >
@@ -645,13 +794,18 @@ Vue.component('pagos_action',{
                         </div>
                     </div>
                     
-                    
+                    <div class="col-2 text-right d-print-none mt-4">
+                        <a href="#" class="btn btn-outline-info btn-hover"
+                        
+                         data-toggle="modal"
+                        data-target="#impresion_factura"
+                         >
+                        <i class="fa fa-ticket"></i> Factura</a>
+                    </div>
                 </div>
                 
-                
-                
                 <div class="row">                        
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label>Descripción</label>
                             <div id="comment-add" :class="{ 'custom-actions': true, ' has-error': errors.first('comentario'), 
@@ -676,15 +830,12 @@ Vue.component('pagos_action',{
                         </div>
                         </div>
                     </div>
-                    <div class="col-4 text-right d-print-none mt-4">
-                        <a href="javascript:window.print();" target="_blank" class="btn btn-primary">
-                        <i class="fa fa-print"></i> Print</a></div>
-                    </div>
+                    
                 </div>
                 
                 <!--botones -->
                 <div class="row">
-                    <div class="col-md-12 text-right">
+                    <div class="col-md-8 text-right">
                         <button 
                             @click="cancelar()"
                             type="button" 
@@ -702,8 +853,14 @@ Vue.component('pagos_action',{
                         </button>
                     </div>
                 </div>
-            </div>
-        </div>`
+           </div>
+            
+        </div>
+        <impresion_factura>
+
+        </impresion_factura>
+        
+    </div>`
 
 });
 
@@ -903,7 +1060,7 @@ Vue.component('seleccion_alumno',{
                 
             </div>
         </div>
-
+        
     </div>
     `
 });
@@ -1088,6 +1245,7 @@ var pagos = new Vue({
             self.show_pagos(true);
             self.showTablaPago = false;
         },
+
         editRow: function (value) {
             let self = this;
             self.id_update = value.id;

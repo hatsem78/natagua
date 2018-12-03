@@ -15675,6 +15675,9 @@ be a descendant of the grid when it is being dragged.
 
 .has-error .form-control {
     color: #FF4A55;
+    border-color: #FF4A55;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 
 .has-error .form-control:focus {
@@ -15756,7 +15759,28 @@ be a descendant of the grid when it is being dragged.
     display: flex;
     padding: 0px;
     background: none;
-    border: 1px solid rgba(60,60,60,.26);
+    border: 0px solid rgba(60,60,60,.26);
     border-radius: 4px;
     white-space: normal;
+}
+
+
+.v-select .dropdown-menu {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 0;
+    width: auto;
+    overflow-y: scroll;
+    border: 1px solid rgba(0,0,0,.26);
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,.15);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    text-align: left;
+    list-style: none;
+    background: #fff;
 }

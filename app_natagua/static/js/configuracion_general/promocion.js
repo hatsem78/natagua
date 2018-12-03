@@ -192,7 +192,7 @@ Vue.component('promocion_action',{
                                     name="nombre" id="nombre" 
                                     placeholder="Nombre"  
                                     v-model='datos.nombre'
-                                    v-validate="'required:true|maxCustom:100|alphanumeric'" 
+                                    v-validate="'required:true|maxCustom:100|remarks'" 
                                     :class="{
                                         'input': true, 
                                         'has-error': errors.first('nombre') && datos.nombre == '', 

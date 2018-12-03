@@ -40,7 +40,7 @@ class PromocionSerializer(serializers.Serializer):
             'description'
         )
 
-
+    id = serializers.IntegerField(read_only=True)
     nombre = serializers.CharField(required=True, allow_blank=False, max_length=100)
     fecha_expiracion = serializers.DateTimeField()
     porcentaje = serializers.CharField(required=True, allow_blank=False, max_length=3)
