@@ -20,7 +20,7 @@ urlpatterns = [
 
 
     url(r'^', include(router.urls)),
-
+GITS
     url(r'listado_presente_list/', ListaPresenteList.as_view(), name='grupos_list'),
     path('listado_presente/', ListaPresenteAdd.as_view()),
     path('listado_presente/<int:pk>/', ListaPresenteDetail.as_view()),
