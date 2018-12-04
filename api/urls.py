@@ -3,6 +3,7 @@ from api.alumno.views import AlumnoList, AlumnoAdd, AlumnoDetail
 from api.complejo.views import ComplejoList, ComplejoAdd, ComplejoDetail
 
 from api.direcciones.views import ProvinciaList, ProvinciaDetail, LocalidadList
+from api.factura_pagos.views import FacturaPagosAdd, FacturaPagosDetail
 
 from api.grupos.views import GruposList, GruposAdd, GruposDetail
 from api.lista_presentes.views import ListaPresenteList, ListaPresenteAdd, ListaPresenteDetail
@@ -29,6 +30,11 @@ urlpatterns = [
     url(r'listado_pagos_list/', ListaPagosList.as_view(), name='listado_pagos_list'),
     path('listado_pagos/', ListadoPagosAdd.as_view()),
     path('listado_pagos/<int:pk>/', ListadoPagosDetail.as_view()),
+
+    #url(r'listado_pagos_list/', ListaPagosList.as_view(), name='listado_pagos_list'),
+    path('factura_pagos/', FacturaPagosAdd.as_view()),
+    path('factura_pagos/<int:pk>/', FacturaPagosDetail.as_view()),
+
 
     url(r'listado_presente_list/', ListaPresenteList.as_view(), name='grupos_list'),
     path('listado_presente/', ListaPresenteAdd.as_view()),

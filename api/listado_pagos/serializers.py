@@ -20,8 +20,7 @@ class ListaPagosPagSerializer(serializers.ModelSerializer):
 
 
 class ListaPagosSerializer(serializers.ModelSerializer):
-
-
+    id = serializers.IntegerField(read_only=True)
     alumno_id = serializers.IntegerField()
     complejo_id = serializers.IntegerField()
     promocion_id = serializers.IntegerField()
@@ -42,6 +41,7 @@ class ListaPagosSerializer(serializers.ModelSerializer):
     class Meta:
         model = ListadoPagos
         fields = (
+            'id',
             'alumno_id', 'fecha', 'cuota',
             'matricula', 'adicional', 'pre_hora',
             'transporte', 'total_pagar', 'pago_parcial',
@@ -54,11 +54,10 @@ class ListaPagosSerializer(serializers.ModelSerializer):
         validated_data['complejo_id'] = Complejo.objects.get(id=validated_data['complejo_id'])
         validated_data['alumno_id'] = Alumno.objects.get(id=validated_data['alumno_id'])
         validated_data['turno_id'] = Turnos.objects.get(id=validated_data['turno_id'])
-        validated_data['promocion_id'] = Promocion.objects.get(id=validated_data['promocion_id'])
         validated_data['complejo_id'] = validated_data['complejo_id'].pk
         validated_data['turno_id'] = validated_data['turno_id'].pk
         validated_data['alumno_id'] = validated_data['alumno_id'].pk
-        validated_data['promocion_id'] = validated_data['promocion_id'].pk
+
 
         pagos = ListadoPagos.objects.create(**validated_data)
 

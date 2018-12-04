@@ -296,7 +296,7 @@ class ListadoPagos(models.Model):
     turno = models.ForeignKey(Turnos, on_delete=models.CASCADE)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha = models.DateTimeField()
-    promocion = models.ForeignKey(Promocion, blank=True, null=True, on_delete=models.CASCADE)
+    promocion_id = models.IntegerField(default=1)
     cuota = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     matricula = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     adicional = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
@@ -333,7 +333,7 @@ class FacturaPagos(models.Model):
     class Meta:
         verbose_name_plural = "FacturaPagos"
 
-    alumno = models.ForeignKey(ListadoPagos, on_delete=models.CASCADE)
+    listado_pago = models.ForeignKey(ListadoPagos, on_delete=models.CASCADE)
     pago = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     fecha = models.DateTimeField(auto_now_add=True)
 

@@ -26,7 +26,6 @@ Vue.component("impresion_factura",{
         imprimir: function () {
             $('.invoice').printThis({
                 importCSS: true,
-                loadCSS: "https://cdn.jsdelivr.net/npm/pc-bootstrap4-datetimepicker@4.17/build/css/bootstrap-datetimepicker.min.css",
             });
         }
 
@@ -268,6 +267,9 @@ Vue.component('pagos_action',{
                 store.dispatch({type: 'setLoading',value: false});
                 console.log(err);
             });
+        },
+        addFacturaPago(){
+
         },
         updatePago: function () {
             let self = this;
@@ -808,8 +810,8 @@ Vue.component('pagos_action',{
                         </div>
                     </div>
                     
-                    <div class="col-2 text-right d-print-none mt-4">
-                        <a href="#" class="btn btn-outline-info btn-hover"
+                    <div class="col-2 text-right d-print-none mt-4" v-if="datos.pago_parcial > 0">
+                        <a href="#" class="btn btn-outline-info"
                             @click="show_factura(true)"
                             data-toggle="modal"
                             data-target="#impresion_factura"
