@@ -15784,3 +15784,9 @@ be a descendant of the grid when it is being dragged.
     list-style: none;
     background: #fff;
 }
+
+
+.table-print th, .table td {
+    padding: 0.30rem !important;
+
+}

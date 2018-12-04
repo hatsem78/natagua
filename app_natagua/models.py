@@ -322,4 +322,18 @@ class ListadoPagos(models.Model):
 
     @property
     def get_alumno(self):
-        return {self.alumno.value_from_object()}
+        return {
+            'fullName': self.alumno.apellido + ', ' + self.alumno.nombre,
+            'direccion': self.alumno.direccion,
+            'dni': self.alumno.dni,
+            'email': self.alumno.email,
+        }
+
+class FacturaPagos(models.Model):
+    class Meta:
+        verbose_name_plural = "FacturaPagos"
+
+    alumno = models.ForeignKey(ListadoPagos, on_delete=models.CASCADE)
+    pago = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    fecha = models.DateTimeField(auto_now_add=True)
+

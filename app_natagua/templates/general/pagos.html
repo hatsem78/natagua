@@ -19,7 +19,7 @@
     <div class="tile mb-4" id="listado_pagos">
          <div class="tile-title-w-btn">
             <h3 class="title">Listado</h3>
-            <p v-if="tipo != 'profesor_update'">
+            <p v-if="tipo != 'pago_update'">
                   <a
                       class="btn btn-info icon-btn"
                       href="#"
@@ -92,6 +92,8 @@
     <script src="{% static '/js/plugins/vue-select.js' %}"></script>
     <script src="{% static '/js/plugins/vue-bootstrap-datetimepicker.js' %}"></script>
     <script src="{% static '/js/plugins/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static '/js/plugins/printThis.js' %}"></script>
+
     <script src="{% static '/js/vue-table.js' %}"></script>
     <script src="{% static '/js/general/lista_pagos.js' %}"></script>
 

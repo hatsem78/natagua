@@ -8,14 +8,34 @@ $("#dashboard").removeClass('active');
 Vue.component("v-select", VueSelect.VueSelect);
 
 Vue.component("impresion_factura",{
+    props:{
+        dato_alumno:{
+            default: {},
+            tipy: Object,
+        },
+        complejo: null
 
-   data(){
+    },
+    data(){
        return {
-           titulo: 'Impresión Factura'
+           titulo: 'Impresión Factura',
+           fecha: moment().format('DD-MM-YYYY'),
        }
-   },
-   template:`
-   <div class="modal fade show" id="impresion_factura" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" width="100">
+    },
+    methods:{
+        imprimir: function () {
+            $('.invoice').printThis({
+                importCSS: true,
+                loadCSS: "https://cdn.jsdelivr.net/npm/pc-bootstrap4-datetimepicker@4.17/build/css/bootstrap-datetimepicker.min.css",
+            });
+        }
+
+    },
+    mounted(){
+        $('#impresion_factura').modal('toggle');
+    },
+    template:`
+    <div class="modal fade show" id="impresion_factura" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" width="100">
         <div class="modal-dialog modal-lg" role="document">
 
             <div class="modal-content">
@@ -28,70 +48,97 @@ Vue.component("impresion_factura",{
                 
                     
                 <div class="modal-body">
-                    <div class="tile">
+                    <div class="tile imprimir">
+                        
                         <section class="invoice">
                             <div class="row mb-4">
                                 <div class="col-6">
                                   <h2 class="page-header"><i class="fa fa-globe"></i> Natagua</h2>
+                                  <strong>Complejo:</strong> <span>{{ complejo }}</span>
                                 </div>
                                 <div class="col-6">
-                                  <h5 class="text-right">Fecha: 01/01/2016</h5>
+                                  <h5 class="text-right">Fecha: {{ fecha }}</h5>
                                 </div>
                             </div>
                             <div class="row invoice-info">
                                 <div class="col-6">
                                     <h5>Alumno</h5>
-                                    <address>
-                                        <strong>Vali Inc.</strong>
-                                        <br>518 Akshar Avenue
-                                        <br>Gandhi Marg
-                                        <br>New Delhi
-                                        <br>Email: hello@vali.com
+                                    <address class="pl-4">
+                                        <strong>{{ dato_alumno.get_alumno.fullName }}</strong>
+                                        <br>D.N.I: {{ dato_alumno.get_alumno.dni }}
+                                        <br>Dirección: {{ dato_alumno.get_alumno.direccion }}
+                                        <br>Email: {{ dato_alumno.get_alumno.email }}
                                     </address>
-                                    
-                                    
                                 </div>
                                 <div class="col-6">
                                     <h5>Natagua</h5>
-                                    <address>
-                                        <br>518 Akshar Avenue
-                                        <br>Gandhi Marg
-                                        <br>New Delhi
-                                        <br>Email: hello@vali.com
+                                    <address class="pl-4">
+                                        C.U.I.T: 13213213131
+                                        <br>Dirección: jhgjhgjgjgj
+                                        <br>Email: prueba@gmail.com
+                                        <br>Tel: 132134654613213
                                     </address>
                                 </div>
                             </div>
                             <div class="row">
-                            <div class="col-12 table-responsive">
-                              <table class="table table-striped">
-                                <thead>
-                                  <tr>
-                                    <th>id</th>
-                                    <th>Item</th>
-                                    <th class="text-right" >Subtotal</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td>1</td>
-                                    <td>Pre-hora</td>
-                                    <td class="text-right">$41.32</td>
-                                  </tr>
-                                  
-                                </tbody>
-                              </table>
+                                <div class="col-12 table-responsive">
+                                    <table class="table-print table ">
+                                        <thead>
+                                            <tr>
+                                                <th>Descripcón</th>
+                                                <th class="text-right" >Subtotal</th>
+                                            </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-if="dato_alumno.cuota">
+                                            <td>Cuota</td>
+                                            <td class="text-right">{{ dato_alumno.cuota }}</td>
+                                        </tr>
+                                        <tr v-if="dato_alumno.matricula">
+                                            <td>Matricula</td>
+                                            <td class="text-right">{{ dato_alumno.matricula }}</td>
+                                        </tr>
+                                        <tr v-if="dato_alumno.transporte">
+                                            <td>Transporte</td>
+                                            <td class="text-right">{{ dato_alumno.transporte }}</td>
+                                        </tr>
+                                        <tr v-if="dato_alumno.pre_hora">
+                                            <td>Pre-hora</td>
+                                            <td class="text-right">{{ dato_alumno.pre_hora }}</td>
+                                        </tr>
+                                        
+                                        <tr v-if="dato_alumno.pago_parcial">
+                                            <td>Pago Parcial</td>
+                                            <td class="text-right">{{ dato_alumno.pago_parcial }}</td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                  </table>
+                                    <div class="col-12 text-right" style="font-size: 1rem;" >
+                                         Total a Pagar: <strong>{{ dato_alumno.total_pagar }}</strong>
+                                         <br>
+                                         Faltante Pago: <strong>{{ dato_alumno.faltante }}</strong>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
-                            <div class="row d-print-none mt-2">
-                            <div class="col-12 text-right" style="margin-left: -14px;">
-                                 <strong>200</strong>
-                            </div>
-                          </div>
+                            
                         </section>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary m-progress" data-dismiss="modal">Cancelar</button>
+                    <button 
+                        type="button" 
+                        class="btn btn-default m-progress" 
+                        data-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button 
+                        type="button" 
+                        class="btn btn-primary m-progress" 
+                        
+                        @click="imprimir">
+                        Imprimir
+                    </button>
                 </div>
                 
             </div>
@@ -167,6 +214,7 @@ Vue.component('pagos_action',{
             idUpdate: this.id_update,
             promocion: [],
             selectPromocion: null,
+            show_impresion: false,
 
         }
     },
@@ -266,7 +314,7 @@ Vue.component('pagos_action',{
                 self.datos.total_pagar = 0.00;
                 self.datos['alumno'] = {
                     id: response.data.alumno_id,
-                    get_fullName: response.data.get_alumno,
+                    get_fullName: response.data.get_alumno.fullName,
                 };
 
                 self.selecteTurno = null;
@@ -349,44 +397,6 @@ Vue.component('pagos_action',{
                 console.log(err);
             });
         },
-        getAllProfesores(){
-            let self = this;
-            HTTP.get(`profesor`)
-            .then((response) => {
-                const listado = response.data.map((profesor) => {
-                    return {
-                        id: profesor.id,
-                        nombre:`${profesor.apellido} ${profesor.nombre}`
-                    }
-                });
-                self.profesores = listado;
-                //self.SelectProfesores = listado[0];
-            })
-            .catch((err) => {
-                store.dispatch({type: 'setLoading',value: false });
-                console.log(err);
-            });
-        },
-        getAllAlumnos(){
-            let self = this;
-            HTTP.get(`alumno`)
-            .then((response) => {
-                const listado = response.data.map((alumno) => {
-                    return {
-                        id: alumno.id,
-                        nombre:`${alumno.apellido} ${alumno.nombre}, edad: ${alumno.edad}`,
-                        edad: alumno.edad,
-                    }
-                });
-                self.alumnos = listado;
-                self.alumnosFilter = listado;
-                //self.SelectProfesores = listado[0];
-            })
-            .catch((err) => {
-                store.dispatch({type: 'setLoading',value: false });
-                console.log(err);
-            });
-        },
         calcular: function () {
             let self = this;
             self.datos.total_pagar =(
@@ -416,14 +426,19 @@ Vue.component('pagos_action',{
                 self.datos.faltante = parseFloat(self.datos.total_pagar) - parseFloat(self.datos.pago_parcial).toFixed(2);
             }
         },
-        show_factura(data){
+        show_factura(val){
+
             let self = this;
-            //self.tipo = "pagos";
-            //self.dataAlumno = data;
+            if(val){
+                self.show_impresion = true;
+                $('#impresion_factura').modal('toggle');
+            }
+            else{
+                $('#impresion_factura').modal('toggle');
+            }
             $('#impresion_factura').modal('toggle');
-            //self.show_pagos(true);
-            //self.showTablaPago = false;
         },
+
     },
     created: function() {
 
@@ -467,7 +482,6 @@ Vue.component('pagos_action',{
 
         self.getAllTurnos();
         self.getAllComplejo();
-        self.getAllProfesores();
         self.getAllPromocion();
 
 
@@ -796,9 +810,9 @@ Vue.component('pagos_action',{
                     
                     <div class="col-2 text-right d-print-none mt-4">
                         <a href="#" class="btn btn-outline-info btn-hover"
-                        
-                         data-toggle="modal"
-                        data-target="#impresion_factura"
+                            @click="show_factura(true)"
+                            data-toggle="modal"
+                            data-target="#impresion_factura"
                          >
                         <i class="fa fa-ticket"></i> Factura</a>
                     </div>
@@ -856,7 +870,11 @@ Vue.component('pagos_action',{
            </div>
             
         </div>
-        <impresion_factura>
+        <impresion_factura
+            v-if="show_impresion"
+            :dato_alumno="datos"  
+            :complejo="selecteComplejo[0].nombre"  
+        >
 
         </impresion_factura>
         
@@ -1084,9 +1102,9 @@ var pagos = new Vue({
                 sortField: 'id'
             },
             {
-                name: 'get_alumno',
+                name: 'get_alumno.fullName',
                 title: 'Alumno',
-                sortField: 'get_alumno'
+                sortField: 'get_alumno.fullName'
             },
             {
                 name: 'cuota',
