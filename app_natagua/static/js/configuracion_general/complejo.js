@@ -325,11 +325,6 @@ Vue.component('complejo_action',{
 
 });
 
-
-
-
-
-
 var complejo = new Vue({
     el: '#complejos',
     delimiters: ['${','}'],

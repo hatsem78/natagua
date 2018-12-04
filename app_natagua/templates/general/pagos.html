@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% block stylesheets %}
+    {{ block.super }}
+    <link href="https://cdn.jsdelivr.net/npm/pc-bootstrap4-datetimepicker@4.17/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+{% block content %}
+    <div class="app-title">
+        <div>
+          <h1><i class="fa fa-list-ul"></i> Listado Presentes</h1>
+          <p>Se toma la lista de los alumnos presente según el grupo</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+        </ul>
+    </div>
+    <div class="tile mb-4" id="listado_pagos">
+         <div class="tile-title-w-btn">
+            <h3 class="title">Listado</h3>
+            <p v-if="tipo != 'pago_update'">
+                  <a
+                      class="btn btn-info icon-btn"
+                      href="#"
+                      data-toggle="modal"
+                      data-target="#select_alumnos"
+                      @click="show_alumnos(true)"
+                  >
+                      <i class="fa fa-plus"></i>Alta de Pagos
+                  </a>
+            </p>
+        </div>
+
+        <div class="col-md-12">
+            <vuetable
+                v-if="showTablaPago"
+                ref="vuetableListadoPagos"
+                api-url="{% url 'listado_pagos_list' %}"
+                :fields="fieldes"
+                :sort-order="sortOrder"
+                :css="css.table"
+                pagination-path=""
+                :per-page="3"
+                @vuetable:pagination-data="onPaginationData"
+                @vuetable:loading="onLoading"
+                @vuetable:loaded="onLoaded">
+
+                <template slot="actions" slot-scope="props">
+                    <div class="table-button-container">
+                       <a class="btn-outline-primary " href="#"
+                            data-toggle="tooltip" title="Editar Pago"
+                            @click="editRow(props.rowData)"
+                       >
+                           <i class="fa fa-lg fa-edit"></i>
+                       </a>
+                       <a class="btn-outline-danger  btn-danger"
+                            href="#" data-toggle="tooltip" title="Eliminar Pago"
+                            >
+                           <i class="fa fa-lg fa-trash"></i>
+                       </a>
+                    </div>
+                </template>
+
+            </vuetable>
+            <vuetable-pagination  v-if="showTablaPago" ref="paginationListadoPagos"
+              :css="css.pagination"
+              @vuetable-pagination:change-page="onChangePage"
+            ></vuetable-pagination>
+
+
+            <input type="hidden" id="alumno_url" value="{% url 'alumno_list' %}">
+            <seleccion_alumno
+                :show="showSelectAlumnos"
+                @alumno_select="show_cuota">
+            </seleccion_alumno>
+
+            <pagos_action
+                v-if="showPagos"
+                :data_alumno="dataAlumno"
+                :tipo="tipo"
+                :titulo_new="titulo"
+                :id_update="id_update"
+                @close="show_pagos(false)"
+            ></pagos_action>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ block.super }}
+    <script src="{% static '/js/plugins/vue-select.js' %}"></script>
+    <script src="{% static '/js/plugins/vue-bootstrap-datetimepicker.js' %}"></script>
+    <script src="{% static '/js/plugins/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static '/js/plugins/printThis.js' %}"></script>
+
+    <script src="{% static '/js/vue-table.js' %}"></script>
+    <script src="{% static '/js/general/lista_pagos.js' %}"></script>
+
+
+{% endblock javascripts %}

@@ -10,9 +10,17 @@ from app_natagua.models import Grupos
 
 
 class GruposList(generics.ListAPIView):
-    queryset = snippets = Grupos.objects.get_queryset().order_by('id')
+    #queryset = Grupos.objects.get_queryset().order_by('id')
     serializer_class = GruposPagSerializer
     pagination_class = Pagination
+
+    def get_queryset(self):
+        mes = self.request.GET.get('get_mes', None)
+        if mes != None:
+            grupos = Grupos.objects.filter(mes__contains=3).order_by('id')
+        else:
+            grupos = Grupos.objects.get_queryset().order_by('id')
+        return grupos
 
 class GruposAdd(APIView):
     """

@@ -9,8 +9,10 @@ class GruposPagSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Grupos
-        fields = ('id', 'getfecha', 'get_turno_name', 'get_edad', 'get_profesor', 'profesor', 'alumno'
-                  , 'edad_min', 'edad_max')
+        fields = ('id', 'get_mes', 'getfecha', 'get_turno_name', 'get_edad', 'get_profesor', 'profesor', 'alumno'
+                  , 'edad_min', 'edad_max', )
+
+
 
 
 class GruposSerializer(serializers.ModelSerializer):
@@ -21,6 +23,8 @@ class GruposSerializer(serializers.ModelSerializer):
     alumno = serializers.PrimaryKeyRelatedField(queryset=Alumno.objects.all(), many=True)
     edad_min = serializers.IntegerField(default=1)
     edad_max = serializers.IntegerField(default=1)
+
+
 
     class Meta:
         model = Grupos
