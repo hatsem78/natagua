@@ -1,19 +1,34 @@
 Vue.component('vuetable-pagination', window.Vuetable.VuetablePagination);
 Vue.component('vuetable', window.Vuetable.Vuetable);
 $("#configuracion_general").addClass('is-expanded');
-$("#menu_complejo").addClass('active');
+$("#menu_promocion").addClass('active');
 $("#dashboard").removeClass('active');
 
-Vue.component('complejo_action',{
+moment.locale('es', {
+    months: 'Enero_Febrero_Marzo_Abril_Mayo_Junio_Julio_Agosto_Septiembre_Octubre_Noviembre_Diciembre'.split('_'),
+    weekdays : 'domingo_lunes_martes_miércoles_jueves_viernes_sábado'.split('_'),
+    weekdaysShort : 'dom._lun._mar._mié._jue._vie._sáb.'.split('_'),
+    weekdaysMin : 'Do_Lu_Ma_Mi_Ju_Vi_Sá'.split('_'),
+    relativeTime: {
+        future: 'Faltan %s',
+        d: '%d día',
+        dd: '%d días'
+    }
+});
+
+
+Vue.component('date-picker', VueBootstrapDatetimePicker);
+
+Vue.component('promocion_action',{
     props:{
         tipo:{
             type: String,
-            default: 'complejo'
+            default: 'promocion'
         },
         id_update: null,
         titulo_new: {
             type: String,
-            default: 'Agregar Complejo'
+            default: 'Agregar Promoción'
         },
     },
     inject:['$validator'],
@@ -24,11 +39,21 @@ Vue.component('complejo_action',{
             datos:{
                 id:'',
                 nombre:'',
-                telefono: '',
-                direccion:'',
-                email: '',
+                porcentaje: '',
+                fecha_expiracion:'',
+                expiracion: false,
+                activo: true,
+                description: ''
             },
-            idUpdate: this.id_update
+            idUpdate: this.id_update,
+            date: null,
+            config: {
+            // https://momentjs.com/docs/#/displaying/
+              format: 'DD/MM/YYYY h:mm:ss',
+              useCurrent: false,
+              showClear: true,
+              showClose: true,
+            },
         }
     },
     methods:{
@@ -38,24 +63,31 @@ Vue.component('complejo_action',{
         guardar: function () {
             let self = this;
             switch (this.accion) {
-                case 'complejo':
-                    self.titulo = 'Agregar Complejo';
-                    self.addComplejo();
+                case 'promocion':
+                    self.titulo = 'Agregar Promoción';
+                    self.addPromocion();
                     break;
-                case 'complejo_update':
-                    self.titulo = "Modificar Complejo";
-                    self.updateComplejo();
+                case 'promocion_update':
+                    self.titulo = "Modificar Promoción";
+                    self.updatePromocion();
                     break;
                 default:
                     break;
             };
         },
-        getComplejo: function (id) {
+        getPromocion: function (id) {
             let self = this;
             store.dispatch({type: 'setLoading',value: true});
-            HTTP.get(`complejo/${id}/`)
+            HTTP.get(`promocion/${id}/`)
             .then((response) => {
+
                 self.datos = response.data;
+                if(self.datos.fecha_expiracion.indexOf('1900') >= 0){
+                    self.datos.fecha_expiracion = '';
+                }
+                else{
+                    self.datos.fecha_expiracion = moment(self.datos.fecha_expiracion, 'YYYY-MM-DD').format('DD-MM-YYYY');
+                }
                 store.dispatch({type: 'setLoading',value: false});
             })
             .catch((err) => {
@@ -63,7 +95,7 @@ Vue.component('complejo_action',{
                 console.log(err);
             });
         },
-        addComplejo: function () {
+        addPromocion: function () {
             let self = this;
 
             store.dispatch({type: 'setLoading',value: true });
@@ -71,15 +103,15 @@ Vue.component('complejo_action',{
             .then(function(response){
                 if (response) {
 
-                    HTTP.post('/complejo/', self.datos)
+                    HTTP.post('/promocion/', self.datos)
                     .then((response) => {
-                        if(response.data.error && response.data.error.indexOf('UNIQUE constraint failed: app_natagua_complejo.nombre') >= 0){
-                            notifier.alert('El Complejo ya se encuentra registrado');
+                        if(response.data.error){
+                            notifier.alert('Ocurrio un error al guardar');
                         }
                         else{
-                            notifier.success('El Complejo se Guardo correctamente');
-                            self.accion = 'complejo_update';
-                            self.titulo = "Modificar Complejo";
+                            notifier.success('El Promoción se Guardo correctamente');
+                            self.accion = 'promocion_update';
+                            self.titulo = "Modificar Promoción";
                             self.datos.id = response.data.id;
                         }
 
@@ -92,21 +124,24 @@ Vue.component('complejo_action',{
                 store.dispatch({type: 'setLoading',value: false });
             });
         },
-        updateComplejo: function () {
+        updatePromocion: function () {
             let self = this;
 
             store.dispatch({type: 'setLoading',value: true });
+            if(!self.datos.expiracion){
+                self.datos.fecha_expiracion = ''
+            }
 
-            HTTP.put(`/complejo/${self.datos.id}/`, self.datos)
+            HTTP.put(`/promocion/${self.idUpdate}/`, self.datos)
             .then((response) => {
                 store.dispatch({type: 'setLoading',value: false });
-                if(response.data.error && response.data.error.indexOf('UNIQUE constraint failed: app_natagua_complejo.nombre') >= 0){
-                    notifier.alert('El Complejo ya se encuentra registrado');
+                if(response.data.error ){
+                    notifier.alert('Ocurrio un error al guardar la Promoción');
                 }
                 else{
-                    notifier.success('El Complejo se Guardo correctamente');
-                    self.accion = 'complejo_update';
-                    self.titulo = "Modificar Complejo";
+                    notifier.success('El Promoción se Guardo correctamente');
+                    self.accion = 'promocion_update';
+                    self.titulo = "Modificar Promoción";
                     self.datos.id = response.data.id;
                 }
             })
@@ -130,9 +165,9 @@ Vue.component('complejo_action',{
         let self = this;
 
         switch (this.accion) {
-            case 'complejo_update':
-                self.titulo = "Modificar Complejo";
-                self.getTransportista(self.idUpdate);
+            case 'promocion_update':
+                self.titulo = "Modificar Promoción";
+                self.getPromocion(self.idUpdate);
                 break;
         };
     },
@@ -142,7 +177,7 @@ Vue.component('complejo_action',{
             <div class="card-body">
                 
                 <div class="row">
-                    <div class="col-md-6 pl-1">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label>Nombre*</label>
                             <div  :class="[
@@ -157,7 +192,7 @@ Vue.component('complejo_action',{
                                     name="nombre" id="nombre" 
                                     placeholder="Nombre"  
                                     v-model='datos.nombre'
-                                    v-validate="'required:true|max:127|alphanumeric'" 
+                                    v-validate="'required:true|maxCustom:100|remarks'" 
                                     :class="{
                                         'input': true, 
                                         'has-error': errors.first('nombre') && datos.nombre == '', 
@@ -177,32 +212,32 @@ Vue.component('complejo_action',{
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Email</label>
+                            <label>Prcentaje*</label>
                             <div  :class="[
                                       { 
-                                        'has-error': errors.first('email'), 
-                                        'has-success': !errors.first('email') && datos.email !== ''
+                                        'has-error': errors.first('porcentaje'), 
+                                        'has-success': !errors.first('porcentaje') && datos.porcentaje !== ''
                                       }, 
                                       ]">
                                       
                                 <input 
                                     type="text" 
-                                    name="email" id="email" 
-                                    placeholder="Email"  
-                                    v-model='datos.email'
-                                    v-validate="'maxCustom:100|email_custom'" 
+                                    name="porcentaje" id="porcentaje" 
+                                    placeholder="porcentaje"  
+                                    v-model='datos.porcentaje'
+                                    v-validate="'required:true|maxCustom:3|numeric|porcentaje'" 
                                     :class="{
                                         'input': true, 
-                                        'has-error': errors.first('email') && datos.email == '', 
+                                        'has-error': errors.first('porcentaje') && datos.porcentaje == '', 
                                         'form-control': true
                                     }"
                                 >
                                 <div class="errors help-block">
-                                    <span v-show="errors.first('email')"
-                                        class="help error">{{ errors.first('email') }}
+                                    <span v-show="errors.first('porcentaje')"
+                                        class="help error">{{ errors.first('porcentaje') }}
                                     </span>
                                 </div> 
-                            </div>
+                            </div>  
                         </div>
                     </div>
                 </div>
@@ -210,66 +245,31 @@ Vue.component('complejo_action',{
                 <div class="row">
                     <div class="col-md-6 pr-1">
                         <div class="form-group">
-                            <label>Teléfono</label>
-                            <div  :class="[
-                                      { 
-                                        'has-error': errors.first('telefono'), 
-                                        'has-success': !errors.first('telefono') && datos.telefono !== ''
-                                      }, 
-                                      ]">
-                                      
-                                <input 
-                                    type="telefono" 
-                                    name="telefono" id="telefono" 
-                                    placeholder="Teléfono"  
-                                    v-model='datos.telefono'
-                                    v-validate="'max:20|numeric'" 
-                                    :class="{
-                                        'input': true, 
-                                        'has-error': errors.first('telefono') && datos.telefono == '', 
-                                        'form-control': true
-                                    }"
-                                >
-                                <div class="errors help-block">
-                                    <span v-show="errors.first('telefono')"
-                                        class="help error">{{ errors.first('telefono') }}
-                                    </span>
-                                </div> 
-                            </div>
+                            <label>Fecha Expiracion</label>
+                            <date-picker 
+                                :disabled="!datos.expiracion"
+                                id="date_picker"
+                                v-model="datos.fecha_expiracion" 
+                                :config="{format: 'DD/MM/YYYY', locale: 'es'}">
+                                :useCurrent='true' 
+                                :language="es"   
+                            </date-picker>
+                        </div>
+                    </div>
+                    <div class="col-md-2 mt-lg-4">
+                        <div class="form-group">
+                            <label>Expira</label>
+                            <input type="checkbox" id="expiracion" value="true" v-model="datos.expiracion">
                         </div>
                     </div>
                     
                 </div>
                 
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-2 mt-lg-4">
                         <div class="form-group">
-                            <label>Dirección</label>
-                            <div  :class="[
-                                      { 
-                                        'has-error': errors.first('direccion'), 
-                                        'has-success': !errors.first('direccion') && datos.direccion !== ''
-                                      }, 
-                                      ]">
-                                      
-                                <input 
-                                    type="text" 
-                                    name="direccion" id="direccion" 
-                                    placeholder="Dirección"  
-                                    v-model='datos.direccion'
-                                    v-validate="'maxCustom:100|alphanumeric'" 
-                                    :class="{
-                                        'input': true, 
-                                        'has-error': errors.first('direccion') && datos.direccion == '', 
-                                        'form-control': true
-                                    }"
-                                >
-                                <div class="errors help-block">
-                                    <span v-show="errors.first('direccion')"
-                                        class="help error">{{ errors.first('direccion') }}
-                                    </span>
-                                </div> 
-                            </div>
+                            <label>Activo</label>
+                            <input type="checkbox" id="expiracion" value="true" v-model="datos.activo">
                         </div>
                     </div>
                 </div>
@@ -279,23 +279,23 @@ Vue.component('complejo_action',{
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Descripción</label>
-                            <div id="comment-add" :class="{ 'custom-actions': true, ' has-error': errors.first('comentario'), 
-		                        'has-success': !errors.first('comentario') && datos.description !== '' }">
+                            <div id="comment-add" :class="{ 'custom-actions': true, ' has-error': errors.first('description'), 
+		                        'has-success': !errors.first('description') && datos.description !== '' }">
                             <textarea 
-                                name="comentario"
-                                id="comentario"
+                                name="description"
+                                id="description"
                                 rows="5"
                                 maxlength="197"
                                 placeholder="Descripción"
                                 v-model='datos.description'
                                 v-validate="'maxCustom:198|remarks'"
-                                :class="{'input': true, 'has-error': errors.first('comentario'), 'form-control': true }" 
+                                :class="{'input': true, 'has-error': errors.first('description'), 'form-control': true }" 
                             >
                             </textarea>
                             
                             <div class="errors help-block" id="comment-error">
-                                <span v-show="errors.first('comentario')"
-                                    class="help error">{{ errors.first('comentario') }}
+                                <span v-show="errors.first('description')"
+                                    class="help error">{{ errors.first('description') }}
                                 </span>
                             </div>
                         </div>
@@ -325,11 +325,11 @@ Vue.component('complejo_action',{
 
 });
 
-var complejo = new Vue({
-    el: '#complejos',
+var promocion = new Vue({
+    el: '#promocion',
     delimiters: ['${','}'],
     data: {
-        titulo:'Agregar Complejo',
+        titulo:'Agregar Promoción',
         turno: [],
         tipo: '',
         loading: false,
@@ -348,19 +348,27 @@ var complejo = new Vue({
                 sortField: 'nombre'
             },
             {
-                name: 'telefono',
-                title: 'Teléfono',
-                sortField: 'telefono'
+                name: 'porcentaje',
+                title: 'Porcentaje',
+                sortField: 'porcentaje'
             },
             {
-                name: 'direccion',
-                title: 'Dirección',
-                sortField: 'direccion'
+                name: 'fecha_expiracion',
+                title: 'Fecha Expiración',
+                callback: 'expiracion',
+                sortField: 'fecha_expiracion'
             },
             {
-                name: 'email',
-                title: 'Email',
-                sortField: 'email'
+                name: 'expiracion',
+                title: 'Expiracion',
+                callback: 'activo',
+                sortField: 'expiracion'
+            },
+            {
+                name: 'activo',
+                title: 'Activo',
+                callback: 'activo',
+                sortField: 'activo'
             },
             {
               name: '__slot:actions',   // <----
@@ -396,31 +404,38 @@ var complejo = new Vue({
         }
         },
         action: true,
-        showComplejo: false,
+        showPromocion: false,
         id_update: 0,
     },
     mounted: function() {
         //this.getTurnos();
     },
     methods: {
-        onPaginationData: function(paginationData) {
-            this.$refs.paginationComplejo.setPaginationData(paginationData)
+        activo: function(value){
+            return (value)? 'Activo': 'Inactivo';
         },
-        show_complejo:function(value){
+        expiracion: function(value){
+
+            return (value.indexOf('1900') <= -1)? moment(value, 'YYYY-MM-DD').format('DD-MM-YYYY'): '';
+        },
+        onPaginationData: function(paginationData) {
+            this.$refs.paginationPromocion.setPaginationData(paginationData)
+        },
+        show_promocion:function(value){
             let self = this;
             if(value){
-                self.showComplejo = value;
+                self.showPromocion = value;
             }
             else{
-                self.showComplejo = value;
-                self.tipo = 'complejo';
+                self.showPromocion = value;
+                self.tipo = 'promocion';
                 self.refresh();
             }
         },
-        deleteComplejo: function (id) {
+        deletePromocion: function (id) {
             let self = this;
             store.dispatch({type: 'setLoading',value: true });
-            HTTP.delete(`/complejo/${id}/`)
+            HTTP.delete(`/promocion/${id}/`)
             .then((response) => {
 
                 store.dispatch({type: 'setLoading',value: false });
@@ -436,20 +451,20 @@ var complejo = new Vue({
             this.$refs.vuetable.changePage(page)
         },
         deleteRow: function(rowData){
-            this.deleteComplejo(rowData.id);
+            this.deletePromocion(rowData.id);
         },
-        addComplejo: function () {
+        addPromocion: function () {
             let self = this;
-            self.titulo = "Agregar Complejo";
-            self.tipo = 'complejo';
-            self.show_complejo(true);
+            self.titulo = "Agregar Promoción";
+            self.tipo = 'promocion';
+            self.show_promocion(true);
         },
         editRow: function (value) {
             let self = this;
             self.id_update = value.id;
-            self.titulo = "Modificar Complejo";
-            self.tipo = 'complejo_update';
-            self.show_complejo(true);
+            self.titulo = "Modificar Promoción";
+            self.tipo = 'promocion_update';
+            self.show_promocion(true);
         },
         onLoading: function() {
 
@@ -457,7 +472,7 @@ var complejo = new Vue({
         refresh: function() {
             let self = this;
             self.$nextTick(()=>{
-              self.$refs.vuetableComplejo.refresh();
+              self.$refs.vuetablePromocion.refresh();
               store.dispatch({type: 'setLoading',value: false });
             })
         },

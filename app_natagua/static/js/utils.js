@@ -81,6 +81,14 @@ VeeValidate.Validator.extend('alphanumeric', {
 });
 
 
+VeeValidate.Validator.extend('decimal', {
+	getMessage: field => {
+		return ('Número invalido solo dos decimales')
+	},
+  	validate: value => /^\d+(\.\d{1,2})?$/.test(value)
+});
+
+
 VeeValidate.Validator.extend('maxCustom', {
 	getMessage: (field, args) => {
 		return ('Ha superado el límite de texto, el cual es de '+args+' caracteres')
@@ -108,6 +116,21 @@ VeeValidate.Validator.extend('required', {
         }
     }
 });
+
+VeeValidate.Validator.extend('porcentaje', {
+	getMessage: field => {
+		return ('El porcentaje no puede superar 100%')
+	},
+  	validate(value, option) {
+	    if(value > 100){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+});
+
 
 VeeValidate.Validator.extend('numeric', {
 	getMessage: field => {
@@ -171,7 +194,7 @@ VeeValidate.Validator.extend('remarks', {
 	getMessage: field => {
 		return (`Se ingresaron caracteres invalidos`);
 	},
-  	validate: value => /^[A-Za-z0-9\*\.\-\@\?\/\ ]+$/.test(value)
+  	validate: value => /^[A-Za-z0-9\*\.\-\@\%\?\/\ ]+$/.test(value)
 });
 
 VeeValidate.Validator.extend('email_custom', {
@@ -180,3 +203,5 @@ VeeValidate.Validator.extend('email_custom', {
 	},
   	validate: value => /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))+$/.test(value)
 });
+
+

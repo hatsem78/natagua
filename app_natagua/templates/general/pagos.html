@@ -8,44 +8,40 @@
 {% block content %}
     <div class="app-title">
         <div>
-          <h1><i class="fa fa-dashboard"></i> Grupos</h1>
-          <p>Creación, modifición, eliminación y listado</p>
+          <h1><i class="fa fa-list-ul"></i> Listado Presentes</h1>
+          <p>Se toma la lista de los alumnos presente según el grupo</p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
           <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
         </ul>
     </div>
-    <div class="tile mb-4" id="grupos">
-        <div class="tile-title-w-btn">
+    <div class="tile mb-4" id="listado_pagos">
+         <div class="tile-title-w-btn">
             <h3 class="title">Listado</h3>
-            <p v-if="tipo != 'grupos_update'">
+            <p v-if="tipo != 'pago_update'">
                   <a
                       class="btn btn-info icon-btn"
                       href="#"
-                      @click="addGrupos(true)"
+                      data-toggle="modal"
+                      data-target="#select_alumnos"
+                      @click="show_alumnos(true)"
                   >
-                      <i class="fa fa-plus"></i>Nuevo Grupos
+                      <i class="fa fa-plus"></i>Alta de Pagos
                   </a>
             </p>
         </div>
-        <!-- <div class="form-inline form-group">
-            <label>Search:</label>
-            <input v-model="filterText" class="form-control" @keyup.enter="onFilterSet" placeholder="Ticket number, reasons, car name and more.">
-            <button class="btn btn-primary" @click="onFilterSet">Go</button>
-            <button class="btn btn-default" @click="onFilterReset">Reset</button>
-        </div> -->
-        <div class="row">
+
+        <div class="col-md-12">
             <vuetable
-                v-if="!showGrupos"
-                ref="vuetableGrupos"
-                api-url="{% url 'grupos_list' %}"
+                v-if="showTablaPago"
+                ref="vuetableListadoPagos"
+                api-url="{% url 'listado_pagos_list' %}"
                 :fields="fieldes"
                 :sort-order="sortOrder"
                 :css="css.table"
                 pagination-path=""
-                :per-page="25"
-                :append-params="moreParams"
+                :per-page="3"
                 @vuetable:pagination-data="onPaginationData"
                 @vuetable:loading="onLoading"
                 @vuetable:loaded="onLoaded">
@@ -65,22 +61,28 @@
                        </a>
                     </div>
                 </template>
+
             </vuetable>
-            <vuetable-pagination v-if="!showGrupos" ref="paginationGrupos"
+            <vuetable-pagination  v-if="showTablaPago" ref="paginationListadoPagos"
               :css="css.pagination"
               @vuetable-pagination:change-page="onChangePage"
             ></vuetable-pagination>
-        </div>
 
 
-        <div class="col-md-10">
-            <grupos_action
-                v-if="showGrupos"
+            <input type="hidden" id="alumno_url" value="{% url 'alumno_list' %}">
+            <seleccion_alumno
+                :show="showSelectAlumnos"
+                @alumno_select="show_cuota">
+            </seleccion_alumno>
+
+            <pagos_action
+                v-if="showPagos"
+                :data_alumno="dataAlumno"
                 :tipo="tipo"
                 :titulo_new="titulo"
                 :id_update="id_update"
-                @close="show_grupos(false)"
-            ></grupos_action>
+                @close="show_pagos(false)"
+            ></pagos_action>
         </div>
     </div>
 
@@ -90,6 +92,10 @@
     <script src="{% static '/js/plugins/vue-select.js' %}"></script>
     <script src="{% static '/js/plugins/vue-bootstrap-datetimepicker.js' %}"></script>
     <script src="{% static '/js/plugins/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static '/js/plugins/printThis.js' %}"></script>
+
     <script src="{% static '/js/vue-table.js' %}"></script>
-    <script src="{% static '/js/configuracion_general/grupos.js' %}"></script>
+    <script src="{% static '/js/general/lista_pagos.js' %}"></script>
+
+
 {% endblock javascripts %}

@@ -134,7 +134,10 @@ Vue.component('grupos_action',{
 
                 self.datos.id = id;
 
-                self.selecteMes = selecteMes;
+                self.selecteTurno = null;
+                self.selecteComplejo = self.complejos.filter((elemento) => elemento.id == self.datos.complejo_id);
+                self.selecteTurno = self.turnos.filter((elemento) => elemento.id == self.datos.turno_id);
+                self.selecteMes = self.mes[self.datos.mes-1];
 
                 store.dispatch({type: 'setLoading',value: false});
             })
@@ -156,9 +159,9 @@ Vue.component('grupos_action',{
                     self.datos['alumno'] = self.grupoAlumnos.map((alumno) => {
                         return alumno.id
                     });
-                    self.datos['complejo_id'] = self.selecteComplejo.id;
-                    self.datos['turno_id'] = self.selecteTurno.id;
-                    self.datos['mes'] = self.selecteMes.id;
+                    self.datos['complejo_id'] = self.datos.complejo_id;
+                    self.datos['turno_id'] = self.datos.turno_id;
+                    self.datos['mes'] = self.datos.mes;
 
                     HTTP.post('/grupos/', self.datos)
                     .then((response) => {
@@ -191,8 +194,8 @@ Vue.component('grupos_action',{
             self.datos['alumno'] = self.grupoAlumnos.map((alumno) => {
                 return alumno.id
             });
-            self.datos['complejo_id'] = self.selecteComplejo.id;
-            self.datos['turno_id'] = self.selecteTurno.id;
+            self.datos['complejo_id'] = self.selecteComplejo[0].id;
+            self.datos['turno_id'] = self.selecteTurno[0].id;
             self.datos['mes'] = self.selecteMes.id;
 
             HTTP.put(`/grupos/${self.datos.id}/`, self.datos)
@@ -699,6 +702,11 @@ var grupos = new Vue({
                 sortField: 'get_profesor'
             },
             {
+                name: 'get_mes',
+                title: 'Mes',
+                sortField: 'get_mes'
+            },
+            {
               name: '__slot:actions',   // <----
               title: 'Actions',
               titleClass: 'center aligned',
@@ -706,7 +714,7 @@ var grupos = new Vue({
             }
         ],
         sortOrder: [
-            { field: 'name', direction: 'asc' }
+            { field: 'get_turno_name', direction: 'asc' }
         ],
         css: {
             table: {
@@ -734,6 +742,8 @@ var grupos = new Vue({
         action: true,
         showGrupos: false,
         id_update: 0,
+        filterText: '',
+        moreParams: {}
     },
     mounted: function() {
         //this.getTurnos();
@@ -769,7 +779,7 @@ var grupos = new Vue({
             })
         },
         onChangePage: function(page) {
-            this.$refs.vuetable.changePage(page)
+            this.$refs.vuetableGrupos.changePage(page)
         },
         deleteRow: function(rowData){
             this.deleteGrupos(rowData.id);
@@ -799,7 +809,18 @@ var grupos = new Vue({
         },
         onLoaded:function () {
 
-        }
+        },
+        /*onFilterSet () {
+            let self = this;
+      		this.moreParams['get_mes'] = self.filterText;
+			this.$nextTick( () => this.$refs.vuetableGrupos.refresh() );
+		},
+		onFilterReset () {
+			delete this.moreParams.filter;
+			this.searchFor = '';
+			this.$nextTick( () => this.$refs.vuetableGrupos.refresh() );
+		}*/
+
     }
 
 });

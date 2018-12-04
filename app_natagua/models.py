@@ -31,6 +31,26 @@ MES = (
     ('12', 'Diciembre'),
 )
 
+FORMA_PAGO = (
+    (1, 'Efectivo'),
+    (2, 'CBU'),
+    (3, 'Factura'),
+ )
+
+MES_LIST = {
+    1: 'Enero',
+    2: 'Febrero',
+    3: 'Marzo',
+    4: 'Abril',
+    5: 'Mayo',
+    6: 'Junio',
+    7: 'Julio',
+    8: 'Agosto',
+    9: 'Septiembre',
+    10: 'Octubre',
+    11: 'Noviembre',
+    12: 'Diciembre',
+}
 def _validate_number(value):
     if type(value) == int:  # Your conditions here
         raise ValidationError('%s some error message' % value)
@@ -168,7 +188,6 @@ class Profesor(models.Model):
     def get_name(self):
         return "%s %s" % (self.apellido, self.nombre)
 
-
 class Alumno(models.Model):
 
     class Meta:
@@ -197,7 +216,11 @@ class Alumno(models.Model):
     id_localidad = models.ForeignKey('Localidad', related_name='localidad_alumno', on_delete=models.CASCADE, null=True)
     codigo_postal = models.CharField(max_length=5, blank=True, null=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
+    activo = models.BooleanField(default=True)
 
+    @property
+    def get_fullName(self):
+        return "%s %s" % (self.apellido, self.nombre)
 
 class Grupos(models.Model):
     class Meta:
@@ -226,6 +249,10 @@ class Grupos(models.Model):
         return self.turno.nombre
 
     @property
+    def get_mes(self):
+        return MES_LIST[int(self.mes)]
+
+    @property
     def get_edad(self):
         edad = ''
         if self.edad_min == self.edad_max:
@@ -246,3 +273,67 @@ class ListadoAlumnosPresentes(models.Model):
     def getfecha(self):
         fecha = datetime.datetime.strptime(str(self.fecha).replace('/', '-')[:10], '%Y-%m-%d')
         return fecha.strftime('%d-%m-%Y')
+
+class Promocion(models.Model):
+    class Meta:
+        verbose_name_plural = "Promocion"
+
+    fecha = models.DateTimeField(auto_now_add=True)
+    nombre = models.CharField(max_length=100, null=False, db_index=True)
+    porcentaje = models.CharField(max_length=3, blank=True, null=True)
+    fecha_expiracion = models.DateTimeField(null=True)
+    expiracion = models.BooleanField(default=False)
+    activo = models.BooleanField(default=True)
+    description = models.TextField(max_length=1000, blank=True, null=True)
+
+
+class ListadoPagos(models.Model):
+    class Meta:
+        verbose_name_plural = "Listado_pagos"
+
+    alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)
+    complejo = models.ForeignKey(Complejo, on_delete=models.CASCADE)
+    turno = models.ForeignKey(Turnos, on_delete=models.CASCADE)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateTimeField()
+    promocion = models.ForeignKey(Promocion, blank=True, null=True, on_delete=models.CASCADE)
+    cuota = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    matricula = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    adicional = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    pre_hora = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    transporte = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    total_pagar = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    pago_parcial = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    faltante = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    forma_pago = models.CharField(max_length=1, choices=FORMA_PAGO, null=False, db_index=True)
+    activo = models.BooleanField(default=True)
+    description = models.TextField(max_length=1000, blank=True, null=True)
+
+
+    @property
+    def fecha_creacion(self):
+        fecha = datetime.datetime.strptime(str(self.fecha).replace('/', '-')[:10], '%Y-%m-%d')
+        return self.fecha_creacion.strftime('%d-%m-%Y')
+
+    @property
+    def fecha_creacion(self):
+        fecha = datetime.datetime.strptime(str(self.fecha).replace('/', '-')[:10], '%Y-%m-%d')
+        return self.fecha.strftime('%d-%m-%Y')
+
+    @property
+    def get_alumno(self):
+        return {
+            'fullName': self.alumno.apellido + ', ' + self.alumno.nombre,
+            'direccion': self.alumno.direccion,
+            'dni': self.alumno.dni,
+            'email': self.alumno.email,
+        }
+
+class FacturaPagos(models.Model):
+    class Meta:
+        verbose_name_plural = "FacturaPagos"
+
+    alumno = models.ForeignKey(ListadoPagos, on_delete=models.CASCADE)
+    pago = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    fecha = models.DateTimeField(auto_now_add=True)
+

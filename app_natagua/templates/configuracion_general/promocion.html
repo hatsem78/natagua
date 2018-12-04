@@ -8,7 +8,7 @@
 {% block content %}
     <div class="app-title">
         <div>
-          <h1><i class="fa fa-dashboard"></i> Transportista</h1>
+          <h1><i class="fa fa-dashboard"></i> Promoción</h1>
           <p>Creación, modifición, eliminación y listado</p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
@@ -16,24 +16,24 @@
           <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
         </ul>
     </div>
-    <div class="tile mb-4" id="starting">
+    <div class="tile mb-4" id="promocion">
         <div class="tile-title-w-btn">
             <h3 class="title">Listado</h3>
-            <p v-if="tipo != 'transportista_update'">
+            <p v-if="tipo != 'prormocion_update'">
                   <a
                       class="btn btn-info icon-btn"
                       href="#"
-                      @click="addTransportista(true)"
+                      @click="addPromocion(true)"
                   >
-                      <i class="fa fa-plus"></i>Nuevo Transportista
+                      <i class="fa fa-plus"></i>Nuevo Promoción
                   </a>
             </p>
         </div>
 
         <vuetable
-            v-if="!showTransportista"
-            ref="vuetableTransportista"
-            api-url="{% url 'transportista_list' %}"
+            v-if="!showPromocion"
+            ref="vuetablePromocion"
+            api-url="{% url 'promocion_list' %}"
             :fields="fieldes"
             :sort-order="sortOrder"
             :css="css.table"
@@ -51,7 +51,7 @@
                    >
                        <i class="fa fa-lg fa-edit"></i>
                    </a>
-                   <a class="btn-outline-danger  btn-danger"
+                   <a class="btn-outline-danger  btn-danger" @click="deleteRow(props.rowData)"
                         href="#" data-toggle="tooltip" title="Eliminar Pago"
                         >
                        <i class="fa fa-lg fa-trash"></i>
@@ -59,7 +59,7 @@
                </div>
            </template>
         </vuetable>
-        <vuetable-pagination v-if="!showTransportista" ref="paginationTransportista"
+        <vuetable-pagination v-if="!showPromocion" ref="paginationPromocion"
           :css="css.pagination"
           @vuetable-pagination:change-page="onChangePage"
         ></vuetable-pagination>
@@ -67,27 +67,22 @@
 
 
         <div class="col-md-10">
-            <persona
-                v-if="showTransportista"
+            <promocion_action
+                v-if="showPromocion"
                 :tipo="tipo"
+                :titulo_new="titulo"
                 :id_update="id_update"
-                @close="show_transportista(false)"
-            ></persona>
+                @close="show_promocion(false)"
+            ></promocion_action>
         </div>
     </div>
 
 {% endblock %}
 {% block javascripts %}
     {{ block.super }}
-
-     <script src="{% static '/js/plugins/vue-select.js' %}"></script>
+    <script src="{% static '/js/plugins/vue-select.js' %}"></script>
     <script src="{% static '/js/plugins/vue-bootstrap-datetimepicker.js' %}"></script>
     <script src="{% static '/js/plugins/bootstrap-datetimepicker.min.js' %}"></script>
     <script src="{% static '/js/vue-table.js' %}"></script>
-    <script src="{% static '/js/configuracion_general/component_persona.js' %}"></script>
-    <script src="{% static '/js/configuracion_general/transportista.js' %}"></script>
-
-
-
-
+    <script src="{% static '/js/configuracion_general/promocion.js' %}"></script>
 {% endblock javascripts %}
