@@ -13,7 +13,7 @@ class ListaPagosPagSerializer(serializers.ModelSerializer):
             'matricula', 'adicional', 'pre_hora',
             'transporte', 'total_pagar', 'pago_parcial',
             'faltante', 'complejo_id', 'turno_id', 'get_alumno',
-            'description', 'forma_pago', 'promocion_id'
+            'description', 'forma_pago', 'promocion_id', 'count_facturas'
         )
 
 

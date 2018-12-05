@@ -14,9 +14,6 @@ class FacturaPagosPagSerializer(serializers.ModelSerializer):
             'pago',
         )
 
-
-
-
 class FacturaPagosSerializer(serializers.ModelSerializer):
 
     listado_pago_id = serializers.IntegerField()
