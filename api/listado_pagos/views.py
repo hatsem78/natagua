@@ -1,6 +1,6 @@
 import datetime
 
-from django.db.models import Count, F
+from django.db.models import Count, F, Q
 from rest_framework import serializers, generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,8 +12,8 @@ from app_natagua.models import  ListadoPagos
 
 class ListaPagosList(generics.ListAPIView):
     #queryset = ListadoPagos.objects.get_queryset().order_by('id')
-    queryset = ListadoPagos.objects.filter(facturapagos__listado_pago_id=F('id')).values() \
-        .annotate(count_factura=Count("facturapagos")).order_by()
+    queryset = ListadoPagos.objects.filter(Q(facturapagos__isnull=True) | Q(facturapagos__isnull=False)).values() \
+        .annotate(count_facturas=Count("facturapagos")).order_by()
     serializer_class = ListaPagosPagSerializer
     pagination_class = Pagination
 

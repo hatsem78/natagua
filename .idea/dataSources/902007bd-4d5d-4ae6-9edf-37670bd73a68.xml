@@ -1509,7 +1509,7 @@ model</ColNames>
     </column>
     <column id="326" parent="31" name="rootpage">
       <Position>4</Position>
-      <DataType>integer|0</DataType>
+      <DataType>int|0</DataType>
     </column>
     <column id="327" parent="31" name="sql">
       <Position>5</Position>

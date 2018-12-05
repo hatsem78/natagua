@@ -260,8 +260,8 @@ Vue.component('pagos_action',{
                     self.factura_datos= {
                         id: '',
                         listado_pago_id: this.datos.id,
-                        fecha: this.pago.fecha,
-                        pago: this.pago_parcial,
+                        fecha: this.datos.fecha,
+                        pago: this.datos.pago_parcial,
                     };
                     self.accion = 'pago_update';
                     self.titulo = "Modificar Pago";
