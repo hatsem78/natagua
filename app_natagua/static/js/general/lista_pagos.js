@@ -215,6 +215,7 @@ Vue.component('pagos_action',{
             promocion: [],
             selectPromocion: null,
             show_impresion: false,
+            showButtonPrint: false,
 
         }
     },
@@ -256,22 +257,31 @@ Vue.component('pagos_action',{
                 }
                 else{
 
-                    self.datos.id = response.data.id;
-                    self.factura_datos= {
-                        id: '',
-                        listado_pago_id: this.datos.id,
-                        fecha: this.datos.fecha,
-                        pago: this.datos.pago_parcial,
+                    self.datos = response.data;
+                    self.datos['alumno'] = {
+                        id: response.data.alumno_id,
+                        get_fullName: response.data.get_alumno.fullName,
                     };
                     self.accion = 'pago_update';
                     self.titulo = "Modificar Pago";
-                    let resultado = await self.addFacturaPago();
-                    if(resultado){
-                        notifier.success('El Pago se guardo');
+
+                    if(self.datos.pago_parcial > 0){
+                        self.factura_datos= {
+                            id: '',
+                            listado_pago_id: self.datos.id,
+                            fecha: moment(self.datos.fecha, 'YYYY-DD-MM').format('DD-MM-YYYY'),
+                            pago: self.datos.pago_parcial,
+                        };
+                        let resultado = await self.addFacturaPago();
+                        if(resultado){
+                            self.showButtonPrint = true;
+                            notifier.success('El Pago se guardo');
+                        }
+                        else{
+                            notifier.alert('Ocurrio un error al guardar factura');
+                        }
                     }
-                    else{
-                        notifier.alert('Ocurrio un error al guardar factura');
-                    }
+
 
                 }
 
@@ -339,9 +349,9 @@ Vue.component('pagos_action',{
 
                     self.factura_datos= {
                         id: '',
-                        listado_pago_id: this.datos.id,
-                        fecha: this.datos.fecha,
-                        pago: this.datos.pago_parcial,
+                        listado_pago_id: self.datos.id,
+                        fecha: self.datos.fecha,
+                        pago: self.datos.pago_parcial,
                     };
                     self.accion = 'pago_update';
                     self.titulo = "Modificar Pago";
@@ -491,6 +501,7 @@ Vue.component('pagos_action',{
         show_factura(val){
 
             let self = this;
+            console.log(self.selecteComplejo);
             if(val){
                 self.show_impresion = true;
                 $('#impresion_factura').modal('toggle');
@@ -870,7 +881,7 @@ Vue.component('pagos_action',{
                         </div>
                     </div>
                     
-                    <div class="col-2 text-right d-print-none mt-4" v-if="datos.pago_parcial > 0">
+                    <div class="col-2 text-right d-print-none mt-4" >
                         <a href="#" class="btn btn-outline-info"
                             @click="show_factura(true)"
                             data-toggle="modal"
@@ -932,10 +943,11 @@ Vue.component('pagos_action',{
            </div>
             
         </div>
+        
         <impresion_factura
             v-if="show_impresion"
             :dato_alumno="datos"  
-            :complejo="selecteComplejo[0].nombre"  
+            :complejo="selecteComplejo.nombre"  
         >
 
         </impresion_factura>
@@ -943,6 +955,7 @@ Vue.component('pagos_action',{
     </div>`
 
 });
+
 
 Vue.component('seleccion_alumno',{
     props:{
@@ -1216,7 +1229,7 @@ var pagos = new Vue({
             }
         ],
         sortOrder: [
-            { field: 'name', direction: 'asc' }
+            { field: 'nombre', direction: 'asc' }
         ],
         css: {
             table: {
@@ -1278,10 +1291,10 @@ var pagos = new Vue({
                 self.showTablaPago = true;
             }
         },
-        deleteGrupos: function (id) {
+        editDeletePago: function (id) {
             let self = this;
             store.dispatch({type: 'setLoading',value: true });
-            HTTP.delete(`/grupos/${id}/`)
+            HTTP.delete(`/listado_pagos/${id}/`)
             .then((response) => {
 
                 store.dispatch({type: 'setLoading',value: false });
@@ -1310,7 +1323,7 @@ var pagos = new Vue({
         refresh: function() {
             let self = this;
             self.$nextTick(()=>{
-              self.$refs.vuetableGrupos.refresh();
+              self.$refs.vuetableListadoPagos.refresh();
               store.dispatch({type: 'setLoading',value: false });
             })
         },

@@ -64,7 +64,8 @@ class ListaPagosSerializer(serializers.ModelSerializer):
             'matricula', 'adicional', 'pre_hora',
             'transporte', 'total_pagar', 'pago_parcial',
             'faltante', 'complejo_id', 'turno_id',
-            'description', 'forma_pago', 'promocion_id'
+            'description', 'forma_pago', 'promocion_id',
+            'get_alumno'
         )
 
     def create(self, validated_data):
