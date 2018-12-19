@@ -11,12 +11,24 @@ from app_natagua.models import  ListadoPagos
 
 
 class ListaPagosList(generics.ListAPIView):
-    #queryset = ListadoPagos.objects.get_queryset().order_by('id')
-    queryset = ListadoPagos.objects.filter(Q(facturapagos__isnull=True) | Q(facturapagos__isnull=False)).values() \
-        .annotate(count_facturas=Count("facturapagos")).order_by()
     serializer_class = ListaPagosPagSerializer
     pagination_class = Pagination
 
+    def get_queryset(self):
+        filter = self.request.GET.get('mes_fecha', None)
+        if filter != None:
+            queryset = queryset = ListadoPagos.objects.filter(
+                Q(facturapagos__isnull=True) | Q(facturapagos__isnull=False)
+                & Q(fecha__month=filter)
+            ).values() \
+                .annotate(count_facturas=Count("facturapagos")
+            )
+
+        else:
+            queryset = ListadoPagos.objects.filter(
+                Q(facturapagos__isnull=True) | Q(facturapagos__isnull=False)).values() \
+                .annotate(count_facturas=Count("facturapagos")).order_by()
+        return queryset
 
 class ListadoPagosAdd(APIView):
     """

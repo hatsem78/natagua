@@ -4,7 +4,7 @@ import json
 
 
 class Pagination(PageNumberPagination):
-    page_size = 20
+    page_size = 2
 
 
     def get_paginated_response(self, data):

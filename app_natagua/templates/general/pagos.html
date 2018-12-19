@@ -6,6 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/pc-bootstrap4-datetimepicker@4.17/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 {% endblock stylesheets %}
 {% block content %}
+
     <div class="app-title">
         <div>
           <h1><i class="fa fa-list-ul"></i> Listado Presentes</h1>
@@ -17,122 +18,144 @@
         </ul>
     </div>
 
-    <div class="wrap-table">
+    <div class="row" id="listado_pagos"  >
+         <div class="tile" v-if="tipo != 'pago_update'">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" @click="filter_mes('01')" href="#home">Enero</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" @click="filter_mes('02')" href="#home">Febrero</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" @click="filter_mes('03')" href="#home">Marzo</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" @click="filter_mes('04')" href="#home">Abril</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" @click="filter_mes('05')" href="#home">Mayo</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" @click="filter_mes('06')" href="#home">Junio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" @click="filter_mes('07')" href="#home">Julio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" @click="filter_mes('08')" href="#home">Agosto</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" @click="filter_mes('09')" href="#home">Septiembre</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" @click="filter_mes('10')" href="#home">Octubre</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" @click="filter_mes('11')" href="#home">Noviembre</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" @click="filter_mes('12')" href="#home">Diciembre</a>
+                </li>
+            </ul>
 
-        <div class="container mt-3">
-          <h2>Toggleable Tabs</h2>
-          <br>
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs">
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#home">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#menu1">Menu 1</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#menu2">Menu 2</a>
-            </li>
-          </ul>
 
-          <!-- Tab panes -->
-          <div class="tab-content">
-            <div id="home" class="container tab-pane active"><br>
-              <h3>HOME</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div>
-            <div id="menu1" class="container tab-pane fade"><br>
-              <h3>Menu 1</h3>
-              <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            </div>
-            <div id="menu2" class="container tab-pane fade"><br>
-              <h3>Menu 2</h3>
-              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-            </div>
-          </div>
-        </div>
+            <div class="tab-content">
+                <div id="home" class="tab-pane active"><br>
 
-    </div>
-    <div class="tile mb-4" id="listado_pagos">
-         <div class="tile-title-w-btn">
-            <h3 class="title">Listado</h3>
-            <p v-if="tipo != 'pago_update'">
-                  <a
-                      class="btn btn-info icon-btn"
-                      href="#"
-                      data-toggle="modal"
-                      data-target="#select_alumnos"
-                      @click="show_alumnos(true)"
-                  >
-                      <i class="fa fa-plus"></i>Alta de Pagos
-                  </a>
-            </p>
-        </div>
+                    <div class="tile mb-4" >
+                    <div class="tile-title-w-btn">
+                        <h3 class="title">Listado</h3>
+                        <p v-if="tipo != 'pago_update'">
+                              <a
+                                  class="btn btn-info icon-btn"
+                                  href="#"
+                                  data-toggle="modal"
+                                  data-target="#select_alumnos"
+                                  @click="show_alumnos(true)"
+                              >
+                                  <i class="fa fa-plus"></i>Alta de Pagos
+                              </a>
+                        </p>
+                    </div>
+                        <template >
+                            <vuetable
+                             ref="vuetable"
+                             v-if="showTablaPago2"
+                             :api-mode="false"
+                             :fields="fieldes"
+                             :tableData="localData"
+                             :data-total="totalpage"
+                             :data-manager="dataManager"
+                             data-path="data"
+                             pagination-path="pagination"
+                             @vuetable:loading="onLoading2"
+                             @vuetable:loaded="onLoaded2"
+                             vuetable-pagination:change-page
+                             :per-page="4"
+                             :css="css.table"
+                             @vuetable:pagination-data="onPaginationData2">
+                             <template slot="actions" slot-scope="props">
+                                <div class="table-button-container">
+                                   <a class="btn-outline-primary " href="#"
 
-        <div class="col-md-12">
-            <vuetable
-                v-if="showTablaPago"
-                ref="vuetableListadoPagos"
-                api-url="{% url 'listado_pagos_list' %}"
-                :fields="fieldes"
-                :sort-order="sortOrder"
-                :css="css.table"
-                pagination-path=""
-                :per-page="3"
-                @vuetable:pagination-data="onPaginationData"
-                @vuetable:loading="onLoading"
-                @vuetable:loaded="onLoaded">
+                                      data-toggle="tooltip" title="Editar Pago"
+                                      @click="editRow(props.rowData)"
+                                   >
+                                       <i class="fa fa-lg fa-edit"></i>
+                                   </a>
+                                   <a class="btn-outline-info  btn-info"
+                                        v-if="props.rowData.count_facturas > 0"
+                                        href="#" data-toggle="tooltip" title="Registrar Pago"
+                                        >
+                                       <i class="fa fa-lg fa-address-card"></i>
+                                   </a>
+                                    <a class="btn-outline-danger  btn-danger"
+                                        v-if="props.rowData.count_facturas == 0"
+                                        @click="editDeletePago(props.rowData.id)"
+                                        href="#" data-toggle="tooltip" title="Eliminar Pago"
+                                        >
+                                       <i class="fa fa-lg fa-trash"></i>
+                                   </a>
 
-                <template slot="actions" slot-scope="props">
-                    <div class="table-button-container">
-                       <a class="btn-outline-primary " href="#"
-                          v-if="props.rowData.count_facturas == 0"
-                          data-toggle="tooltip" title="Editar Pago"
-                          @click="editRow(props.rowData)"
-                       >
-                           <i class="fa fa-lg fa-edit"></i>
-                       </a>
-                       <a class="btn-outline-info  btn-info"
-                            v-if="props.rowData.count_facturas > 0"
-                            href="#" data-toggle="tooltip" title="Registrar Pago"
-                            >
-                           <i class="fa fa-lg fa-address-card"></i>
-                       </a>
-                        <a class="btn-outline-danger  btn-danger"
-                            v-if="props.rowData.count_facturas == 0"
-                            @click="editDeletePago(props.rowData.id)"
-                            href="#" data-toggle="tooltip" title="Eliminar Pago"
-                            >
-                           <i class="fa fa-lg fa-trash"></i>
-                       </a>
+
+                                </div>
+                            </template>
+                        </vuetable>
+
+                            <vuetable-pagination ref="pagination" v-if="showTablaPago2"
+                                             :css="css.pagination"
+                                             @vuetable-pagination:change-page="onChangePage2">
+                        </vuetable-pagination>
+
+                        </template>
+
+
+                        <br>
 
 
                     </div>
-                </template>
+                </div>
 
-            </vuetable>
-            <vuetable-pagination  v-if="showTablaPago" ref="paginationListadoPagos"
-              :css="css.pagination"
-              @vuetable-pagination:change-page="onChangePage"
-            ></vuetable-pagination>
-
-
-            <input type="hidden" id="alumno_url" value="{% url 'alumno_list' %}">
-            <seleccion_alumno
-                :show="showSelectAlumnos"
-                @alumno_select="show_cuota">
-            </seleccion_alumno>
-
-            <pagos_action
-                v-if="showPagos"
-                :data_alumno="dataAlumno"
-                :tipo="tipo"
-                :titulo_new="titulo"
-                :id_update="id_update"
-                @close="show_pagos(false)"
-            ></pagos_action>
+            </div>
         </div>
+        <input type="hidden" id="alumno_url" value="{% url 'alumno_list' %}">
+        <seleccion_alumno
+            :show="showSelectAlumnos"
+            @alumno_select="show_cuota">
+        </seleccion_alumno>
+
+        <pagos_action
+                            v-if="showPagos"
+                            :data_alumno="dataAlumno"
+                            :tipo="tipo"
+                            :titulo_new="titulo"
+                            :id_update="id_update"
+                            @close="show_pagos(false)"
+                        ></pagos_action>
     </div>
+
+
 
 {% endblock %}
 {% block javascripts %}
@@ -141,7 +164,7 @@
     <script src="{% static '/js/plugins/vue-bootstrap-datetimepicker.js' %}"></script>
     <script src="{% static '/js/plugins/bootstrap-datetimepicker.min.js' %}"></script>
     <script src="{% static '/js/plugins/printThis.js' %}"></script>
-
+    <script src="{% static '/js/plugins/lodash.min.js' %}"></script>
     <script src="{% static '/js/vue-table.js' %}"></script>
     <script src="{% static '/js/general/lista_pagos.js' %}"></script>
 

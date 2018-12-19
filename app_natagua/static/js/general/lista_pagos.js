@@ -1260,13 +1260,21 @@ var pagos = new Vue({
         id_update: 0,
         dataAlumno: '',
         showTablaPago: true,
+        showTablaPago2: false,
+        localData:[],
+        totalpage: 0,
+        filterMes: '01',
+
     },
     mounted: function() {
-
+        this.getData();
     },
     methods: {
         onPaginationData: function(paginationData) {
             this.$refs.paginationListadoPagos.setPaginationData(paginationData)
+        },
+        onPaginationData2: function(paginationData) {
+            this.$refs.pagination.setPaginationData(paginationData)
         },
         show_pagos:function(value){
             let self = this;
@@ -1306,8 +1314,99 @@ var pagos = new Vue({
                 console.log(err);
             })
         },
+        filter_mes: function (val) {
+            let self = this;
+            console.log(val);
+            self.filterMes = val;
+            self.getData2('01');
+        },
+        getData: function (id) {
+            let self = this;
+            store.dispatch({type: 'setLoading',value: true });
+            HTTP.get(`/listado_pagos_list/?mes_fecha=` + self.filterMes)
+            .then((response) => {
+                self.localData = response.data;
+                console.log(self.localData);
+
+                self.showTablaPago2 = true;
+
+                store.dispatch({type: 'setLoading',value: false });
+                //self.refresh();
+            })
+            .catch((err) => {
+                notifier.alert('Error ocurrete: ' + err);
+                store.dispatch({type: 'setLoading',value: false });
+                console.log(err);
+            })
+        },
+        getData2: function (page) {
+            let self = this, url='';
+            self.showTablaPago2 = false;
+            store.dispatch({type: 'setLoading',value: true });
+
+            if(page === 'next'){
+                url = self.localData.next_page_url+'&per_page=3&mes_fecha=' + self.filterMes;
+            }
+            else if(page === 'prev'){
+                url = self.localData.prev_page_url+'&per_page=3&mes_fecha=' + self.filterMes;
+            }
+            else{
+                url = `/listado_pagos_list/?` + "page=" + page + '&per_page=3&mes_fecha=' + + self.filterMes;
+            }
+
+            HTTP.get(url)
+            .then((response) => {
+                self.localData = [];
+                self.localData = response.data;
+                self.showTablaPago2 = true;
+
+                store.dispatch({type: 'setLoading',value: false });
+                //self.refresh();
+            })
+            .catch((err) => {
+                notifier.alert('Error ocurrete: ' + err);
+                store.dispatch({type: 'setLoading',value: false });
+                console.log(err);
+            })
+        },
+        dataManager (sortOrder, pagination) {
+            let self = this;
+            var data = this.localData.data;
+
+            // account for search filter
+            if (this.searchFor) {
+                // the text should be case insensitive
+                    var txt = new RegExp(this.searchFor, 'i')
+
+                // search on name, email, and nickname
+                data = _.filter(data, function(item) {
+                    return item.name.search(txt) >= 0 || item.email.search(txt) >= 0 || item.nickname.search(txt) >= 0
+                })
+            }
+
+            // sortOrder can be empty, so we have to check for that as well
+            if (sortOrder.length > 0) {
+                data = _.orderBy(data, sortOrder[0].sortField, sortOrder[0].direction)
+            }
+
+            // since the filter might affect the total number of records
+            // we can ask Vuetable to recalculate the pagination for us
+            // by calling makePagination()
+            pagination = this.$refs.vuetable.makePagination(data.length);
+            this.totalpage = pagination.total;
+
+            console.log( pagination);
+            return {
+                pagination: this.localData ,
+                data: _.slice(data, pagination.from-1, pagination.to)
+            }
+        },
         onChangePage: function(page) {
+            this.$refs.vuetableListadoPagos.changePage(page)
+        },
+        onChangePage2: function(page) {
             this.$refs.vuetable.changePage(page)
+            this.getData2(page);
         },
         altaPagos: function (value) {
             let self = this;
@@ -1320,6 +1419,13 @@ var pagos = new Vue({
         onLoading: function() {
 
         },
+        onLoading2: function() {
+            console.log(2);
+            this.pepe = 1;
+        },
+        onLoaded2: function() {
+            console.log(2);
+        },
         refresh: function() {
             let self = this;
             self.$nextTick(()=>{
@@ -1328,6 +1434,7 @@ var pagos = new Vue({
             })
         },
         onLoaded:function () {
+
 
         },
         show_cuota(data){

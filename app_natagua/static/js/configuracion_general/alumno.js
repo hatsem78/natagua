@@ -118,7 +118,7 @@ var alumno = new Vue({
             })
         },
         onChangePage: function(page) {
-            this.$refs.vuetable.changePage(page)
+            this.$refs.vuetableAlumno.changePage(page)
         },
         deleteRow: function(rowData){
             this.deleteAlumno(rowData.id);
