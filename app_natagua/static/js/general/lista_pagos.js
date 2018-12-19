@@ -182,6 +182,7 @@ Vue.component('pagos_action',{
                 promocion_id: 0,
 
             },
+            factura_datos: {},
             anio: '',
             mes: [
                 { id: 1, nombre: 'Enero'},
@@ -214,6 +215,7 @@ Vue.component('pagos_action',{
             promocion: [],
             selectPromocion: null,
             show_impresion: false,
+            showButtonPrint: false,
 
         }
     },
@@ -248,16 +250,39 @@ Vue.component('pagos_action',{
 
             store.dispatch({type: 'setLoading',value: true});
             HTTP.post(`listado_pagos/`,self.datos)
-            .then((response) => {
+            .then(async (response) => {
 
                 if(response.data.error ){
                     notifier.alert('Ocurrio un error');
                 }
                 else{
-                    notifier.success('El Pago se guardo');
+
+                    self.datos = response.data;
+                    self.datos['alumno'] = {
+                        id: response.data.alumno_id,
+                        get_fullName: response.data.get_alumno.fullName,
+                    };
                     self.accion = 'pago_update';
                     self.titulo = "Modificar Pago";
-                    self.datos.id = response.data.id;
+
+                    if(self.datos.pago_parcial > 0){
+                        self.factura_datos= {
+                            id: '',
+                            listado_pago_id: self.datos.id,
+                            fecha: moment(self.datos.fecha, 'YYYY-DD-MM').format('DD-MM-YYYY'),
+                            pago: self.datos.pago_parcial,
+                        };
+                        let resultado = await self.addFacturaPago();
+                        if(resultado){
+                            self.showButtonPrint = true;
+                            notifier.success('El Pago se guardo');
+                        }
+                        else{
+                            notifier.alert('Ocurrio un error al guardar factura');
+                        }
+                    }
+
+
                 }
 
 
@@ -269,9 +294,38 @@ Vue.component('pagos_action',{
             });
         },
         addFacturaPago(){
+            let self = this;
+
+            store.dispatch({type: 'setLoading',value: true});
+            return new Promise(resolve => {
+
+                HTTP.post(`factura_pagos/`,self.factura_datos)
+                .then((response) => {
+
+                    if(response.data.error ){
+                        notifier.alert('Ocurrio un error');
+                        resolve(false);
+                    }
+                    else{
+                        /*notifier.success('El Pago se guardo');
+                        self.accion = 'pago_update';
+                        self.titulo = "Modificar Pago";
+                        self.datos.id = response.data.id*/;
+                        resolve(true);
+                    }
+
+
+                    store.dispatch({type: 'setLoading',value: false});
+                })
+                .catch((err) => {
+                    store.dispatch({type: 'setLoading',value: false});
+                    console.log(err);
+                    resolve(false);
+                });
+            });
 
         },
-        updatePago: function () {
+        updatePago: async function () {
             let self = this;
 
             store.dispatch({type: 'setLoading',value: true });
@@ -286,15 +340,28 @@ Vue.component('pagos_action',{
 
 
             HTTP.put(`/listado_pagos/${self.datos.id}/`, self.datos)
-            .then((response) => {
+            .then(async (response) => {
                 store.dispatch({type: 'setLoading',value: false });
                 if(response.data.error ){
                     notifier.alert('Se genero un error al guardar');
                 }
                 else{
-                    notifier.success('El Pago se Guardo correctamente');
+
+                    self.factura_datos= {
+                        id: '',
+                        listado_pago_id: self.datos.id,
+                        fecha: self.datos.fecha,
+                        pago: self.datos.pago_parcial,
+                    };
                     self.accion = 'pago_update';
                     self.titulo = "Modificar Pago";
+                    let resultado = await self.addFacturaPago();
+                    if(resultado){
+                        notifier.success('El Pago se Guardo correctamente');
+                    }
+                    else{
+                        notifier.alert('Ocurrio un error al guardar factura');
+                    }
                 }
             })
             .catch((err) => {
@@ -328,8 +395,11 @@ Vue.component('pagos_action',{
                 self.selectFormaPago = self.selectFormaPago[0];
 
                 self.selectPromocion = self.promocion[0];;
-                self.selectPromocion = self.promocion.filter((elemento) => elemento.id == self.datos.promocion_id);
-                self.selectPromocion = self.selectPromocion[0];
+                let resultado  = self.promocion.filter((elemento) => elemento.id == self.datos.promocion_id);
+                if(Object.keys(resultado).length > 0){
+                    self.selectPromocion = resultado[0];
+                }
+
 
 
                 store.dispatch({type: 'setLoading',value: false});
@@ -431,6 +501,7 @@ Vue.component('pagos_action',{
         show_factura(val){
 
             let self = this;
+            console.log(self.selecteComplejo);
             if(val){
                 self.show_impresion = true;
                 $('#impresion_factura').modal('toggle');
@@ -810,7 +881,7 @@ Vue.component('pagos_action',{
                         </div>
                     </div>
                     
-                    <div class="col-2 text-right d-print-none mt-4" v-if="datos.pago_parcial > 0">
+                    <div class="col-2 text-right d-print-none mt-4" >
                         <a href="#" class="btn btn-outline-info"
                             @click="show_factura(true)"
                             data-toggle="modal"
@@ -872,10 +943,11 @@ Vue.component('pagos_action',{
            </div>
             
         </div>
+        
         <impresion_factura
             v-if="show_impresion"
             :dato_alumno="datos"  
-            :complejo="selecteComplejo[0].nombre"  
+            :complejo="selecteComplejo.nombre"  
         >
 
         </impresion_factura>
@@ -883,6 +955,7 @@ Vue.component('pagos_action',{
     </div>`
 
 });
+
 
 Vue.component('seleccion_alumno',{
     props:{
@@ -1156,7 +1229,7 @@ var pagos = new Vue({
             }
         ],
         sortOrder: [
-            { field: 'name', direction: 'asc' }
+            { field: 'nombre', direction: 'asc' }
         ],
         css: {
             table: {
@@ -1187,13 +1260,21 @@ var pagos = new Vue({
         id_update: 0,
         dataAlumno: '',
         showTablaPago: true,
+        showTablaPago2: false,
+        localData:[],
+        totalpage: 0,
+        filterMes: '01',
+
     },
     mounted: function() {
-
+        this.getData();
     },
     methods: {
         onPaginationData: function(paginationData) {
             this.$refs.paginationListadoPagos.setPaginationData(paginationData)
+        },
+        onPaginationData2: function(paginationData) {
+            this.$refs.pagination.setPaginationData(paginationData)
         },
         show_pagos:function(value){
             let self = this;
@@ -1218,10 +1299,10 @@ var pagos = new Vue({
                 self.showTablaPago = true;
             }
         },
-        deleteGrupos: function (id) {
+        editDeletePago: function (id) {
             let self = this;
             store.dispatch({type: 'setLoading',value: true });
-            HTTP.delete(`/grupos/${id}/`)
+            HTTP.delete(`/listado_pagos/${id}/`)
             .then((response) => {
 
                 store.dispatch({type: 'setLoading',value: false });
@@ -1233,8 +1314,99 @@ var pagos = new Vue({
                 console.log(err);
             })
         },
+        filter_mes: function (val) {
+            let self = this;
+            console.log(val);
+            self.filterMes = val;
+            self.getData2('01');
+        },
+        getData: function (id) {
+            let self = this;
+            store.dispatch({type: 'setLoading',value: true });
+            HTTP.get(`/listado_pagos_list/?mes_fecha=` + self.filterMes)
+            .then((response) => {
+                self.localData = response.data;
+                console.log(self.localData);
+
+                self.showTablaPago2 = true;
+
+                store.dispatch({type: 'setLoading',value: false });
+                //self.refresh();
+            })
+            .catch((err) => {
+                notifier.alert('Error ocurrete: ' + err);
+                store.dispatch({type: 'setLoading',value: false });
+                console.log(err);
+            })
+        },
+        getData2: function (page) {
+            let self = this, url='';
+            self.showTablaPago2 = false;
+            store.dispatch({type: 'setLoading',value: true });
+
+            if(page === 'next'){
+                url = self.localData.next_page_url+'&per_page=3&mes_fecha=' + self.filterMes;
+            }
+            else if(page === 'prev'){
+                url = self.localData.prev_page_url+'&per_page=3&mes_fecha=' + self.filterMes;
+            }
+            else{
+                url = `/listado_pagos_list/?` + "page=" + page + '&per_page=3&mes_fecha=' + + self.filterMes;
+            }
+
+            HTTP.get(url)
+            .then((response) => {
+                self.localData = [];
+                self.localData = response.data;
+                self.showTablaPago2 = true;
+
+                store.dispatch({type: 'setLoading',value: false });
+                //self.refresh();
+            })
+            .catch((err) => {
+                notifier.alert('Error ocurrete: ' + err);
+                store.dispatch({type: 'setLoading',value: false });
+                console.log(err);
+            })
+        },
+        dataManager (sortOrder, pagination) {
+            let self = this;
+            var data = this.localData.data;
+
+            // account for search filter
+            if (this.searchFor) {
+                // the text should be case insensitive
+                    var txt = new RegExp(this.searchFor, 'i')
+
+                // search on name, email, and nickname
+                data = _.filter(data, function(item) {
+                    return item.name.search(txt) >= 0 || item.email.search(txt) >= 0 || item.nickname.search(txt) >= 0
+                })
+            }
+
+            // sortOrder can be empty, so we have to check for that as well
+            if (sortOrder.length > 0) {
+                data = _.orderBy(data, sortOrder[0].sortField, sortOrder[0].direction)
+            }
+
+            // since the filter might affect the total number of records
+            // we can ask Vuetable to recalculate the pagination for us
+            // by calling makePagination()
+            pagination = this.$refs.vuetable.makePagination(data.length);
+            this.totalpage = pagination.total;
+
+            console.log( pagination);
+            return {
+                pagination: this.localData ,
+                data: _.slice(data, pagination.from-1, pagination.to)
+            }
+        },
         onChangePage: function(page) {
+            this.$refs.vuetableListadoPagos.changePage(page)
+        },
+        onChangePage2: function(page) {
             this.$refs.vuetable.changePage(page)
+            this.getData2(page);
         },
         altaPagos: function (value) {
             let self = this;
@@ -1247,14 +1419,22 @@ var pagos = new Vue({
         onLoading: function() {
 
         },
+        onLoading2: function() {
+            console.log(2);
+            this.pepe = 1;
+        },
+        onLoaded2: function() {
+            console.log(2);
+        },
         refresh: function() {
             let self = this;
             self.$nextTick(()=>{
-              self.$refs.vuetableGrupos.refresh();
+              self.$refs.vuetableListadoPagos.refresh();
               store.dispatch({type: 'setLoading',value: false });
             })
         },
         onLoaded:function () {
+
 
         },
         show_cuota(data){

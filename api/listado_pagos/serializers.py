@@ -4,6 +4,24 @@ from app_natagua.models import ListadoPagos, Complejo, Turnos, Alumno, Promocion
 
 
 class ListaPagosPagSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    alumno_id = serializers.IntegerField()
+    complejo_id = serializers.IntegerField()
+    promocion_id = serializers.IntegerField()
+    turno_id = serializers.IntegerField()
+    fecha = serializers.DateTimeField()
+    cuota = serializers.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    matricula = serializers.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    adicional = serializers.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    pre_hora = serializers.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    transporte = serializers.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    total_pagar = serializers.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    pago_parcial = serializers.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    faltante = serializers.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    forma_pago = serializers.IntegerField()
+    description = serializers.CharField(max_length=500, allow_blank=True)
+    count_facturas = serializers.IntegerField(read_only=True)
+
 
     class Meta:
         model = ListadoPagos
@@ -13,7 +31,7 @@ class ListaPagosPagSerializer(serializers.ModelSerializer):
             'matricula', 'adicional', 'pre_hora',
             'transporte', 'total_pagar', 'pago_parcial',
             'faltante', 'complejo_id', 'turno_id', 'get_alumno',
-            'description', 'forma_pago', 'promocion_id'
+            'description', 'forma_pago', 'promocion_id', 'count_facturas'
         )
 
 
@@ -46,7 +64,8 @@ class ListaPagosSerializer(serializers.ModelSerializer):
             'matricula', 'adicional', 'pre_hora',
             'transporte', 'total_pagar', 'pago_parcial',
             'faltante', 'complejo_id', 'turno_id',
-            'description', 'forma_pago', 'promocion_id'
+            'description', 'forma_pago', 'promocion_id',
+            'get_alumno'
         )
 
     def create(self, validated_data):
