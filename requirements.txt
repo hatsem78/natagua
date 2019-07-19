@@ -1,4 +1,4 @@
-Django==2.1.2
+Django
 #DRF
 djangorestframework
 django-crispy-forms
